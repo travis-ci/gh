@@ -34,7 +34,7 @@ module GH
     #
     # Returns new Response instance.
     def dup
-      super.dup!
+      super.dup_ivars
     end
 
     # Public: Returns the Response body as a String.
@@ -44,7 +44,7 @@ module GH
 
     protected
 
-    def dup!
+    def dup_ivars
       @headers, @data, @body = @headers.dup, @data.dup, @body.dup
       self
     end
