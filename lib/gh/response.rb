@@ -23,7 +23,7 @@ module GH
     # body    - HTTP body as a String
     def initialize(headers, body)
       @headers = Hash[headers.map { |k,v| [k.downcase, v] }]
-      raise ArgumentError, "unexpected Content-Type #{content_type}" unless content_type == CONTENT_TYPE
+      raise ArgumentError, "unexpected Content-Type #{content_type}" if content_type and content_type != CONTENT_TYPE
 
       @body = body.to_str
       @body = @body.encode("utf-8") if @body.respond_to? :encode
