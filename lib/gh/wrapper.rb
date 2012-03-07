@@ -23,13 +23,16 @@ module GH
   class Wrapper
     extend Forwardable
 
+    # Public: Get/set wrapped layer.
+    attr_accessor :backend
+
     # Public: Returns the URI used for sending out web request.
-    def_delegator :@backend, :api_host
+    def_delegator :backend, :api_host
 
     # Public: Retrieves resources from Github.
     #
     # By default, this method is delegated to the nex layer on the stack.
-    def_delegator :@backend, :[]
+    def_delegator :backend, :[]
 
     # Internal: Get/set default layer to wrap when creating a new instance.
     def self.wraps(klass = nil)
