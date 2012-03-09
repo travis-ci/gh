@@ -2,12 +2,12 @@ require 'spec_helper'
 
 describe GH::Remote do
   it 'loads resources from github' do
-    stub_request(:get, "https://api.github.com/foo").to_return(:body => '"foo"')
-    subject['foo'].to_s.should be == '"foo"'
+    stub_request(:get, "https://api.github.com/foo").to_return(:body => '["foo"]')
+    subject['foo'].to_s.should be == '["foo"]'
   end
 
   it 'sets headers correctly' do
-    stub_request(:get, "https://api.github.com/foo").to_return(:headers => {'X-Foo' => 'bar'})
+    stub_request(:get, "https://api.github.com/foo").to_return(:headers => {'X-Foo' => 'bar'}, :body => '[]')
     subject['foo'].headers['x-foo'].should be == 'bar'
   end
 
