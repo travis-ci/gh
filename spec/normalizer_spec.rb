@@ -71,10 +71,62 @@ describe GH::Normalizer do
       normalized['commit_id'].should be == 'foo'
     end
 
-    it 'renames comments to comment_count if content is a number'
-    it 'renames repositories to repository_count if content is a number'
-    it 'renames repos to repository_count if content is a number'
-    it 'renames forks to fork_count if content is a number'
+    it 'renames comments to comment_count if content is a number' do
+      normalize 'comments' => 42
+      normalized.should include('comment_count')
+      normalized.should_not include('comments')
+      normalized['comment_count'].should be == 42
+    end
+
+    it 'renames repositories to repository_count if content is a number' do
+      normalize 'repositories' => 42
+      normalized.should include('repository_count')
+      normalized.should_not include('repositories')
+      normalized['repository_count'].should be == 42
+    end
+
+    it 'renames repos to repository_count if content is a number' do
+      normalize 'repos' => 42
+      normalized.should include('repository_count')
+      normalized.should_not include('repos')
+      normalized['repository_count'].should be == 42
+    end
+
+    it 'renames forks to fork_count if content is a number' do
+      normalize 'forks' => 42
+      normalized.should include('fork_count')
+      normalized.should_not include('forks')
+      normalized['fork_count'].should be == 42
+    end
+
+    it 'does not rename comments to comment_count if content is not a number' do
+      normalize 'comments' => 'foo'
+      normalized.should include('comments')
+      normalized.should_not include('comment_count')
+      normalized['comments'].should be == 'foo'
+    end
+
+    it 'does not rename repositories to repository_count if content is not a number' do
+      normalize 'repositories' => 'foo'
+      normalized.should include('repositories')
+      normalized.should_not include('repository_count')
+      normalized['repositories'].should be == 'foo'
+    end
+
+    it 'does not rename repos to repository_count if content is not a number' do
+      normalize 'repos' => 'foo'
+      normalized.should include('repositories')
+      normalized.should_not include('repository_count')
+      normalized['repositories'].should be == 'foo'
+    end
+
+    it 'does not rename forks to fork_count if content is not a number' do
+      normalize 'forks' => 'foo'
+      normalized.should include('forks')
+      normalized.should_not include('fork_count')
+      normalized['forks'].should be == 'foo'
+    end
+
     it 'renames user to owner if appropriate'
     it 'renames user to author if appropriate'
     it 'leaves user in place if owner exists'
