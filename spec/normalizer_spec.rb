@@ -208,7 +208,16 @@ describe GH::Normalizer do
     it 'generates link headers from link entries'
     it 'does not discard existing link entires'
     it 'does not discard existing link headers'
-    it 'identifies _url prefix as link'
+
+    it 'identifies _url suffix as link' do
+      normalize 'foo_url' => 'http://lmgtfy.com/?q=foo'
+      normalized.should_not include('foo_url')
+      normalized.should include("_links")
+      normalized["_links"].should include("foo")
+      normalized["_links"]["foo"].should be_a(Hash)
+      normalized["_links"]["foo"]["href"].should be == 'http://lmgtfy.com/?q=foo'
+    end
+
     it 'identifies blog as link'
     it 'detects avatar links from gravatar_url'
     it 'detects html urls in url field'
