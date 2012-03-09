@@ -1,7 +1,21 @@
 require 'spec_helper'
 
 describe GH::Normalizer do
-  it 'leaves unknown fields in place'
+  before { subject.backend = GH::MockBackend.new }
+
+  def normalize(payload)
+    data['payload'] = payload
+  end
+
+  def normalized
+    subject['payload']
+  end
+
+  it 'leaves unknown fields in place' do
+    normalize 'foo' => 'bar'
+    normalized['foo'] = 'bar'
+  end
+
   it 'works for deeply nested fields'
   it 'works for lists'
 
@@ -10,12 +24,21 @@ describe GH::Normalizer do
   end
 
   context 'renaming' do
-    it 'renames gravatar_url to avatar_url'
-    it 'renames org to organization'
-    it 'renames orgs to organizations'
-    it 'renames username to login'
-    it 'renames repo to repository'
-    it 'renames repos to repositories'
+    def self.renames(a, b)
+      it "renames #{a} to #{b}" do
+        normalize a => "foo"
+        normalized.should_not include(a)
+        normalized.should include(b)
+        normalized[b].should be == "foo"
+      end
+    end
+
+    renames 'org', 'organization'
+    renames 'orgs', 'organizations'
+    renames 'username', 'login'
+    renames 'repo', 'repository'
+    renames 'repos', 'repositories'
+
     it 'renames repo_ prefix to repository_'
     it 'renames repos_ prefix to repository_'
     it 'renames _repo suffix to _repository'
@@ -43,6 +66,7 @@ describe GH::Normalizer do
     it 'does not discard existing link headers'
     it 'identifies _url prefix as link'
     it 'identifies blog as link'
+    it 'detects avatar links from gravatar_url'
     it 'detects html urls in url field'
     it 'detects self urls in url field'
   end

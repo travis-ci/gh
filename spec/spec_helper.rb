@@ -12,6 +12,10 @@ module GH
     def requests
       backend.requests
     end
+
+    def data
+      backend.data
+    end
   end
 
   class MockBackend < Wrapper
@@ -27,13 +31,15 @@ module GH
       file = File.expand_path("../payloads/#{key}.yml", __FILE__)
       @requests << key
 
-      unless File.exist? file
-        res = allow_http { super }
-        FileUtils.mkdir_p File.dirname(file)
-        File.write file, [res.headers, res.body].to_yaml
-      end
+      @data[key] ||= begin
+        unless File.exist? file
+          res = allow_http { super }
+          FileUtils.mkdir_p File.dirname(file)
+          File.write file, [res.headers, res.body].to_yaml
+        end
 
-      @data[key] ||= Response.new(*YAML.load_file(file))
+        Response.new(*YAML.load_file(file))
+      end
     end
 
     private
