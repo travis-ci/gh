@@ -21,7 +21,7 @@ module GH
     #
     # headers - HTTP headers as a Hash
     # body    - HTTP body as a String
-    def initialize(headers, body)
+    def initialize(headers = {}, body = "{}")
       @headers = Hash[headers.map { |k,v| [k.downcase, v] }]
       raise ArgumentError, "unexpected Content-Type #{content_type}" if content_type and content_type != CONTENT_TYPE
 
@@ -37,9 +37,27 @@ module GH
       super.dup_ivars
     end
 
-    # Public: Returns the Response body as a String.
+    # Public: Returns the response body as a String.
     def to_s
       @body.dup
+    end
+
+    # Public: Returns true or false indicating whether it supports method.
+    def respond_to?(method, *)
+      return super unless method == "to_hash" or method == "to_ary"
+      data.respond_to? method
+    end
+
+    # Public: Implements to_hash conventions, please check respond_to?(:to_hash).
+    def to_hash
+      return method_missing(__method__) unless respond_to? __method__
+      @data.dup.to_hash
+    end
+
+    # Public: Implements to_ary conventions, please check respond_to?(:to_hash).
+    def to_ary
+      return method_missing(__method__) unless respond_to? __method__
+      @data.dup.to_ary
     end
 
     protected

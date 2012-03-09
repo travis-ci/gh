@@ -7,6 +7,11 @@ describe GH::Normalizer do
     data['payload'] = payload
   end
 
+  def with_headers(headers = {})
+    response = GH::Response.new(headers)
+    data['payload'], response.data = response, data['payload']
+  end
+
   def normalized
     subject['payload']
   end
@@ -191,7 +196,15 @@ describe GH::Normalizer do
   end
 
   context 'links' do
-    it 'generates link entries from link headers'
+    it 'generates link entries from link headers' do
+      pending
+      normalize '_links' => {'href' => 'foo'}
+      with_headers
+
+      normalized.headers.should include("Link")
+      normalized.headers["Link"].should be == "something something"
+    end
+
     it 'generates link headers from link entries'
     it 'does not discard existing link entires'
     it 'does not discard existing link headers'
