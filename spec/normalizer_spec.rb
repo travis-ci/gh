@@ -38,13 +38,39 @@ describe GH::Normalizer do
     renames 'username', 'login'
     renames 'repo', 'repository'
     renames 'repos', 'repositories'
+    renames 'repo_foo', 'repository_foo'
+    renames 'repos_foo', 'repository_foo'
+    renames 'foo_repo', 'foo_repository'
+    renames 'foo_repos', 'foo_repositories'
 
-    it 'renames repo_ prefix to repository_'
-    it 'renames repos_ prefix to repository_'
-    it 'renames _repo suffix to _repository'
-    it 'renames _repos prefix to _repositories'
-    it 'renames commit to sha if value is a sha'
-    it 'renames commit_id to sha if value is a sha'
+    it 'renames commit to sha if value is a sha' do
+      normalize 'commit' => 'd0f4aa01f100c26c6eae17ea637f46cf150d9c1f'
+      normalized.should_not include('commit')
+      normalized.should include('sha')
+      normalized['sha'].should be == 'd0f4aa01f100c26c6eae17ea637f46cf150d9c1f'
+    end
+
+    it 'does not rename commit to sha if value is not a sha' do
+      normalize 'commit' => 'foo'
+      normalized.should include('commit')
+      normalized.should_not include('sha')
+      normalized['commit'].should be == 'foo'
+    end
+
+    it 'renames commit_id to sha if value is a sha' do
+      normalize 'commit_id' => 'd0f4aa01f100c26c6eae17ea637f46cf150d9c1f'
+      normalized.should_not include('commit_id')
+      normalized.should include('sha')
+      normalized['sha'].should be == 'd0f4aa01f100c26c6eae17ea637f46cf150d9c1f'
+    end
+
+    it 'does not rename commit_id to sha if value is not a sha' do
+      normalize 'commit_id' => 'foo'
+      normalized.should include('commit_id')
+      normalized.should_not include('sha')
+      normalized['commit_id'].should be == 'foo'
+    end
+
     it 'renames comments to comment_count if content is a number'
     it 'renames repositories to repository_count if content is a number'
     it 'renames repos to repository_count if content is a number'
