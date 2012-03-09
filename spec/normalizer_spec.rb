@@ -227,7 +227,15 @@ describe GH::Normalizer do
       normalized["_links"]["blog"]["href"].should be == 'http://rkh.im'
     end
 
-    it 'detects avatar links from gravatar_url'
+    it 'detects avatar links from gravatar_url' do
+      normalize 'gravatar_url' => 'http://gravatar.com/avatar/93c02710978db9979064630900741691?size=50'
+      normalized.should_not include('blog')
+      normalized.should include("_links")
+      normalized["_links"].should include("blog")
+      normalized["_links"]["avatar"].should be_a(Hash)
+      normalized["_links"]["avatar"]["href"].should be == 'http://gravatar.com/avatar/93c02710978db9979064630900741691?size=50'
+    end
+
     it 'detects html urls in url field'
     it 'detects self urls in url field'
   end
