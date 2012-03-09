@@ -127,11 +127,44 @@ describe GH::Normalizer do
       normalized['forks'].should be == 'foo'
     end
 
-    it 'renames user to owner if appropriate'
-    it 'renames user to author if appropriate'
-    it 'leaves user in place if owner exists'
-    it 'leaves user in place if author exists'
-    it 'leaves user in place if no indication what kind of user'
+    it 'renames user to owner if appropriate' do
+      normalize 'user' => 'me', 'created_at' => Time.now.xmlschema
+      normalized.should_not include('user')
+      normalized.should include('owner')
+      normalized['owner'].should be == 'me'
+    end
+
+    it 'renames user to author if appropriate' do
+      normalize 'user' => 'me', 'committed_at' => Time.now.xmlschema
+      normalized.should_not include('user')
+      normalized.should include('author')
+      normalized['author'].should be == 'me'
+    end
+
+    it 'leaves user in place if owner exists' do
+      normalize 'user' => 'me', 'created_at' => Time.now.xmlschema, 'owner' => 'you'
+      normalized.should include('user')
+      normalized.should include('owner')
+      normalized['user'].should be == 'me'
+      normalized['owner'].should be == 'you'
+    end
+
+    it 'leaves user in place if author exists' do
+      normalize 'user' => 'me', 'committed_at' => Time.now.xmlschema, 'author' => 'you'
+      normalized.should include('user')
+      normalized.should include('author')
+      normalized['user'].should be == 'me'
+      normalized['author'].should be == 'you'
+    end
+
+    it 'leaves user in place if no indication what kind of user' do
+      normalize 'user' => 'me'
+      normalized.should_not include('owner')
+      normalized.should_not include('author')
+      normalized.should include('user')
+      normalized['user'].should be == 'me'
+    end
+
     it 'copies author to committer'
     it 'copies committer to author'
     it 'does not override committer or author if both exist'
