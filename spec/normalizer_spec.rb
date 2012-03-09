@@ -218,7 +218,15 @@ describe GH::Normalizer do
       normalized["_links"]["foo"]["href"].should be == 'http://lmgtfy.com/?q=foo'
     end
 
-    it 'identifies blog as link'
+    it 'identifies blog as link' do
+      normalize 'blog' => 'http://rkh.im'
+      normalized.should_not include('blog')
+      normalized.should include("_links")
+      normalized["_links"].should include("blog")
+      normalized["_links"]["blog"].should be_a(Hash)
+      normalized["_links"]["blog"]["href"].should be == 'http://rkh.im'
+    end
+
     it 'detects avatar links from gravatar_url'
     it 'detects html urls in url field'
     it 'detects self urls in url field'

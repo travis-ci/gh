@@ -53,7 +53,7 @@ module GH
     def normalize_url(hash, key, value)
       case key
       when "blog"
-        set_link(hash. key, value)
+        set_link(hash, key, value)
       when "url"
         type = Addressable::URI.parse(value).host == api_host.host ? "self" : "html"
         set_link(hash, type, value)
