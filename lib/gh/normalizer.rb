@@ -26,6 +26,7 @@ module GH
 
     def normalize_hash(hash)
       corrected = {}
+      corrected.default_proc = hash.default_proc
 
       hash.each_pair do |key, value|
         key = normalize_key(key, value)
