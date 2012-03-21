@@ -71,12 +71,13 @@ if Faraday::VERSION < '0.8.0'
       def initialize(app, token, options={})
         super(app)
 
-        values = ["token=#{token.to_s.inspect}"]
-        options.each do |key, value|
-          values << "#{key}=#{value.to_s.inspect}"
-        end
-        comma = ",\n#{' ' * ('Authorization: Token '.size)}"
-        @header_value = "Token #{values * comma}"
+        # values = ["token=#{token.to_s.inspect}"]
+        #         options.each do |key, value|
+        #           values << "#{key}=#{value.to_s.inspect}"
+        #         end
+        #         comma = ",\n#{' ' * ('Authorization: Token '.size)}"
+        #         @header_value = "Token #{values * comma}"
+        @header_value = "token #{token}"
       end
 
       def call(env)
