@@ -6,6 +6,8 @@ module GH
   #
   # Delegates safe methods to the parsed body (expected to be an Array or Hash).
   class Response
+    include GH::Case
+
     # Internal: Content-Type header value expected from Github
     CONTENT_TYPE = "application/json; charset=utf-8"
 
@@ -25,9 +27,16 @@ module GH
       @headers = Hash[headers.map { |k,v| [k.downcase, v] }]
       raise ArgumentError, "unexpected Content-Type #{content_type}" if content_type and content_type != CONTENT_TYPE
 
-      @body = body.to_str
-      @body = @body.encode("utf-8") if @body.respond_to? :encode
-      @data = MultiJson.decode(@body)
+      case body
+      when respond_to(:to_str)  then @body = body.to_str
+      when respond_to(:to_hash) then @data = body.to_hash
+      when respond_to(:to_ary)  then @data = body.to_ary
+      else raise ArgumentError, "cannot parse #{body.inspect}"
+      end
+
+      @body ||= MultiJson.encode(@data)
+      @body   = @body.encode("utf-8") if @body.respond_to? :encode
+      @data ||= MultiJson.decode(@body)
     end
 
     # Public: Duplicates the instance. Will also duplicate some instance variables to behave as expected.
@@ -44,7 +53,7 @@ module GH
 
     # Public: Returns true or false indicating whether it supports method.
     def respond_to?(method, *)
-      return super unless method == "to_hash" or method == "to_ary"
+      return super unless method.to_s == "to_hash" or method.to_s == "to_ary"
       data.respond_to? method
     end
 
@@ -58,6 +67,10 @@ module GH
     def to_ary
       return method_missing(__method__) unless respond_to? __method__
       @data.dup.to_ary
+    end
+
+    def hash?
+      respond_to? :to_hash
     end
 
     protected

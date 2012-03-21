@@ -25,16 +25,12 @@ module GH
       end
     end
 
-    # Public: Initializes a new Cache instance.
-    #
-    # backend - Backend to wrap (defaults to Remote)
-    # options - Configuration options:
-    #           :cache - Cache to be used.
-    def initialize(*)
-      super
+    # Internal: Initializes a new Cache instance.
+    def setup(*)
       self.cache ||= Rails.cache if defined? Rails.cache
       self.cache ||= ActiveSupport::Cache.lookup_store if defined? ActiveSupport::Cache.lookup_store
       self.cache ||= SimpleCache.new
+      super
     end
 
     # Public: Retrieves resources from Github and caches response for future access.

@@ -20,8 +20,7 @@ module GH
     #
     # It is highly recommended to set origin, but not to set headers.
     # If you set the username, you should also set the password.
-    def initialize(api_host = 'https://api.github.com', options = {})
-      api_host, options         = normalize_options(api_host, options)
+    def setup(api_host, options)
       token, username, password = options.values_at :token, :username, :password
 
       api_host  = api_host.api_host if api_host.respond_to? :api_host
@@ -59,7 +58,14 @@ module GH
     # Returns the Response.
     def [](key)
       response = connection.get(path_for(key), headers)
-      Response.new(response.headers, response.body)
+      modify(response.body, response.headers)
+    end
+
+    private
+
+    def modify(body, headers = {})
+      return body if body.is_a? Response
+      Response.new(headers, body)
     end
   end
 end

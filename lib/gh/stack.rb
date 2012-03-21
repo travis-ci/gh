@@ -27,14 +27,14 @@ module GH
     # Can be used for easly stacking layers.
     def initialize(options = {}, &block)
       @options, @stack = {}, []
-      block.try(:instance_eval, self)
+      instance_eval(&block) if block
     end
 
     # Public: Adds a new layer to the stack.
     #
     # Layer will be wrapped by layers already on the stack.
     def use(klass, options = {})
-      stack << [klass, options]
+      @stack << [klass, options]
       self
     end
 
@@ -43,8 +43,8 @@ module GH
     # options - Hash of options that will be passed to all layers upon initialization.
     #
     # Returns top most Wrapper instance.
-    def build(options)
-      stack.reverse.inject(nil) do |backend, (klass, opts)|
+    def build(options = {})
+      @stack.reverse.inject(nil) do |backend, (klass, opts)|
         klass.new backend, @options.merge(opts).merge(options)
       end
     end

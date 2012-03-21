@@ -23,16 +23,19 @@ module GH
   class Wrapper
     extend Forwardable
 
-    # Public: Get/set wrapped layer.
-    attr_accessor :backend
+    # Public: Get wrapped layer.
+    attr_reader :backend
 
     # Public: Returns the URI used for sending out web request.
     def_delegator :backend, :api_host
 
     # Public: Retrieves resources from Github.
     #
-    # By default, this method is delegated to the nex layer on the stack.
-    def_delegator :backend, :[]
+    # By default, this method is delegated to the next layer on the stack
+    # and modify is called.
+    def [](key)
+      modify backend[key]
+    end
 
     # Internal: Get/set default layer to wrap when creating a new instance.
     def self.wraps(klass = nil)
@@ -45,9 +48,24 @@ module GH
     # backend - layer to be wrapped
     # options - config options
     def initialize(backend = nil, options = {})
-      backend, options = normalize_options(backend, options)
-      @backend = Wrapper === backend ? backend : self.class.wraps.new(backend, options)
+      setup(*normalize_options(backend, options))
       options.each_pair { |key, value| public_send("#{key}=", value) if respond_to? "#{key}=" }
+    end
+
+    # Public: Set wrapped layer.
+    def backend=(layer)
+      layer.frontend = self
+      @backend = layer
+    end
+
+    # Internal: ...
+    def frontend=(value)
+      @frontend = value
+    end
+
+    # Internal: ...
+    def frontend
+      @frontend ? @frontend.frontend : self
     end
 
     def inspect
@@ -56,11 +74,23 @@ module GH
 
     private
 
+    def modify(data)
+      data
+    end
+
+    def setup(backend, options)
+      self.backend = Wrapper === backend ? backend : self.class.wraps.new(backend, options)
+    end
+
     def normalize_options(backend, options)
-      backend, options = nil, backend if options.nil? and Hash === backend
+      backend, options = nil, backend if Hash === backend
       options ||= {}
       backend ||= options[:backend] || options[:api_url] || 'https://api.github.com'
       [backend, options]
+    end
+
+    def full_url(key)
+      api_host + path_for(key)
     end
 
     def path_for(key)

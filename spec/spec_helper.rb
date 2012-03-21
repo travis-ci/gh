@@ -21,7 +21,7 @@ module GH
   class MockBackend < Wrapper
     attr_accessor :data, :requests
 
-    def initialize(*)
+    def setup(*)
       @data, @requests = {}, []
       super
     end
@@ -31,7 +31,7 @@ module GH
       file = File.expand_path("../payloads/#{key}.yml", __FILE__)
       @requests << key
 
-      @data[key] ||= begin
+      result = @data[key] ||= begin
         unless File.exist? file
           res = allow_http { super }
           FileUtils.mkdir_p File.dirname(file)
@@ -40,6 +40,9 @@ module GH
 
         Response.new(*YAML.load_file(file))
       end
+
+      result = Response.new({}, result) unless result.is_a? Response
+      result
     end
 
     private

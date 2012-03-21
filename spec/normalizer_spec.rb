@@ -16,9 +16,13 @@ describe GH::Normalizer do
     subject['payload']
   end
 
+  it 'is set up properly' do
+    backend.frontend.should be_a(GH::Normalizer)
+  end
+
   it 'leaves unknown fields in place' do
     normalize 'foo' => 'bar'
-    normalized['foo'] = 'bar'
+    normalized['foo'].should be == 'bar'
   end
 
   it 'works for deeply nested fields'
@@ -241,7 +245,6 @@ describe GH::Normalizer do
       normalized.should_not include('url')
       normalized.should include('_links')
       normalized['_links'].should include('html')
-      normalized['_links'].should_not include('self')
       normalized['_links']['html']['href'].should be == 'http://github.com/foo'
     end
 
