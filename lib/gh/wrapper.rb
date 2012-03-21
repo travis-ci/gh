@@ -50,6 +50,10 @@ module GH
       options.each_pair { |key, value| public_send("#{key}=", value) if respond_to? "#{key}=" }
     end
 
+    def inspect
+      "#<#{self.class}: #{backend.inspect}>"
+    end
+
     private
 
     def normalize_options(backend, options)

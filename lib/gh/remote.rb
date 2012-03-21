@@ -43,6 +43,11 @@ module GH
       end
     end
 
+    # Public: ...
+    def inspect
+      "#<#{self.class}: #{api_host}>"
+    end
+
     # Public: Retrieves resources from Github.
     #
     # Examples
