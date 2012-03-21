@@ -4,6 +4,7 @@ require 'forwardable'
 
 module GH
   autoload :Cache,      'gh/cache'
+  autoload :Case,       'gh/case'
   autoload :Normalizer, 'gh/normalizer'
   autoload :Remote,     'gh/remote'
   autoload :Response,   'gh/response'
