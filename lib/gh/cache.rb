@@ -27,7 +27,7 @@ module GH
 
     # Internal: Initializes a new Cache instance.
     def setup(*)
-      self.cache ||= Rails.cache if defined? Rails.cache
+      self.cache ||= Rails.cache if defined? Rails.cache and defined? RAILS_CACHE
       self.cache ||= ActiveSupport::Cache.lookup_store if defined? ActiveSupport::Cache.lookup_store
       self.cache ||= SimpleCache.new
       super
