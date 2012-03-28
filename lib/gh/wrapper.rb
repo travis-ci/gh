@@ -22,6 +22,7 @@ module GH
   #   end
   class Wrapper
     extend Forwardable
+    include Case
 
     # Public: Get wrapped layer.
     attr_reader :backend
@@ -74,9 +75,34 @@ module GH
 
     private
 
-    def modify(data)
+    def self.double_dispatch
+      define_method(:modify) { |data| double_dispatch(data) }
+    end
+
+    def double_dispatch(data)
+      case data
+      when respond_to(:to_gh)   then modify_response(data)
+      when respond_to(:to_hash) then modify_hash(data)
+      when respond_to(:to_ary)  then modify_array(data)
+      when respond_to(:to_str)  then modify_string(data)
+      when respond_to(:to_int)  then modify_integer(data)
+      else raise ArgumentError, "cannot dispatch #{data.inspect}"
+      end
+    end
+
+    def modify_response(response)
+      result = double_dispatch response.data
+      result.respond_to?(:to_gh) ? result.to_gh : Response.new({}, result)
+    end
+
+    def modify(data, *)
       data
     end
+
+    alias modify_array    modify
+    alias modify_hash     modify
+    alias modify_string   modify
+    alias modify_integer  modify
 
     def setup(backend, options)
       self.backend = Wrapper === backend ? backend : self.class.wraps.new(backend, options)

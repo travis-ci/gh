@@ -9,15 +9,13 @@ module GH
     # Returns normalized Response.
     def [](key)
       result = super
-      links(result)['self'] ||= { 'href' => full_url(key).to_s } if result.hash?
+      links(result)['self'] ||= { 'href' => full_url(key).to_s } if result.respond_to? :to_hash
       result
     end
 
     private
 
-    def modify(*)
-      normalize super
-    end
+    double_dispatch
 
     def links(hash)
       hash = hash.data if hash.respond_to? :data
@@ -28,32 +26,32 @@ module GH
       links(hash)[type] = {"href" => href}
     end
 
-    def normalize_response(response)
+    def modify_response(response)
       response      = response.dup
-      response.data = normalize response.data
+      response.data = modify response.data
       response
     end
 
-    def normalize_hash(hash)
+    def modify_hash(hash)
       corrected = {}
       corrected.default_proc = hash.default_proc if hash.default_proc
 
       hash.each_pair do |key, value|
-        key = normalize_key(key, value)
-        next if normalize_url(corrected, key, value)
-        next if normalize_time(corrected, key, value)
-        corrected[key] = normalize(value)
+        key = modify_key(key, value)
+        next if modify_url(corrected, key, value)
+        next if modify_time(corrected, key, value)
+        corrected[key] = modify(value)
       end
 
-      normalize_user(corrected)
+      modify_user(corrected)
       corrected
     end
 
-    def normalize_time(hash, key, value)
+    def modify_time(hash, key, value)
       hash['date'] = Time.at(value).xmlschema if key == 'timestamp'
     end
 
-    def normalize_user(hash)
+    def modify_user(hash)
       hash['owner']  ||= hash.delete('user') if hash['created_at']   and hash['user']
       hash['author'] ||= hash.delete('user') if hash['committed_at'] and hash['user']
 
@@ -61,7 +59,7 @@ module GH
       hash['author']    ||= hash['committer'] if hash['committer']
     end
 
-    def normalize_url(hash, key, value)
+    def modify_url(hash, key, value)
       case key
       when "blog"
         set_link(hash, key, value)
@@ -73,14 +71,14 @@ module GH
       end
     end
 
-    def normalize_key(key, value = nil)
+    def modify_key(key, value = nil)
       case key
       when 'gravatar_url'         then 'avatar_url'
       when 'org'                  then 'organization'
       when 'orgs'                 then 'organizations'
       when 'username'             then 'login'
       when 'repo'                 then 'repository'
-      when 'repos'                then normalize_key('repositories', value)
+      when 'repos'                then modify_key('repositories', value)
       when /^repos?_(.*)$/        then "repository_#{$1}"
       when /^(.*)_repo$/          then "#{$1}_repository"
       when /^(.*)_repos$/         then "#{$1}_repositories"
@@ -93,17 +91,8 @@ module GH
       end
     end
 
-    def normalize_array(array)
-      array.map { |e| normalize(e) }
-    end
-
-    def normalize(object)
-      case object
-      when Hash     then normalize_hash(object)
-      when Array    then normalize_array(object)
-      when Response then normalize_response(object)
-      else object
-      end
+    def modify_array(array)
+      array.map { |e| modify(e) }
     end
   end
 end

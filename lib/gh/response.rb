@@ -69,8 +69,9 @@ module GH
       @data.dup.to_ary
     end
 
-    def hash?
-      respond_to? :to_hash
+    # Public: ...
+    def to_gh
+      self
     end
 
     protected
