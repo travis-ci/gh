@@ -256,5 +256,10 @@ describe GH::Normalizer do
       normalized['_links'].should_not include('html')
       normalized['_links']['self']['href'].should be == 'http://api.github.com/foo'
     end
+
+    it 'passes through true' do
+      normalize 'foo' => true
+      normalized['foo'].should be == true
+    end
   end
 end
