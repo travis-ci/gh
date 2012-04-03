@@ -14,4 +14,14 @@ describe GH::Cache do
     subject['users/rkh']['name'].should be == "Konstantin Haase"
     requests.count.should be == 2
   end
+
+  it 'cache is resettable' do
+    subject['users/rkh']['name'].should be == "Konstantin Haase"
+    subject['users/rkh']['name'].should be == "Konstantin Haase"
+    requests.count.should be == 1
+
+    subject.reset
+    subject['users/rkh']['name'].should be == "Konstantin Haase"
+    requests.count.should be == 2
+  end
 end

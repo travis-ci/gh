@@ -20,8 +20,13 @@ module GH
       # Internal: Tries to fetch a value from the cache and if it doesn't exist, generates it from the
       # block given.
       def fetch(key)
-        @mutex.lock { @old, @new = @new, {} if @new.size > @size } if @new.size > @size
+        @mutex.synchronize { @old, @new = @new, {} if @new.size > @size } if @new.size > @size
         @new[key] ||= @old[key] || yield
+      end
+
+      # Internal: ...
+      def clear
+        @mutex.synchronize { @old, @new = {}, {} }
       end
     end
 
@@ -33,6 +38,12 @@ module GH
       super
     end
 
+    # Public: ...
+    def reset
+      super
+      clear_partial or clear_all
+    end
+
     # Public: Retrieves resources from Github and caches response for future access.
     #
     # Examples
@@ -42,6 +53,21 @@ module GH
     # Returns the Response.
     def [](key)
       cache.fetch(prefixed(key)) { super }
+    end
+
+    private
+
+    def clear_partial
+      return false unless cache.respond_to? :delete_matched
+      pattern = "^" << Regexp.escape(prefixed(""))
+      cache.delete_matched Regexp.new(pattern)
+      true
+    rescue NotImplementedError
+      false
+    end
+
+    def clear_all
+      cache.clear
     end
   end
 end
