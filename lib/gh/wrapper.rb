@@ -69,6 +69,7 @@ module GH
       @frontend ? @frontend.frontend : self
     end
 
+    # Public: ...
     def inspect
       "#<#{self.class}: #{backend.inspect}>"
     end
