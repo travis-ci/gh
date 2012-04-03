@@ -48,5 +48,7 @@ module GH
         klass.new backend, @options.merge(opts).merge(options)
       end
     end
+
+    alias_method :new, :build
   end
 end
