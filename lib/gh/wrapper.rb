@@ -78,6 +78,11 @@ module GH
       prefix + "#" + identifier(key)
     end
 
+    # Public: ...
+    def reset
+      backend.reset
+    end
+
     private
 
     def identifier(key)

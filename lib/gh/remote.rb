@@ -66,6 +66,10 @@ module GH
       modify(response.body, response.headers)
     end
 
+    # Public: ...
+    def reset
+    end
+
     private
 
     def identifier(key)
