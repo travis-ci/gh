@@ -11,18 +11,24 @@ module GH
   autoload :Stack,      'gh/stack'
   autoload :Wrapper,    'gh/wrapper'
 
-  def self.[](key)
-    backend = Thread.current[:GH] ||= DefaultStack.build
-    backend[key]
-  end
-
   def self.with(backend)
     backend = DefaultStack.build(backend) if Hash === backend
-    was, Thread.current[:GH] = Thread.current[:GH], backend
+    was, self.current = current, backend
     yield
   ensure
-    Thread.current[:GH] = was
+    self.current = was
   end
+
+  def self.current
+    Thread.current[:GH] ||= DefaultStack.new
+  end
+
+  def self.current=(backend)
+    Thread.current[:GH] = backend
+  end
+
+  extend SingleForwardable
+  def_single_delegators :current, :api_host, :[], :reset
 
   DefaultStack = Stack.new do
     use Cache
