@@ -41,7 +41,7 @@ module GH
     # Internal: Get/set default layer to wrap when creating a new instance.
     def self.wraps(klass = nil)
       @wraps = klass if klass
-      @wraps || Remote
+      @wraps ||= Remote
     end
 
     # Public: Initialize a new Wrapper.
