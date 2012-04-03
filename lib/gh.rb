@@ -28,7 +28,7 @@ module GH
   end
 
   extend SingleForwardable
-  def_single_delegators :current, :api_host, :[], :reset
+  def_delegators :current, :api_host, :[], :reset
 
   DefaultStack = Stack.new do
     use Cache
