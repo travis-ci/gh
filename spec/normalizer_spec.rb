@@ -4,16 +4,16 @@ describe GH::Normalizer do
   before { subject.backend = GH::MockBackend.new }
 
   def normalize(payload)
-    data['payload'] = payload
+    data['/payload'] = payload
   end
 
   def with_headers(headers = {})
     response = GH::Response.new(headers)
-    data['payload'], response.data = response, data['payload']
+    data['/payload'], response.data = response, data['/payload']
   end
 
   def normalized
-    subject['payload']
+    subject['/payload']
   end
 
   it 'is set up properly' do

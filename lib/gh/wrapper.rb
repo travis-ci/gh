@@ -73,7 +73,20 @@ module GH
       "#<#{self.class}: #{backend.inspect}>"
     end
 
+    # Internal: ...
+    def prefixed(key)
+      prefix + "#" + identifier(key)
+    end
+
     private
+
+    def identifier(key)
+      backend.prefixed(key)
+    end
+
+    def prefix
+      self.class.name
+    end
 
     def self.double_dispatch
       define_method(:modify) { |data| double_dispatch(data) }
@@ -117,13 +130,13 @@ module GH
     end
 
     def full_url(key)
-      api_host + path_for(key)
+      uri = api_host + Addressable::URI.parse(key)
+      raise ArgumentError, "URI out of scope: #{key}" if uri.host != api_host.host
+      uri
     end
 
     def path_for(key)
-      uri = Addressable::URI.parse(key)
-      raise ArgumentError, "URI out of scope: #{key}" if uri.host and uri.host != api_host.host
-      uri.request_uri
+      full_url(key).request_uri
     end
   end
 end

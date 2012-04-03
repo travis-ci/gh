@@ -5,7 +5,7 @@ module GH
   # Public: This class deals with HTTP requests to Github. It is the base Wrapper you always want to use.
   # Note that it is usually used implicitely by other wrapper classes if not specified.
   class Remote < Wrapper
-    attr_reader :api_host, :connection, :headers
+    attr_reader :api_host, :connection, :headers, :prefix
 
     # Public: Generates a new Rempte instance.
     #
@@ -32,6 +32,11 @@ module GH
                              "application/json;q=0.1",
         "Accept-Charset"  => "utf-8"
       }
+
+      @prefix = ""
+      @prefix << "#{token}@" if token
+      @prefix << "#{username}:#{password}@" if username and password
+      @prefix << @api_host.host
 
       @connection = Faraday.new(:url => api_host) do |builder|
         builder.request(:token_auth, token)               if token
@@ -62,6 +67,10 @@ module GH
     end
 
     private
+
+    def identifier(key)
+      path_for(key)
+    end
 
     def modify(body, headers = {})
       return body if body.is_a? Response

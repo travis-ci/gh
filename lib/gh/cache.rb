@@ -41,7 +41,7 @@ module GH
     #
     # Returns the Response.
     def [](key)
-      cache.fetch(path_for(key)) { super }
+      cache.fetch(prefixed(key)) { super }
     end
   end
 end
