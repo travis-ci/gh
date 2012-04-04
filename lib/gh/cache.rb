@@ -2,8 +2,7 @@ require 'gh'
 require 'thread'
 
 module GH
-  # Public: This class deals with HTTP requests to Github. It is the base Wrapper you always want to use.
-  # Note that it is usually used implicitely by other wrapper classes if not specified.
+  # Public: This class caches responses.
   class Cache < Wrapper
     # Public: Get/set cache to use. Compatible with Rails/ActiveSupport cache.
     attr_accessor :cache
