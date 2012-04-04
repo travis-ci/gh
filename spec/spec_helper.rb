@@ -46,6 +46,12 @@ module GH
       result
     end
 
+    def reset
+      super
+      @data.clear
+      @requests.clear
+    end
+
     private
 
     def allow_http

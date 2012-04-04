@@ -55,6 +55,7 @@ module GH
 
     # Public: Set wrapped layer.
     def backend=(layer)
+      reset
       layer.frontend = self
       @backend = layer
     end
@@ -81,7 +82,7 @@ module GH
 
     # Public: ...
     def reset
-      backend.reset
+      backend.reset if backend
     end
 
     # Public: ...

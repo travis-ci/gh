@@ -21,7 +21,8 @@ describe GH::Cache do
     requests.count.should be == 1
 
     subject.reset
+    requests.count.should be == 0
     subject['users/rkh']['name'].should be == "Konstantin Haase"
-    requests.count.should be == 2
+    requests.count.should be == 1
   end
 end
