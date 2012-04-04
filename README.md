@@ -23,3 +23,16 @@ api = GH::Stack.build do
   use GH::Remote, username: "admin", password: "admin"
 end
 ```
+
+Usage example:
+
+``` ruby
+GH.with username: 'rkh' password: 'abc123' do
+  sven = GH['users/svenfuchs']
+
+  if sven['hireable']
+    # recruiter has to be provided by some different library
+    Recruiter.contact sven['email']
+  end
+end
+```
