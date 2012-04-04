@@ -5,6 +5,7 @@ require 'forwardable'
 module GH
   autoload :Cache,      'gh/cache'
   autoload :Case,       'gh/case'
+  autoload :LazyLoader, 'gh/lazy_loader'
   autoload :Normalizer, 'gh/normalizer'
   autoload :Remote,     'gh/remote'
   autoload :Response,   'gh/response'
@@ -31,6 +32,7 @@ module GH
   def_delegators :current, :api_host, :[], :reset
 
   DefaultStack = Stack.new do
+    use LazyLoader
     use Cache
     use Normalizer
     use Remote

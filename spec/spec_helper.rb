@@ -17,6 +17,16 @@ module GH
     def data
       backend.data
     end
+
+    def should_request(num = 1, &block)
+      was = requests.count
+      yield
+      (requests.count - was).should be == num
+    end
+
+    def should_not_request(&block)
+      should_request(0, &block)
+    end
   end
 
   class MockBackend < Wrapper

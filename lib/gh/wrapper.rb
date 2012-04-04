@@ -31,6 +31,11 @@ module GH
     def_delegator :backend, :api_host
 
     # Public: Retrieves resources from Github.
+    def self.[](key)
+      new[key]
+    end
+
+    # Public: Retrieves resources from Github.
     #
     # By default, this method is delegated to the next layer on the stack
     # and modify is called.
@@ -128,9 +133,10 @@ module GH
       array.map { |e| modify(e) }
     end
 
-    def modify_hash(hash)
+    def modify_hash(hash, &block)
       corrected = {}
       hash.each_pair { |k,v| corrected[k] = modify(v) }
+      corrected.default_proc = hash.default_proc if hash.default_proc
       corrected
     end
 
@@ -153,6 +159,26 @@ module GH
       uri = api_host + Addressable::URI.parse(key)
       raise ArgumentError, "URI out of scope: #{key}" if uri.host != api_host.host
       uri
+    end
+
+    def setup_default_proc(hash, &block)
+      old_proc = hash.default_proc
+      hash.default_proc = proc do |hash, key|
+        value = old_proc.call(hash, key) if old_proc
+        value = block[hash, key] if value.nil?
+        value
+      end
+    end
+
+    def setup_lazy_loading(hash, *args)
+      loaded = false
+      setup_default_proc hash do |hash, key|
+        next if loaded
+        fields = lazy_load(hash, key, *args)
+        hash.merge! fields
+        loaded = true
+        fields[key]
+      end
     end
 
     def path_for(key)
