@@ -84,6 +84,11 @@ module GH
       backend.reset
     end
 
+    # Public: ...
+    def load(data)
+      modify backend.load(data)
+    end
+
     private
 
     def identifier(key)

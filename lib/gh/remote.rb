@@ -70,6 +70,11 @@ module GH
     def reset
     end
 
+    # Public: ...
+    def load(data)
+      modify(data)
+    end
+
     private
 
     def identifier(key)

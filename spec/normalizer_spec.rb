@@ -25,6 +25,12 @@ describe GH::Normalizer do
     normalized['foo'].should be == 'bar'
   end
 
+  it 'allows normalization with #load' do
+    result = subject.load("org" => "foo")
+    result.should_not include("org")
+    result["organization"].should be == "foo"
+  end
+
   it 'works for deeply nested fields'
   it 'works for lists'
 
