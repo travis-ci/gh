@@ -60,4 +60,6 @@ end
 
 RSpec.configure do |c|
   c.include GH::TestHelpers
+  c.before { GH::DefaultStack.replace GH::Remote, GH::MockBackend }
+  c.after { GH.reset }
 end

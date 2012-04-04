@@ -49,6 +49,11 @@ module GH
       end
     end
 
+    # Public: ...
+    def replace(old_class, new_class)
+      @stack.map! { |klass, options| [old_class == klass ? new_class : klass, options] }
+    end
+
     alias_method :new, :build
   end
 end
