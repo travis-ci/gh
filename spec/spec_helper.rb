@@ -5,8 +5,9 @@ require 'fileutils'
 
 module GH
   module TestHelpers
-    def backend
-      subject.backend
+    def backend(layer = subject)
+      return layer if layer.backend.nil? or layer.is_a? MockBackend
+      backend layer.backend
     end
 
     def requests
