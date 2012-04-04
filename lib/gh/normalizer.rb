@@ -90,9 +90,5 @@ module GH
       else key
       end
     end
-
-    def modify_array(array)
-      array.map { |e| modify(e) }
-    end
   end
 end

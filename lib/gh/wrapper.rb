@@ -118,8 +118,16 @@ module GH
       data
     end
 
-    alias modify_array    modify
-    alias modify_hash     modify
+    def modify_array(array)
+      array.map { |e| modify(e) }
+    end
+
+    def modify_hash(hash)
+      corrected = {}
+      hash.each_pair { |k,v| corrected[k] = modify(v) }
+      corrected
+    end
+
     alias modify_string   modify
     alias modify_integer  modify
     alias modify_unkown   modify
