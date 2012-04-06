@@ -16,7 +16,7 @@ module GH
     # options - Hash of options that will be passed to all layers upon initialization.
     #
     # Returns top most Wrapper instance.
-    def self.build(options, &block)
+    def self.build(options = {}, &block)
       new(&block).build(options)
     end
 
