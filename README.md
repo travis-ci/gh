@@ -27,7 +27,7 @@ end
 Usage example:
 
 ``` ruby
-GH.with username: 'rkh' password: 'abc123' do
+GH.with username: 'rkh', password: 'abc123' do
   sven = GH['users/svenfuchs']
 
   if sven['hireable']
