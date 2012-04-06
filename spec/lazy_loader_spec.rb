@@ -13,6 +13,10 @@ describe GH::LazyLoader do
     subject.load(raw)
   end
 
+  it 'wraps normalizer by default' do
+    GH::LazyLoader.new.backend.should be_a(GH::Normalizer)
+  end
+
   it 'send http requests for missing fields' do
     should_request(1) { rkh['name'].should be == 'Konstantin Haase' }
   end

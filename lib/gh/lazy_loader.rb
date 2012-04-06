@@ -3,6 +3,7 @@ require 'gh'
 module GH
   # Public: ...
   class LazyLoader < Wrapper
+    wraps GH::Normalizer
     double_dispatch
 
     def modify_hash(hash)
