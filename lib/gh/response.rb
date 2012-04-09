@@ -34,8 +34,8 @@ module GH
       else raise ArgumentError, "cannot parse #{body.inspect}"
       end
 
+      @body.force_encoding("utf-8") if @body.respond_to? :force_encoding
       @body ||= MultiJson.encode(@data)
-      @body   = @body.encode("utf-8") if @body.respond_to? :encode
       @data ||= MultiJson.decode(@body)
     end
 
