@@ -110,6 +110,7 @@ I hope so, we use it in production for [Travis CI](http://travis-ci.org/). The w
 
 ## History
 
+* 2012-04-10: 0.2.1 - bug fix release
 * 2012-04-10: 0.2.0 - added link following plus bug fixes (mainly encoding issues)
 * 2012-04-06: 0.1.2 - bug fix release (issues with cache reloading)
 * 2012-04-06: 0.1.1 - bug fix release (DSL fixes)
