@@ -52,6 +52,7 @@ gh = GH::LazyLoader.new(GH::LinkFollower.new)
 For convinience a stack DSL is provided:
 
 ``` ruby
+# Same as GH::Normalizer.new(GH::Cache.new)
 gh = GH::Stack.build do
   use GH::Normalizer
   use GH::Cache
