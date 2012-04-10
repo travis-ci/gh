@@ -3,14 +3,15 @@ require 'backports'
 require 'forwardable'
 
 module GH
-  autoload :Cache,      'gh/cache'
-  autoload :Case,       'gh/case'
-  autoload :LazyLoader, 'gh/lazy_loader'
-  autoload :Normalizer, 'gh/normalizer'
-  autoload :Remote,     'gh/remote'
-  autoload :Response,   'gh/response'
-  autoload :Stack,      'gh/stack'
-  autoload :Wrapper,    'gh/wrapper'
+  autoload :Cache,        'gh/cache'
+  autoload :Case,         'gh/case'
+  autoload :LazyLoader,   'gh/lazy_loader'
+  autoload :LinkFollower, 'gh/link_follower'
+  autoload :Normalizer,   'gh/normalizer'
+  autoload :Remote,       'gh/remote'
+  autoload :Response,     'gh/response'
+  autoload :Stack,        'gh/stack'
+  autoload :Wrapper,      'gh/wrapper'
 
   def self.with(backend)
     backend = DefaultStack.build(backend) if Hash === backend
@@ -32,6 +33,7 @@ module GH
   def_delegators :current, :api_host, :[], :reset
 
   DefaultStack = Stack.new do
+    use LinkFollower
     use LazyLoader
     use Cache
     use Normalizer
