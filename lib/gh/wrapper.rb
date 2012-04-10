@@ -175,9 +175,11 @@ module GH
       setup_default_proc hash do |hash, key|
         next if loaded
         fields = lazy_load(hash, key, *args)
-        hash.merge! fields
-        loaded = true
-        fields[key]
+        if fields
+          hash.merge! fields
+          loaded = true
+          fields[key]
+        end
       end
     end
 

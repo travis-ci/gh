@@ -17,4 +17,8 @@ describe GH::LinkFollower do
     # location is not included in the comment payload
     commentator["location"].should be == "San Francisco"
   end
+
+  it 'does not raise exceptions for unknown fields' do
+    commentator["location"].should be_nil
+  end
 end
