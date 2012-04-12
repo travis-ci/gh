@@ -15,7 +15,7 @@ module GH
     private
 
     def lazy_load(hash, key)
-      next unless key == 'merge_commit'
+      return unless key == 'merge_commit'
       link = hash['_links']['self']['href'].gsub(%r{/pulls/(\d+)$}, '/git/refs/pull/\1/merge')
       { key => backend[link] }
     end
