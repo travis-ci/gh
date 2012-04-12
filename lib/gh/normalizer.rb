@@ -63,8 +63,6 @@ module GH
       hash['committer'] ||= hash['author']    if hash['author']
       hash['author']    ||= hash['committer'] if hash['committer']
 
-      modify_user_fields hash['committer']
-      modify_user_fields hash['author']
       modify_user_fields hash['owner']
       modify_user_fields hash['user']
     end
