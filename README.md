@@ -88,7 +88,7 @@ end
 That way, you could create a stack with, for instance, an [access token](http://developer.github.com/v3/oauth/):
 
 ``` ruby
-authenticated = GH::DefaultStack token: 'e72e16c7e42f292c6912e7710c838347ae178b4a'
+authenticated = GH::DefaultStack.build token: 'e72e16c7e42f292c6912e7710c838347ae178b4a'
 
 GH.with(authenticated) do
   # ...
