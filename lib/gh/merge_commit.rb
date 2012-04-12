@@ -16,8 +16,13 @@ module GH
 
     def lazy_load(hash, key)
       return unless key =~ /^(merge|head)_commit$/
-      link    = hash['_links']['self']['href'].gsub(%r{/pulls/(\d+)$}, '/git/refs/pull/\1')
-      commits = self[link].map { |data| [data['ref'].split('/').last << "_commit", data["object"]] }
+      link     = hash['_links']['self']['href'].gsub(%r{/pulls/(\d+)$}, '/git/refs/pull/\1')
+      commits  = self[link].map do |data|
+        ref    = data['ref']
+        name   = ref.split('/').last + "_commit"
+        object = data['object'].merge 'ref' => ref
+        [name, object]
+      end
       Hash[commits]
     end
   end
