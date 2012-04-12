@@ -48,7 +48,7 @@ module GH
     end
 
     def modify_time(hash, key, value)
-      hash['date'] = Time.at(value).xmlschema if key == 'timestamp'
+      hash['date'] = Time.parse(value).xmlschema if key == 'timestamp'
     end
 
     def modify_user(hash)
