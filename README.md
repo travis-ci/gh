@@ -112,7 +112,7 @@ I hope so, we use it in production for [Travis CI](http://travis-ci.org/). The w
 
 ## History
 
-* 2012-04-13: 0.2.3 - added support for merge commits
+* 2012-04-13: 0.2.4 - added support for merge commits
 * 2012-04-12: 0.2.3 - better normalization
 * 2012-04-10: 0.2.2 - improved link following
 * 2012-04-10: 0.2.1 - bug fix release
