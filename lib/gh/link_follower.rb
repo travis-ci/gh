@@ -13,7 +13,7 @@ module GH
 
     def lazy_load(hash, key)
       link = hash['_links'][key]
-      { key => backend[link['href']] } if link
+      { key => self[link['href']] } if link
     end
   end
 end

@@ -6,9 +6,9 @@ module GH
     wraps GH::Normalizer
     double_dispatch
 
-    def modify_hash(hash)
-      hash = super
-      link = hash['_links'].try(:[], 'self')
+    def modify_hash(hash, loaded = false)
+      hash = super(hash)
+      link = hash['_links'].try(:[], 'self') unless loaded
       setup_lazy_loading(hash, link['href']) if link
       hash
     end
@@ -16,7 +16,7 @@ module GH
     private
 
     def lazy_load(hash, key, link)
-      backend[link]
+      result = modify_hash(backend[link].data, true)
     end
   end
 end
