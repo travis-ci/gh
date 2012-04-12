@@ -208,12 +208,12 @@ describe GH::Normalizer do
   context 'time' do
     it 'transforms timestamps stored in "timestamp" to a date in "date"' do
       normalize 'timestamp' => 1234
-      normalized['date'].should be == "1970-01-01T01:20:34+01:00"
+      normalized['date'].should be == Time.at(1234).xmlschema
     end
 
     it 'transforms dates stored in "timestamp" to a date in "date"' do
       normalize 'timestamp' => "2012-04-12T17:29:51+02:00"
-      normalized['date'].should be == "2012-04-12T17:29:51+02:00"
+      normalized['date'].should be == Time.parse("2012-04-12T17:29:51+02:00").xmlschema
     end
   end
 
