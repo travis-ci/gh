@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.version     = GH::VERSION
   s.authors     = ["Konstantin Haase"]
   s.email       = ["konstantin.mailinglists@googlemail.com"]
-  s.homepage    = ""
+  s.homepage    = "http://gh.rkh.im/"
   s.summary     = %q{layered github client}
   s.description = %q{multi-layer client for the github api v3}
 
