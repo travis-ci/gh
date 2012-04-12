@@ -48,7 +48,12 @@ module GH
     end
 
     def modify_time(hash, key, value)
-      hash['date'] = Time.parse(value).xmlschema if key == 'timestamp'
+      return unless key == 'timestamp'
+      time = Time.at(value)
+    rescue TypeError
+      time = Time.parse(value.to_s)
+    ensure
+      hash['date'] = time.xmlschema if time
     end
 
     def modify_user(hash)
@@ -57,6 +62,16 @@ module GH
 
       hash['committer'] ||= hash['author']    if hash['author']
       hash['author']    ||= hash['committer'] if hash['committer']
+
+      modify_user_fields hash['committer']
+      modify_user_fields hash['author']
+      modify_user_fields hash['owner']
+      modify_user_fields hash['user']
+    end
+
+    def modify_user_fields(hash)
+      return unless hash
+      hash['login'] ||= hash.delete('name')
     end
 
     def modify_url(hash, key, value)
