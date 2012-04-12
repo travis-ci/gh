@@ -68,8 +68,8 @@ module GH
     end
 
     def modify_user_fields(hash)
-      return unless hash
-      hash['login'] ||= hash.delete('name')
+      return unless Hash === hash
+      hash['login'] = hash.delete('name') if hash['name']
       set_link hash, 'self', "users/#{hash['login']}" unless links(hash).include? 'self'
     end
 
