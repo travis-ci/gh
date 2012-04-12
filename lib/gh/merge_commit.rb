@@ -8,7 +8,7 @@ module GH
 
     def modify_hash(hash)
       hash = super
-      setup_lazy_loading(hash) if hash.include? 'mergable' and hash['mergable']
+      setup_lazy_loading(hash) if hash.include? 'mergeable' and hash['mergeable']
       hash
     end
 
