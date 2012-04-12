@@ -7,6 +7,7 @@ module GH
   autoload :Case,         'gh/case'
   autoload :LazyLoader,   'gh/lazy_loader'
   autoload :LinkFollower, 'gh/link_follower'
+  autoload :MergeCommit,  'gh/merge_commit'
   autoload :Normalizer,   'gh/normalizer'
   autoload :Remote,       'gh/remote'
   autoload :Response,     'gh/response'
@@ -34,6 +35,7 @@ module GH
 
   DefaultStack = Stack.new do
     use LinkFollower
+    use MergeCommit
     use LazyLoader
     use Cache
     use Normalizer
