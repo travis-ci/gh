@@ -225,6 +225,11 @@ describe GH::Normalizer do
       normalize 'foo' => "2012-04-12T17:29:51+02:00"
       normalized['foo'].should be == "2012-04-12T15:29:51Z"
     end
+
+    it 'does not choke on empty values' do
+      normalize 'date' => ""
+      normalized['date'].should be == ""
+    end
   end
 
   context 'links' do

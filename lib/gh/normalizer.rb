@@ -53,11 +53,10 @@ module GH
     def modify_time(hash, key, value)
       return unless TIME_KEYS.include? key or TIME_PATTERN === value
       should_be = key == 'timestamp' ? 'date' : key
-      time = Time.at(value)
-    rescue TypeError
-      time = Time.parse(value.to_s)
-    ensure
+      time = Time.at(value) rescue Time.parse(value.to_s)
       hash[should_be] = time.utc.xmlschema if time
+    rescue ArgumentError
+      hash[should_be] = value
     end
 
     def modify_user(hash)
