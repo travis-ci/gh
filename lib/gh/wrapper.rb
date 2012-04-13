@@ -181,6 +181,7 @@ module GH
           fields[key]
         end
       end
+      hash
     end
 
     def path_for(key)

@@ -7,15 +7,24 @@ module GH
     double_dispatch
 
     def modify_hash(hash)
-      hash = super
-      setup_lazy_loading(hash) if hash.include? 'mergeable' and hash['mergeable']
-      hash
+      setup_lazy_loading(super)
     end
 
     private
 
     def lazy_load(hash, key)
-      return unless key =~ /^(merge|head)_commit$/
+      return unless key =~ /^(merge|head)_commit$/ and hash.include? 'mergeable'
+
+      # FIXME: Rick said "this will become part of the API"
+      # until then, please look the other way
+      while hash['mergable'].nil?
+        url = hash['_links']['html']['href'] + '/mergable'
+        case Faraday.get(url).body
+        when "true"  then hash['mergable'] = true
+        when "false" then hash['mergable'] = false
+        end
+      end
+
       link     = hash['_links']['self']['href'].gsub(%r{/pulls/(\d+)$}, '/git/refs/pull/\1')
       commits  = self[link].map do |data|
         ref    = data['ref']
