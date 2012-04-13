@@ -53,7 +53,7 @@ module GH
     def modify_time(hash, key, value)
       return unless TIME_KEYS.include? key or TIME_PATTERN === value
       should_be = key == 'timestamp' ? 'date' : key
-      raise ArgumentError if RUBY_VERSION < 1.9 and value == "" # TODO: remove this line. duh.
+      raise ArgumentError if RUBY_VERSION < "1.9" and value == "" # TODO: remove this line. duh.
       time = Time.at(value) rescue Time.parse(value.to_s)
       hash[should_be] = time.utc.xmlschema if time
     rescue ArgumentError, TypeError
