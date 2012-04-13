@@ -47,13 +47,17 @@ module GH
       corrected
     end
 
+    TIME_KEYS    = %w[date timestamp committed_at created_at merged_at closed_at datetime time]
+    TIME_PATTERN = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\S*$/
+
     def modify_time(hash, key, value)
-      return unless key == 'timestamp'
+      return unless TIME_KEYS.include? key or TIME_PATTERN === value
+      should_be = key == 'timestamp' ? 'date' : key
       time = Time.at(value)
     rescue TypeError
       time = Time.parse(value.to_s)
     ensure
-      hash['date'] = time.utc.xmlschema if time
+      hash[should_be] = time.utc.xmlschema if time
     end
 
     def modify_user(hash)

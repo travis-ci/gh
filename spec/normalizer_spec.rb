@@ -215,6 +215,16 @@ describe GH::Normalizer do
       normalize 'timestamp' => "2012-04-12T17:29:51+02:00"
       normalized['date'].should be == "2012-04-12T15:29:51Z"
     end
+
+    it 'changes date to UTC' do
+      normalize 'date' => "2012-04-12T17:29:51+02:00"
+      normalized['date'].should be == "2012-04-12T15:29:51Z"
+    end
+
+    it 'changes any time entry to UTC' do
+      normalize 'foo' => "2012-04-12T17:29:51+02:00"
+      normalized['foo'].should be == "2012-04-12T15:29:51Z"
+    end
   end
 
   context 'links' do
