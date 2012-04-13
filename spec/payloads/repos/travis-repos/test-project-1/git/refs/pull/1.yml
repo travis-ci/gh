@@ -1,0 +1,20 @@
+---
+- !binary "c2VydmVy": !binary |-
+    bmdpbngvMS4wLjEz
+  !binary "ZGF0ZQ==": !binary |-
+    RnJpLCAxMyBBcHIgMjAxMiAxNDoyMDo1OCBHTVQ=
+  !binary "Y29udGVudC10eXBl": !binary |-
+    YXBwbGljYXRpb24vanNvbjsgY2hhcnNldD11dGYtOA==
+  !binary "dHJhbnNmZXItZW5jb2Rpbmc=": !binary |-
+    Y2h1bmtlZA==
+  !binary "Y29ubmVjdGlvbg==": !binary |-
+    a2VlcC1hbGl2ZQ==
+  !binary "c3RhdHVz": !binary |-
+    MjAwIE9L
+  !binary "eC1yYXRlbGltaXQtbGltaXQ=": !binary |-
+    NTAwMA==
+  !binary "ZXRhZw==": !binary |-
+    ImY4OTFjOGE4Y2FmYmY3ZTUzMTNhMThiN2M1NDY2MTE4Ig==
+  !binary "eC1yYXRlbGltaXQtcmVtYWluaW5n": !binary |-
+    NDk4Ng==
+- ! '[{"object":{"type":"commit","sha":"01eae10530ca65b51474b2d950365967ebdf3023","url":"https://api.github.com/repos/travis-repos/test-project-1/git/commits/01eae10530ca65b51474b2d950365967ebdf3023"},"url":"https://api.github.com/repos/travis-repos/test-project-1/git/refs/pull/1/head","ref":"refs/pull/1/head"},{"object":{"type":"commit","sha":"ca3c0a44ec1d9bf8557d2653aa1b79fcc9ff5f5d","url":"https://api.github.com/repos/travis-repos/test-project-1/git/commits/ca3c0a44ec1d9bf8557d2653aa1b79fcc9ff5f5d"},"url":"https://api.github.com/repos/travis-repos/test-project-1/git/refs/pull/1/merge","ref":"refs/pull/1/merge"}]'
