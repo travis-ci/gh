@@ -53,7 +53,7 @@ module GH
     rescue TypeError
       time = Time.parse(value.to_s)
     ensure
-      hash['date'] = time.xmlschema if time
+      hash['date'] = time.utc.xmlschema if time
     end
 
     def modify_user(hash)
