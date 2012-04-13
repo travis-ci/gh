@@ -38,7 +38,11 @@ module GH
       @prefix << "#{username}:#{password}@" if username and password
       @prefix << @api_host.host
 
-      @connection = Faraday.new(:url => api_host) do |builder|
+      faraday_options = {:url => api_host}
+      faraday_options[:ssl] = options[:ssl] if options[:ssl]
+      faraday_options.merge! options[:faraday_options] if options[:faraday_options]
+
+      @connection = Faraday.new(faraday_options) do |builder|
         builder.request(:token_auth, token)               if token
         builder.request(:basic_auth, username, password)  if username and password
         builder.request(:retry)

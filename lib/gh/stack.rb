@@ -11,6 +11,8 @@ module GH
   #     use GH::Remote, username: "admin", password: "admin"
   #   end
   class Stack
+    attr_reader :options
+
     # Public: Generates a new wrapper stack from the given block.
     #
     # options - Hash of options that will be passed to all layers upon initialization.
