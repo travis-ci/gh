@@ -30,6 +30,9 @@ module GH
     # Public: Returns the URI used for sending out web request.
     def_delegator :backend, :api_host
 
+    # Internal: ...
+    def_delegator :backend, :http
+
     # Public: Retrieves resources from Github.
     def self.[](key)
       new[key]

@@ -20,15 +20,11 @@ module GH
     def lazy_load(hash, key)
       return unless key =~ /^(merge|head)_commit$/ and hash.include? 'mergeable'
 
-      faraday_options = {}
-      faraday_options[:ssl] = @ssl if @ssl
-      faraday = Faraday.new(faraday_options)
-
       # FIXME: Rick said "this will become part of the API"
       # until then, please look the other way
       while hash['mergable'].nil?
         url = hash['_links']['html']['href'] + '/mergable'
-        case faraday.get(url).body
+        case http(url).body
         when "true"  then hash['mergable'] = true
         when "false" then hash['mergable'] = false
         end

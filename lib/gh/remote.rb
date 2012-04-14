@@ -66,8 +66,13 @@ module GH
     # Raises Faraday::Error::ClientError if the resource returns a status between 400 and 599.
     # Returns the Response.
     def [](key)
-      response = connection.get(path_for(key), headers)
+      response = http(path_for(key), headers)
       modify(response.body, response.headers)
+    end
+
+    # Internal: ...
+    def http(url, headers = {})
+      connection.get(url, headers)
     end
 
     # Public: ...
