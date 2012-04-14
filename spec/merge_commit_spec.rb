@@ -7,7 +7,7 @@ describe GH::MergeCommit do
   let(:pull_request) { gh['pull_request'] }
 
   before do
-    stub_request(:get, "https://github.com/travis-repos/test-project-1/pull/1/mergable").
+    stub_request(:get, "https://github.com/travis-repos/test-project-1/pull/1/mergeable").
       to_return(:status => 200, :body => "true", :headers => {})
   end
 
