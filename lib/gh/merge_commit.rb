@@ -23,7 +23,7 @@ module GH
       # FIXME: Rick said "this will become part of the API"
       # until then, please look the other way
       while hash['mergable'].nil?
-        url = hash['_links']['html']['href'] + '/mergable'
+        url = hash['_links']['html']['href'] + '/mergeable'
         case http(url).body
         when "true"  then hash['mergable'] = true
         when "false" then hash['mergable'] = false
