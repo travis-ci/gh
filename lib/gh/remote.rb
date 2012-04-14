@@ -72,6 +72,7 @@ module GH
 
     # Internal: ...
     def http(url, headers = {})
+      $stderr.puts "GH: loading #{url}"
       connection.get(url, headers)
     end
 
