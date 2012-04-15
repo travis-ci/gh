@@ -21,8 +21,6 @@
 require 'faraday'
 
 if Faraday::VERSION < '0.8.0'
-  $stderr.puts "please update faraday"
-
   # https://github.com/technoweenie/faraday/blob/master/lib/faraday/request/basic_authentication.rb
   require 'base64'
 
