@@ -33,6 +33,9 @@ module GH
     # Internal: ...
     def_delegator :backend, :http
 
+    # Public: ...
+    def_delegator :backend, :post
+
     # Public: Retrieves resources from Github.
     def self.[](key)
       new[key]

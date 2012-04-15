@@ -71,8 +71,16 @@ module GH
     end
 
     # Internal: ...
-    def http(verb, url, headers = {})
-      connection.public_send(verb, url, headers)
+    def http(verb, url, headers = {}, &block)
+      connection.run_request(verb, url, nil, headers, &block)
+    end
+
+    # Public: ...
+    def post(key, body)
+      response = http(:post, path_for(key), headers) do |req|
+        req.body = Response.new({}, body).to_s
+      end
+      modify(response.body, response.headers)
     end
 
     # Public: ...

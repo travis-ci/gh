@@ -32,7 +32,7 @@ module GH
   end
 
   extend SingleForwardable
-  def_delegators :current, :api_host, :[], :reset, :load
+  def_delegators :current, :api_host, :[], :reset, :load, :post
 
   DefaultStack = Stack.new do
     use LinkFollower
