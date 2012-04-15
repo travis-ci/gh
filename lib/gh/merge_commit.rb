@@ -24,7 +24,7 @@ module GH
       # until then, please look the other way
       while hash['mergable'].nil?
         url = hash['_links']['html']['href'] + '/mergeable'
-        case http(url).body
+        case http(:get, url).body
         when "true"  then hash['mergable'] = true
         when "false" then hash['mergable'] = false
         end
