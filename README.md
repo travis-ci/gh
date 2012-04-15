@@ -9,14 +9,17 @@ require 'gh'
 puts GH['users/rkh']['name']
 ```
 
-This will by default use all the middleware that ships with GH, in the following order
+This will by default use all the middleware that ships with GH, in the following order:
 
 * `GH::Remote` - sends HTTP requests to GitHub and parses the response
 * `GH::Normalizer` - renames fields consistenly, adds hypermedia links if possible
-* `GH::Cache` - caches the responses (will use Rails cache if in Rails, in-memory cache otherwise)
 * `GH::LazyLoader` - will load missing fields when accessed (handy for dealing with incomplete data without sending to many requests)
 * `GH::LinkFollower` - will add content of hypermedia links as fields (lazyly), allows you to traverse relations
 * `GH::MergeCommit` - adds infos about merge commits to pull request payloads
+
+This middleware ships with the `gh` library but is not added by default:
+
+* `GH::Cache` - caches the responses (will use Rails cache if in Rails, in-memory cache otherwise)
 
 ## Main Entry Points
 
@@ -112,6 +115,7 @@ I hope so, we use it in production for [Travis CI](http://travis-ci.org/). The w
 
 ## History
 
+* 2012-04-15: 0.3.0 - added API for posting to github, fix merge commit, disable cache by default
 * 2012-04-13: 0.2.4 - added support for merge commits
 * 2012-04-12: 0.2.3 - better normalization
 * 2012-04-10: 0.2.2 - improved link following
