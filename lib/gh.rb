@@ -5,6 +5,7 @@ require 'forwardable'
 module GH
   autoload :Cache,            'gh/cache'
   autoload :Case,             'gh/case'
+  autoload :Instrumentation,  'gh/instrumentation'
   autoload :LazyLoader,       'gh/lazy_loader'
   autoload :LinkFollower,     'gh/link_follower'
   autoload :MergeCommit,      'gh/merge_commit'
@@ -35,6 +36,7 @@ module GH
   def_delegators :current, :api_host, :[], :reset, :load, :post
 
   DefaultStack = Stack.new do
+    use Instrumentation
     use LinkFollower
     use MergeCommit
     use LazyLoader
