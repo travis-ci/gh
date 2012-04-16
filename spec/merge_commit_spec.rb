@@ -14,4 +14,16 @@ describe GH::MergeCommit do
   it 'adds merge commits' do
     pull_request['merge_commit']['sha'].should_not be_nil
   end
+
+  it 'adds base commits' do
+    pull_request['base_commit']['sha'].should_not be_nil
+  end
+
+  it 'adds head commits' do
+    pull_request['head_commit']['sha'].should_not be_nil
+  end
+
+  it 'allows lazy loading on the commit' do
+    pull_request['merge_commit']['committer']['name'] == 'GitHub Merge Button'
+  end
 end

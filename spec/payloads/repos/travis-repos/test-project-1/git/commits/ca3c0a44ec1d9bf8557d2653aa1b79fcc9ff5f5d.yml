@@ -1,0 +1,23 @@
+---
+- !binary "c2VydmVy": !binary |-
+    bmdpbngvMS4wLjEz
+  !binary "ZGF0ZQ==": !binary |-
+    TW9uLCAxNiBBcHIgMjAxMiAxMzowNjoyOCBHTVQ=
+  !binary "Y29udGVudC10eXBl": !binary |-
+    YXBwbGljYXRpb24vanNvbjsgY2hhcnNldD11dGYtOA==
+  !binary "dHJhbnNmZXItZW5jb2Rpbmc=": !binary |-
+    Y2h1bmtlZA==
+  !binary "Y29ubmVjdGlvbg==": !binary |-
+    a2VlcC1hbGl2ZQ==
+  !binary "c3RhdHVz": !binary |-
+    MjAwIE9L
+  !binary "ZXRhZw==": !binary |-
+    ImQ3ODI2ZWE2Y2RkMTg3NDQxOTJhYzFlNjJlNTlkMjdkIg==
+  !binary "eC1yYXRlbGltaXQtbGltaXQ=": !binary |-
+    NTAwMA==
+  !binary "eC1yYXRlbGltaXQtcmVtYWluaW5n": !binary |-
+    NDk5Nw==
+- ! '{"parents":[{"url":"https://api.github.com/repos/travis-repos/test-project-1/git/commits/ee644876520685ea3ce144bc8449c1155cee56b4","sha":"ee644876520685ea3ce144bc8449c1155cee56b4"},{"url":"https://api.github.com/repos/travis-repos/test-project-1/git/commits/01eae10530ca65b51474b2d950365967ebdf3023","sha":"01eae10530ca65b51474b2d950365967ebdf3023"}],"url":"https://api.github.com/repos/travis-repos/test-project-1/git/commits/ca3c0a44ec1d9bf8557d2653aa1b79fcc9ff5f5d","sha":"ca3c0a44ec1d9bf8557d2653aa1b79fcc9ff5f5d","message":"Merge
+  01eae10530ca65b51474b2d950365967ebdf3023 into ee644876520685ea3ce144bc8449c1155cee56b4\n","author":{"date":"2012-04-13T06:35:25-07:00","name":"GitHub
+  Merge Button","email":"merge-button@github.com"},"committer":{"date":"2012-04-13T06:35:25-07:00","name":"GitHub
+  Merge Button","email":"merge-button@github.com"},"tree":{"url":"https://api.github.com/repos/travis-repos/test-project-1/git/trees/2a21cfc2f647885fcebc1d65f0f29932ef131f4f","sha":"2a21cfc2f647885fcebc1d65f0f29932ef131f4f"}}'

@@ -182,6 +182,7 @@ module GH
         next if loaded
         fields = lazy_load(hash, key, *args)
         if fields
+          modify_hash fields
           hash.merge! fields
           loaded = true
           fields[key]
