@@ -20,4 +20,10 @@ describe GH::Remote do
     stub_request(:get, "https://api.github.com/foo").to_return(:body => '{"foo":"bar"}')
     subject['foo']['foo'].should be == 'bar'
   end
+
+  it 'sends http calls through the frontend' do
+    wrapper = Class.new(GH::Wrapper).new
+    wrapper.should_receive(:http).with(:get, "/foo", backend.headers).and_return GH::Response.new
+    wrapper['foo']
+  end
 end

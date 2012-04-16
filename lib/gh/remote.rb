@@ -66,7 +66,7 @@ module GH
     # Raises Faraday::Error::ClientError if the resource returns a status between 400 and 599.
     # Returns the Response.
     def [](key)
-      response = http(:get, path_for(key), headers)
+      response = frontend.http(:get, path_for(key), headers)
       modify(response.body, response.headers)
     end
 
@@ -77,7 +77,7 @@ module GH
 
     # Public: ...
     def post(key, body)
-      response = http(:post, path_for(key), headers) do |req|
+      response = frontend.http(:post, path_for(key), headers) do |req|
         req.body = Response.new({}, body).to_s
       end
       modify(response.body, response.headers)
