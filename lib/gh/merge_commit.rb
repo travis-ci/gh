@@ -49,14 +49,14 @@ module GH
     def force_merge_commit(hash)
       # FIXME: Rick said "this will become part of the API"
       # until then, please look the other way
-      while hash['mergable'].nil?
+      while hash['mergeable'].nil?
         url = hash['_links']['html']['href'] + '/mergeable'
         case http(:get, url).body
-        when "true"  then hash['mergable'] = true
-        when "false" then hash['mergable'] = false
+        when "true"  then hash['mergeable'] = true
+        when "false" then hash['mergeable'] = false
         end
       end
-      hash['mergable']
+      hash['mergeable']
     end
   end
 end
