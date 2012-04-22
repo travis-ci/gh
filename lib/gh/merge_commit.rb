@@ -1,4 +1,5 @@
 require 'gh'
+require 'timeout'
 
 module GH
   # Public: ...
@@ -47,13 +48,15 @@ module GH
     end
 
     def force_merge_commit(hash)
-      # FIXME: Rick said "this will become part of the API"
-      # until then, please look the other way
-      while hash['mergeable'].nil?
-        url = hash['_links']['html']['href'] + '/mergeable'
-        case frontend.http(:get, url).body
-        when "true"  then hash['mergeable'] = true
-        when "false" then hash['mergeable'] = false
+      Timeout.timeout(10) do # MAGIC NUMBERS FTW
+        # FIXME: Rick said "this will become part of the API"
+        # until then, please look the other way
+        while hash['mergeable'].nil?
+          url = hash['_links']['html']['href'] + '/mergeable'
+          case frontend.http(:get, url).body
+          when "true"  then hash['mergeable'] = true
+          when "false" then hash['mergeable'] = false
+          end
         end
       end
       hash['mergeable']
