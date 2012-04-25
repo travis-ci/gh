@@ -7,6 +7,8 @@ module GH
       hash = super
       setup_lazy_loading(hash) if hash['_links']
       hash
+    rescue Exception => error
+      raise Error.new(error, hash)
     end
 
     private
@@ -14,6 +16,8 @@ module GH
     def lazy_load(hash, key)
       link = hash['_links'][key]
       { key => self[link['href']] } if link
+    rescue Exception => error
+      raise Error.new(error, hash)
     end
   end
 end

@@ -5,6 +5,7 @@ require 'forwardable'
 module GH
   autoload :Cache,            'gh/cache'
   autoload :Case,             'gh/case'
+  autoload :Error,            'gh/error'
   autoload :Instrumentation,  'gh/instrumentation'
   autoload :LazyLoader,       'gh/lazy_loader'
   autoload :LinkFollower,     'gh/link_follower'

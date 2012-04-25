@@ -74,6 +74,11 @@ module GH
       self
     end
 
+    # Public: ...
+    def ==(other)
+      super or @data == other
+    end
+
     protected
 
     def dup_ivars

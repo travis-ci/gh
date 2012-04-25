@@ -11,12 +11,16 @@ module GH
       link = hash['_links'].try(:[], 'self') unless loaded
       setup_lazy_loading(hash, link['href']) if link
       hash
+    rescue Exception => error
+      raise Error.new(error, hash)
     end
 
     private
 
     def lazy_load(hash, key, link)
       result = modify_hash(backend[link].data, true)
+    rescue Exception => error
+      raise Error.new(error, hash)
     end
   end
 end

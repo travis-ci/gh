@@ -14,6 +14,8 @@ module GH
 
     def modify_hash(hash)
       setup_lazy_loading(super)
+    rescue Exception => error
+      raise Error.new(error, hash)
     end
 
     private
@@ -25,6 +27,8 @@ module GH
       fields['base_commit'] ||= commit_for hash, hash['base']
       fields['head_commit'] ||= commit_for hash, hash['head']
       fields
+    rescue Exception => error
+      raise Error.new(error, hash)
     end
 
     def commit_for(from, hash)

@@ -124,6 +124,8 @@ module GH
       when respond_to(:to_int)  then modify_integer(data)
       else modify_unkown data
       end
+    rescue Exception => error
+      raise Error.new(error, data)
     end
 
     def modify_response(response)
@@ -133,6 +135,8 @@ module GH
 
     def modify(data, *)
       data
+    rescue Exception => error
+      raise Error.new(error, data)
     end
 
     def modify_array(array)
