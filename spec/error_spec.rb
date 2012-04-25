@@ -10,7 +10,7 @@ describe GH::Error do
 
   let(:exception) do
     begin
-      SomeWrapper.new.load(:foo => :bar)
+      SomeWrapper.new.load('foo' => 'bar')
       nil
     rescue Exception => error
       error
@@ -26,6 +26,6 @@ describe GH::Error do
   end
 
   it 'keeps the payload around' do
-    exception.payload.should be == {:foo => :bar}
+    exception.payload.should be == {'foo' => 'bar'}
   end
 end
