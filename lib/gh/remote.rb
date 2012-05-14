@@ -1,5 +1,5 @@
 require 'gh'
-require 'gh/faraday'
+require 'faraday'
 
 module GH
   # Public: This class deals with HTTP requests to Github. It is the base Wrapper you always want to use.
@@ -43,7 +43,7 @@ module GH
       faraday_options.merge! options[:faraday_options] if options[:faraday_options]
 
       @connection = Faraday.new(faraday_options) do |builder|
-        builder.request(:token_auth, token)               if token
+        builder.request(:authorization, :token, token) if token
         builder.request(:basic_auth, username, password)  if username and password
         builder.request(:retry)
         builder.response(:raise_error)
