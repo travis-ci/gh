@@ -233,6 +233,11 @@ describe GH::Normalizer do
   end
 
   context 'links' do
+    it 'does not normalize config' do
+      normalize 'config' => {'url' => 'http://localhost'}
+      normalized['config'].should be == {'url' => 'http://localhost'}
+    end
+
     it 'generates link entries from link headers' do
       pending
       normalize '_links' => {'href' => 'foo'}

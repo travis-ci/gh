@@ -86,6 +86,8 @@ module GH
         set_link(hash, type, value)
       when /^(.+)_url$/
         set_link(hash, $1, value)
+      when "config"
+        hash[key] = value
       end
     end
 
