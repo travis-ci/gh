@@ -34,7 +34,7 @@ module GH
   end
 
   extend SingleForwardable
-  def_delegators :current, :api_host, :[], :reset, :load, :post
+  def_delegators :current, :api_host, :[], :reset, :load, :post, :delete, :patch, :put
 
   DefaultStack = Stack.new do
     use Instrumentation

@@ -75,12 +75,32 @@ module GH
       connection.run_request(verb, url, nil, headers, &block)
     end
 
-    # Public: ...
-    def post(key, body)
-      response = frontend.http(:post, path_for(key), headers) do |req|
-        req.body = Response.new({}, body).to_s
+    # Internal: ...
+    def request(verb, key, body = nil)
+      response = frontend.http(verb, path_for(key), headers) do |req|
+        req.body = Response.new({}, body).to_s if body
       end
       modify(response.body, response.headers)
+    end
+
+    # Public: ...
+    def post(key, body)
+      request(:post, key, body)
+    end
+
+    # Public: ...
+    def delete(key)
+      request(:delete, key)
+    end
+
+    # Public: ...
+    def patch(key, body)
+      request(:patch, key, body)
+    end
+
+    # Public: ...
+    def put(key, body)
+      request(:put, key, body)
     end
 
     # Public: ...
