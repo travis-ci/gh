@@ -11,6 +11,7 @@ module GH
   autoload :LinkFollower,     'gh/link_follower'
   autoload :MergeCommit,      'gh/merge_commit'
   autoload :Normalizer,       'gh/normalizer'
+  autoload :Pagination,       'gh/pagination'
   autoload :Remote,           'gh/remote'
   autoload :Response,         'gh/response'
   autoload :ResponseWrapper,  'gh/response_wrapper'
@@ -38,6 +39,7 @@ module GH
 
   DefaultStack = Stack.new do
     use Instrumentation
+    use Pagination
     use LinkFollower
     use MergeCommit
     use LazyLoader
