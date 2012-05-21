@@ -139,7 +139,7 @@ module GH
 
     def modify_response(response)
       result = double_dispatch response.data
-      result.respond_to?(:to_gh) ? result.to_gh : Response.new({}, result)
+      result.respond_to?(:to_gh) ? result.to_gh : Response.new(response.headers, result)
     end
 
     def modify(data, *)
