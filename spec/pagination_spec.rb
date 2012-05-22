@@ -18,4 +18,11 @@ describe GH::Pagination do
     counter = GH['users/rkh/repos'].map { 1 }.reduce(:+) # map/reduce!
     counter.should be > 120
   end
+
+  it 'gives random access' do
+    data = subject['users/rkh/repos']
+    data.each_with_index do |value, index|
+      data[index].should be == value
+    end
+  end
 end

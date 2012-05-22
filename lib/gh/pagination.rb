@@ -17,6 +17,11 @@ module GH
         "[#{first.inspect}, ...]"
       end
 
+      def [](value)
+        return @page[value] if value < @page.size
+        next_page[value - @page.size]
+      end
+
       private
 
       def next_page
