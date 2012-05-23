@@ -1,0 +1,21 @@
+---
+- !binary "c2VydmVy": !binary |-
+    bmdpbngvMS4wLjEz
+  !binary "ZGF0ZQ==": !binary |-
+    V2VkLCAyMyBNYXkgMjAxMiAxMzo1OTozMyBHTVQ=
+  !binary "Y29udGVudC10eXBl": !binary |-
+    YXBwbGljYXRpb24vanNvbjsgY2hhcnNldD11dGYtOA==
+  !binary "dHJhbnNmZXItZW5jb2Rpbmc=": !binary |-
+    Y2h1bmtlZA==
+  !binary "Y29ubmVjdGlvbg==": !binary |-
+    a2VlcC1hbGl2ZQ==
+  !binary "c3RhdHVz": !binary |-
+    MjAwIE9L
+  !binary "eC1yYXRlbGltaXQtbGltaXQ=": !binary |-
+    NTAwMA==
+  !binary "eC1yYXRlbGltaXQtcmVtYWluaW5n": !binary |-
+    NDk5OQ==
+  !binary "ZXRhZw==": !binary |-
+    IjUxZmE0YWU3MTU1YzM1NDM2NjIyMDM2MmI3YjU3ZjVlIg==
+- ! '{"type":"User","url":"https://api.github.com/users/rkh","company":"Travis CI","public_repos":125,"gravatar_id":"5c2b452f6eea4a6d84c105ebd971d2a4","html_url":"https://github.com/rkh","avatar_url":"https://secure.gravatar.com/avatar/5c2b452f6eea4a6d84c105ebd971d2a4?d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-140.png","followers":469,"following":513,"created_at":"2008-10-22T18:56:03Z","public_gists":231,"login":"rkh","name":"Konstantin
+  Haase","hireable":false,"blog":"http://rkh.im","id":30442,"location":"Berlin","email":"konstantin.haase@gmail.com","bio":""}'

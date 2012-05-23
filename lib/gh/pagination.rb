@@ -33,6 +33,14 @@ module GH
     wraps GH::Normalizer
     double_dispatch
 
+    def [](key)
+      url = full_url(key)
+      params = url.query_values || {}
+      params['per_page'] ||= 100
+      url.query_values = params
+      super url.request_uri
+    end
+
     def modify_response(response)
       return response unless response.headers['link'] =~ /<([^>]+)>;\s*rel=\"next\"/
       Paginated.new(response, $1, self)
