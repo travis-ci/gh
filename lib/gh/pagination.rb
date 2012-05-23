@@ -18,6 +18,7 @@ module GH
       end
 
       def [](value)
+        raise TypeError, "index has to be an Integer, got #{value.class}" unless value.is_a? Integer
         return @page[value] if value < @page.size
         next_page[value - @page.size]
       end
