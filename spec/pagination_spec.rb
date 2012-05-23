@@ -25,4 +25,8 @@ describe GH::Pagination do
       data[index].should be == value
     end
   end
+
+  it 'does not wrap hash responses' do
+    subject['users/rkh'].should_not be_a(GH::Pagination::Paginated)
+  end
 end

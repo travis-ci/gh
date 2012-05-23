@@ -42,7 +42,7 @@ module GH
     end
 
     def modify_response(response)
-      return response unless response.headers['link'] =~ /<([^>]+)>;\s*rel=\"next\"/
+      return response unless response.respond_to? :to_ary and response.headers['link'] =~ /<([^>]+)>;\s*rel=\"next\"/
       Paginated.new(response, $1, self)
     end
   end
