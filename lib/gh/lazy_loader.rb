@@ -18,7 +18,7 @@ module GH
     private
 
     def lazy_load(hash, key, link)
-      result = modify_hash(backend[link].data, true)
+      modify_hash(backend[link].data, true)
     rescue Exception => error
       raise Error.new(error, hash)
     end
