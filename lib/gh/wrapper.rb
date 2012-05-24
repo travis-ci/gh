@@ -43,7 +43,7 @@ module GH
     def_delegator :backend, :patch
 
     # Public: ...
-    def_delegator :backendt, :put
+    def_delegator :backend, :put
 
     # Public: Retrieves resources from Github.
     def self.[](key)
