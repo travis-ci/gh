@@ -185,7 +185,6 @@ describe GH::Normalizer do
       normalized.should include('author')
       normalized.should include('committer')
       normalized['author'].should be == 'me'
-      normalized['author'].should be_equal(normalized['committer'])
     end
 
     it 'copies committer to author' do
@@ -193,7 +192,6 @@ describe GH::Normalizer do
       normalized.should include('author')
       normalized.should include('committer')
       normalized['author'].should be == 'me'
-      normalized['author'].should be_equal(normalized['committer'])
     end
 
     it 'does not override committer or author if both exist' do

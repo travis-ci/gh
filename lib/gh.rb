@@ -12,6 +12,7 @@ module GH
   autoload :MergeCommit,      'gh/merge_commit'
   autoload :Normalizer,       'gh/normalizer'
   autoload :Pagination,       'gh/pagination'
+  autoload :Parallel,         'gh/parallel'
   autoload :Remote,           'gh/remote'
   autoload :Response,         'gh/response'
   autoload :ResponseWrapper,  'gh/response_wrapper'
@@ -35,10 +36,11 @@ module GH
   end
 
   extend SingleForwardable
-  def_delegators :current, :api_host, :[], :reset, :load, :post, :delete, :patch, :put
+  def_delegators :current, :api_host, :[], :reset, :load, :post, :delete, :patch, :put, :in_parallel, :in_parallel?
 
   DefaultStack = Stack.new do
     use Instrumentation
+    use Parallel
     use Pagination
     use LinkFollower
     use MergeCommit

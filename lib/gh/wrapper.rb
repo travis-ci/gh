@@ -33,6 +33,9 @@ module GH
     # Internal: ...
     def_delegator :backend, :http
 
+    # Internal: ...
+    def_delegator :backend, :request
+
     # Public: ...
     def_delegator :backend, :post
 
@@ -45,6 +48,15 @@ module GH
     # Public: ...
     def_delegator :backend, :put
 
+    # Public: ...
+    def_delegator :backend, :fetch_resource
+
+    # Public: ...
+    def_delegator :backend, :in_parallel
+
+    # Public: ...
+    def_delegator :backend, :in_parallel?
+
     # Public: Retrieves resources from Github.
     def self.[](key)
       new[key]
@@ -55,7 +67,12 @@ module GH
     # By default, this method is delegated to the next layer on the stack
     # and modify is called.
     def [](key)
-      modify backend[key]
+      generate_response key, fetch_resource(key)
+    end
+
+    # Internal: ...
+    def generate_response(key, resource)
+      modify backend.generate_response(key, resource)
     end
 
     # Internal: Get/set default layer to wrap when creating a new instance.

@@ -43,18 +43,11 @@ module GH
       clear_partial or clear_all
     end
 
-    # Public: Retrieves resources from Github and caches response for future access.
-    #
-    # Examples
-    #
-    #   Github::Cache.new['users/rkh'] # => { ... }
-    #
-    # Returns the Response.
-    def [](key)
+    private
+
+    def fetch_resource(key)
       cache.fetch(prefixed(key)) { super }
     end
-
-    private
 
     def clear_partial
       return false unless cache.respond_to? :delete_matched

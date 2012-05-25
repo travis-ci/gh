@@ -4,10 +4,7 @@ require 'time'
 module GH
   # Public: A Wrapper class that deals with normalizing Github responses.
   class Normalizer < Wrapper
-    # Public: Fetches and normalizes a github entity.
-    #
-    # Returns normalized Response.
-    def [](key)
+    def generate_response(key, response)
       result = super
       links(result)['self'] ||= { 'href' => full_url(key).to_s } if result.respond_to? :to_hash
       result

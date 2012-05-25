@@ -37,7 +37,7 @@ module GH
       super
     end
 
-    def [](key)
+    def fetch_resource(key)
       key  = path_for(key)
       file = File.expand_path("../payloads/#{key}.yml", __FILE__)
       @requests << key

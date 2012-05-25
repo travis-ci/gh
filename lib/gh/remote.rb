@@ -56,17 +56,13 @@ module GH
       "#<#{self.class}: #{api_host}>"
     end
 
-    # Public: Retrieves resources from Github.
-    #
-    # Examples
-    #
-    #   Github::Remote.new['users/rkh'] # => { ... }
-    #
-    # Raises Faraday::Error::ResourceNotFound if the resource returns status 404.
-    # Raises Faraday::Error::ClientError if the resource returns a status between 400 and 599.
-    # Returns the Response.
-    def [](key)
-      response = frontend.http(:get, path_for(key), headers)
+    # Internal: ...
+    def fetch_resource(key)
+      frontend.http(:get, path_for(key), headers)
+    end
+
+    # Internal: ...
+    def generate_response(key, response)
       modify(response.body, response.headers)
     end
 
@@ -80,27 +76,27 @@ module GH
       response = frontend.http(verb, path_for(key), headers) do |req|
         req.body = Response.new({}, body).to_s if body
       end
-      modify(response.body, response.headers)
+      frontend.generate_response(key, response)
     end
 
     # Public: ...
     def post(key, body)
-      request(:post, key, body)
+      frontend.request(:post, key, body)
     end
 
     # Public: ...
     def delete(key)
-      request(:delete, key)
+      frontend.request(:delete, key)
     end
 
     # Public: ...
     def patch(key, body)
-      request(:patch, key, body)
+      frontend.request(:patch, key, body)
     end
 
     # Public: ...
     def put(key, body)
-      request(:put, key, body)
+      frontend.request(:put, key, body)
     end
 
     # Public: ...
@@ -110,6 +106,11 @@ module GH
     # Public: ...
     def load(data)
       modify(data)
+    end
+
+    # Public: ...
+    def in_parallel
+      raise RuntimeError, "use GH::Parallel middleware for #in_parallel support"
     end
 
     private

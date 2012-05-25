@@ -33,7 +33,7 @@ module GH
     wraps GH::Normalizer
     double_dispatch
 
-    def [](key)
+    def fetch_resource(key)
       url = full_url(key)
       params = url.query_values || {}
       params['per_page'] ||= 100
