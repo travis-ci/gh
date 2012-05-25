@@ -23,4 +23,6 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'backports',   '~> 2.3'
   s.add_runtime_dependency 'multi_json',  '~> 1.0'
   s.add_runtime_dependency 'addressable'
+  s.add_runtime_dependency 'net-http-persistent'
+  s.add_runtime_dependency 'net-http-pipeline'
 end

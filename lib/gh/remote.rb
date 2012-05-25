@@ -47,7 +47,7 @@ module GH
         builder.request(:basic_auth, username, password)  if username and password
         builder.request(:retry)
         builder.response(:raise_error)
-        builder.adapter(options[:adapter] || :net_http)
+        builder.use(options[:adapter] || GH::FaradayAdapter)
       end
     end
 
