@@ -3,7 +3,7 @@ require 'spec_helper'
 
 describe GH::Response do
   it 'handles UTF-8 properly, even if encoded binary' do
-    pending "not working on jruby" in RUBY_ENGINE == 'jruby'
+    pending "not working on jruby" if RUBY_ENGINE == 'jruby'
     raw = '{"foo":"über cool sista året"}'
     raw.force_encoding 'binary' if raw.respond_to? :force_encoding
     response = GH::Response.new({}, raw)
@@ -11,7 +11,7 @@ describe GH::Response do
   end
 
   it 'handles broken encodings properly' do
-    pending "not working on jruby" in RUBY_ENGINE == 'jruby'
+    pending "not working on jruby" if RUBY_ENGINE == 'jruby'
     GH::Response.new({}, "{\"foo\":\"\xC3\"}")["foo"].should be == "\xC3"
   end
 end
