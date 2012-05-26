@@ -19,6 +19,7 @@ describe GH::Parallel do
   end
 
   it 'runs requests in parallel' do
+    WebMock.allow_net_connect!
     GH::DefaultStack.replace GH::MockBackend, GH::Remote
     GH.current = nil
     GH.should_not be_in_parallel
