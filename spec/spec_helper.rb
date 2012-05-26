@@ -3,6 +3,8 @@ require 'webmock/rspec'
 require 'yaml'
 require 'fileutils'
 
+RUBY_ENGINE = 'ruby' unless defined? RUBY_ENGINE
+
 module GH
   module TestHelpers
     def backend(layer = subject)
