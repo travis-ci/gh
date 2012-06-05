@@ -22,10 +22,11 @@ module GH
 
   def self.with(backend)
     backend = DefaultStack.build(backend) if Hash === backend
+    return backend unless block_given?
     was, self.current = current, backend
     yield
   ensure
-    self.current = was
+    self.current = was if was
   end
 
   def self.current

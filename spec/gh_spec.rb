@@ -11,4 +11,14 @@ describe GH do
     response = GH.post "somewhere", "foo" => "bar"
     response['hi'].should be == 'ho'
   end
+
+  describe 'with' do
+    it 'returns the GH instance if no block is given' do
+      GH.with(:token => "...").should be_a(GH::Wrapper)
+    end
+
+    it 'returns the block value if block is given' do
+      GH.with(:token => "...") { 42 }.should be == 42
+    end
+  end
 end
