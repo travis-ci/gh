@@ -111,17 +111,3 @@ Scoping is thread-safe.
 ## Is this production ready?
 
 I hope so, we use it in production for [Travis CI](http://travis-ci.org/). The work on this library has been funded by the [Travis Love Campaign](https://love.travis-ci.org/).
-
-## History
-
-* 2012-04-15: 0.3.0 - added API for posting to github, fix merge commit, disable cache by default
-* 2012-04-13: 0.2.4 - added support for merge commits
-* 2012-04-12: 0.2.3 - better normalization
-* 2012-04-10: 0.2.2 - improved link following
-* 2012-04-10: 0.2.1 - bug fix release
-* 2012-04-10: 0.2.0 - added link following plus bug fixes (mainly encoding issues)
-* 2012-04-06: 0.1.2 - bug fix release (issues with cache reloading)
-* 2012-04-06: 0.1.1 - bug fix release (DSL fixes)
-* 2012-04-04: 0.1.0 - many bug fixes plus lazy loading
-* 2012-03-21: 0.0.1 - first public release
-* 2012-03-05: project started
