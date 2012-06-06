@@ -10,6 +10,7 @@ describe GH::Response do
   end
 
   it 'handles broken encodings properly' do
+    pending if RUBY_ENGINE == 'jruby' # see https://github.com/flori/json/issues/138
     GH::Response.new({}, "{\"foo\":\"\xC3\"}")["foo"].should be == "\xC3"
   end
 end
