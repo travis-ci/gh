@@ -1,5 +1,6 @@
 require 'gh'
 require 'faraday'
+require 'thread'
 require 'net/https'
 require 'net/http/pipeline'
 require 'net/http/persistent'
@@ -9,20 +10,25 @@ module GH
   class FaradayAdapter < Faraday::Adapter::NetHttpPersistent
     class Manager
       def initialize(*)
+        @mutex    = Mutex.new
         @requests = {}
-        @connects = {}
       end
 
       def add_request(http, env, adapter)
         url = env[:url] + '/'
         env[:adapter] = adapter
-        @requests[url] ||= []
-        @requests[url] << env
+
+        @mutex.synchronize do
+          @requests[url] ||= []
+          @requests[url] << env
+        end
       end
 
       def run
+        requests = nil
+        @mutex.synchronize { requests, @requests = @requests, {} }
         http = Net::HTTP::Persistent.new 'GH'
-        @requests.each do |url, envs|
+        requests.each do |url, envs|
           requests  = envs.map { |env| env[:adapter].create_request(env) }
           responses = http.pipeline(url, requests)
           envs.zip(responses) do |e,r|

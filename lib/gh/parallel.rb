@@ -27,10 +27,11 @@ module GH
       dummy
     end
 
-    def in_parallel(&block)
+    def in_parallel
       return yield if in_parallel?
       was, @in_parallel = @in_parallel, true
-      result = connection.in_parallel(&block)
+      result = nil
+      connection.in_parallel { result = yield }
       @mutex.synchronize do
         @queue.each { |dummy, key, response| dummy.__delegate__ = backend.generate_response(key, response) }
         @queue.clear

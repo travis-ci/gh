@@ -43,4 +43,8 @@ describe GH::Parallel do
 
     GH.should_not be_in_parallel
   end
+
+  it 'returns the block value' do
+    GH.in_parallel { 42 }.should be == 42
+  end
 end
