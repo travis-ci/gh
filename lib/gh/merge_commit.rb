@@ -52,7 +52,7 @@ module GH
     end
 
     def force_merge_commit(hash)
-      Timeout.timeout(10) do # MAGIC NUMBERS FTW
+      Timeout.timeout(600) do # MAGIC NUMBERS FTW
         # FIXME: Rick said "this will become part of the API"
         # until then, please look the other way
         while hash['mergeable'].nil?
