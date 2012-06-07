@@ -12,7 +12,7 @@ module GH
     CONTENT_TYPE = "application/json; charset=utf-8"
 
     include Enumerable
-    attr_accessor :headers, :data, :body
+    attr_accessor :headers, :data, :body, :url
 
     # subset of safe methods that both Array and Hash implement
     extend Forwardable
@@ -23,8 +23,10 @@ module GH
     #
     # headers - HTTP headers as a Hash
     # body    - HTTP body as a String
-    def initialize(headers = {}, body = "{}")
+    def initialize(body = "{}", headers = {}, url = nil)
+      @url     = url
       @headers = Hash[headers.map { |k,v| [k.downcase, v] }]
+
       raise ArgumentError, "unexpected Content-Type #{content_type}" if content_type and content_type != CONTENT_TYPE
 
       case body

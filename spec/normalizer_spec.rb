@@ -8,7 +8,7 @@ describe GH::Normalizer do
   end
 
   def with_headers(headers = {})
-    response = GH::Response.new(headers)
+    response = GH::Response.new("{}", headers)
     data['/payload'], response.data = response, data['/payload']
   end
 

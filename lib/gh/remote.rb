@@ -67,7 +67,8 @@ module GH
 
     # Internal: ...
     def generate_response(key, response)
-      modify(response.body, response.headers)
+      body, headers, url = response.body, response.headers, response.env[:url]
+      modify(body, headers, url)
     end
 
     # Internal: ...
@@ -78,7 +79,7 @@ module GH
     # Internal: ...
     def request(verb, key, body = nil)
       response = frontend.http(verb, path_for(key), headers) do |req|
-        req.body = Response.new({}, body).to_s if body
+        req.body = Response.new(body).to_s if body
       end
       frontend.generate_response(key, response)
     end
@@ -123,9 +124,9 @@ module GH
       path_for(key)
     end
 
-    def modify(body, headers = {})
+    def modify(body, headers = {}, url = nil)
       return body if body.is_a? Response
-      Response.new(headers, body)
+      Response.new(body, headers, url)
     end
   end
 end

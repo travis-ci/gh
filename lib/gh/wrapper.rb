@@ -156,7 +156,7 @@ module GH
 
     def modify_response(response)
       result = double_dispatch response.data
-      result.respond_to?(:to_gh) ? result.to_gh : Response.new(response.headers, result)
+      result.respond_to?(:to_gh) ? result.to_gh : Response.new(result, response.headers, response.url)
     end
 
     def modify(data, *)

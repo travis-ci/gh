@@ -51,10 +51,11 @@ module GH
           File.write file, [res.headers, res.body].to_yaml
         end
 
-        Response.new(*YAML.load_file(file))
+        headers, body = YAML.load_file(file)
+        Response.new(body, headers, full_url(key))
       end
 
-      result = Response.new({}, result) unless result.is_a? Response
+      result = Response.new(result) unless result.is_a? Response
       result
     end
 
