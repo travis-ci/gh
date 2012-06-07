@@ -67,7 +67,9 @@ module GH
 
     # Internal: ...
     def generate_response(key, response)
-      body, headers, url = response.body, response.headers, response.env[:url]
+      body, headers = response.body, response.headers
+      url = response.respond_to?(:url) ? response.url : response.env.try(:[], :url)
+      url = full_url(key) if url.to_s.empty?
       modify(body, headers, url)
     end
 
