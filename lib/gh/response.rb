@@ -40,6 +40,8 @@ module GH
       @body.force_encoding("utf-8") if @body.respond_to? :force_encoding
       @body ||= MultiJson.encode(@data)
       @data ||= MultiJson.decode(@body)
+    rescue EncodingError => error
+      fail "Invalid encoding in #{url.to_s}, please contact github."
     end
 
     # Public: Duplicates the instance. Will also duplicate some instance variables to behave as expected.
