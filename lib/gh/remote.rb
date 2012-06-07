@@ -42,16 +42,12 @@ module GH
       faraday_options[:ssl] = options[:ssl] if options[:ssl]
       faraday_options.merge! options[:faraday_options] if options[:faraday_options]
 
-      adapter = options[:adapter]
-      adapter ||= Faraday::Adapter::NetHttp if defined? RUBY_ENGINE and RUBY_ENGINE == 'jruby'
-      adapter ||= GH::FaradayAdapter
-
       @connection = Faraday.new(faraday_options) do |builder|
         builder.request(:authorization, :token, token) if token
         builder.request(:basic_auth, username, password)  if username and password
         builder.request(:retry)
         builder.response(:raise_error)
-        builder.use(adapter)
+        builder.use(options[:adapter] || GH::FaradayAdapter)
       end
     end
 
