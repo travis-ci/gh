@@ -13,12 +13,15 @@ This will by default use all the middleware that ships with GH, in the following
 
 * `GH::Remote` - sends HTTP requests to GitHub and parses the response
 * `GH::Normalizer` - renames fields consistenly, adds hypermedia links if possible
-* `GH::Cache` - caches the responses (will use Rails cache if in Rails, in-memory cache otherwise)
 * `GH::LazyLoader` - will load missing fields when accessed (handy for dealing with incomplete data without sending to many requests)
 * `GH::MergeCommit` - adds infos about merge commits to pull request payloads
 * `GH::LinkFollower` - will add content of hypermedia links as fields (lazyly), allows you to traverse relations
 * `GH::Pagination` - adds support for transparent pagination
 * `GH::Instrumentation` - let's you instrument `gh`
+
+The following middleware is not included by default:
+
+* `GH::Cache` - caches the responses (will use Rails cache if in Rails, in-memory cache otherwise)
 
 ## Main Entry Points
 

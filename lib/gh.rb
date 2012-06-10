@@ -47,7 +47,6 @@ module GH
     use LinkFollower
     use MergeCommit
     use LazyLoader
-    #use Cache
     use Normalizer
     use Remote
   end
