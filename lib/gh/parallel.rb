@@ -5,6 +5,8 @@ require 'backports/basic_object' unless defined? BasicObject
 module GH
   # Public: ...
   class Parallel < Wrapper
+    attr_accessor :parallelize
+
     class Dummy < BasicObject
       attr_accessor :__delegate__
       def method_missing(*args)
@@ -14,6 +16,7 @@ module GH
     end
 
     def setup(*)
+      @parallelize = true if @parallelize.nil?
       @in_parallel = false
       @mutex       = Mutex.new
       @queue       = []
@@ -28,7 +31,7 @@ module GH
     end
 
     def in_parallel
-      return yield if in_parallel?
+      return yield if in_parallel? or not @parallelize
       was, @in_parallel = @in_parallel, true
       result = nil
       connection.in_parallel { result = yield }

@@ -44,6 +44,30 @@ describe GH::Parallel do
     GH.should_not be_in_parallel
   end
 
+  it 'runs requests right away if parallelize is set to false' do
+    WebMock.allow_net_connect!
+    GH::DefaultStack.replace GH::MockBackend, GH::Remote
+      GH.with :parallelize => false do
+      GH.should_not be_in_parallel
+
+      a = b = nil
+      GH.in_parallel do
+        GH.should_not be_in_parallel
+
+        a = GH['users/rkh']
+        b = GH['users/svenfuchs']
+
+        a['name'].should be == "Konstantin Haase"
+        b['name'].should be == "Sven Fuchs"
+      end
+
+      a['name'].should be == "Konstantin Haase"
+      b['name'].should be == "Sven Fuchs"c
+
+      GH.should_not be_in_parallel
+    end
+  end
+
   it 'returns the block value' do
     GH.in_parallel { 42 }.should be == 42
   end
