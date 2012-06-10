@@ -68,6 +68,14 @@ describe GH::Parallel do
     end
   end
 
+  it 'works with pagination' do
+    WebMock.allow_net_connect!
+    GH::DefaultStack.replace GH::MockBackend, GH::Remote
+    repos = GH.in_parallel { GH['users/rkh/repos'] }
+    counter = repos.to_a.map { 1 }.reduce(:+)
+    counter.should be > 120
+  end
+
   it 'returns the block value' do
     GH.in_parallel { 42 }.should be == 42
   end

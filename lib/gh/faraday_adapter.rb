@@ -29,10 +29,13 @@ module GH
         @mutex.synchronize { requests, @requests = @requests, {} }
         http = Net::HTTP::Persistent.new 'GH'
         requests.each do |url, envs|
-          requests  = envs.map { |env| env[:adapter].create_request(env) }
-          responses = http.pipeline(url, requests)
-          envs.zip(responses) do |e,r|
-            e[:adapter].save_response(e, r.code.to_i, r.body) { |h| r.each_header { |k,v| h[k] = v } }
+          _requests = envs.map { |env| env[:adapter].create_request(env) }
+          responses = http.pipeline(url, _requests)
+          envs.zip(responses) do |env, http_response|
+            env[:adapter].save_response(env, http_response.code.to_i, http_response.body) do |headers|
+              http_response.each_header { |key, value| headers[key] = value }
+            end
+            env[:response].finish(env)
           end
         end
       end
