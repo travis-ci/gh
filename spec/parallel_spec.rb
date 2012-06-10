@@ -79,4 +79,15 @@ describe GH::Parallel do
   it 'returns the block value' do
     GH.in_parallel { 42 }.should be == 42
   end
+
+  it 'works two times in a row' do
+    WebMock.allow_net_connect!
+    GH::DefaultStack.replace GH::MockBackend, GH::Remote
+
+    a = GH.in_parallel { GH['users/rkh'] }
+    b = GH.in_parallel { GH['users/svenfuchs'] }
+
+    a['name'].should be == "Konstantin Haase"
+    b['name'].should be == "Sven Fuchs"
+  end
 end
