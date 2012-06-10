@@ -23,6 +23,10 @@ module GH
         next_page[value - @page.size]
       end
 
+      def to_ary
+        to_a # replace with better implementation (use in_parallel)
+      end
+
       private
 
       def next_page
