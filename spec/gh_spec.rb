@@ -20,5 +20,13 @@ describe GH do
     it 'returns the block value if block is given' do
       GH.with(:token => "...") { 42 }.should be == 42
     end
+
+    it 'propagates options' do
+      GH.with(:a => :b) do
+        GH.with(:b => :c) do
+          GH.options.should be == {:a => :b, :b => :c}
+        end
+      end
+    end
   end
 end

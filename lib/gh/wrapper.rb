@@ -27,6 +27,9 @@ module GH
     # Public: Get wrapped layer.
     attr_reader :backend
 
+    # Public: ...
+    attr_reader :options
+
     # Public: Returns the URI used for sending out web request.
     def_delegator :backend, :api_host
 
@@ -86,8 +89,9 @@ module GH
     # backend - layer to be wrapped
     # options - config options
     def initialize(backend = nil, options = {})
-      setup(*normalize_options(backend, options))
-      options.each_pair { |key, value| public_send("#{key}=", value) if respond_to? "#{key}=" }
+      backend, @options = normalize_options(backend, options)
+      @options.each_pair { |key, value| public_send("#{key}=", value) if respond_to? "#{key}=" }
+      setup(backend, @options)
     end
 
     # Public: Set wrapped layer.

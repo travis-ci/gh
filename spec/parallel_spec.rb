@@ -47,7 +47,7 @@ describe GH::Parallel do
   it 'runs requests right away if parallelize is set to false' do
     WebMock.allow_net_connect!
     GH::DefaultStack.replace GH::MockBackend, GH::Remote
-      GH.with :parallelize => false do
+    GH.with :parallelize => false do
       GH.should_not be_in_parallel
 
       a = b = nil
@@ -62,7 +62,7 @@ describe GH::Parallel do
       end
 
       a['name'].should be == "Konstantin Haase"
-      b['name'].should be == "Sven Fuchs"c
+      b['name'].should be == "Sven Fuchs"
 
       GH.should_not be_in_parallel
     end

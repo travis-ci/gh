@@ -21,11 +21,20 @@ module GH
   autoload :Wrapper,          'gh/wrapper'
 
   def self.with(backend)
-    backend = DefaultStack.build(backend) if Hash === backend
-    return backend unless block_given?
-    was, self.current = current, backend
-    yield
+    if Hash === backend
+      @options ||= {}
+      @options, options = @options.merge(backend), @options
+      backend = DefaultStack.build(@options)
+    end
+
+    if block_given?
+      was, self.current = current, backend
+      yield
+    else
+      backend
+    end
   ensure
+    @options = options if options
     self.current = was if was
   end
 
@@ -38,7 +47,7 @@ module GH
   end
 
   extend SingleForwardable
-  def_delegators :current, :api_host, :[], :reset, :load, :post, :delete, :patch, :put, :in_parallel, :in_parallel?
+  def_delegators :current, :api_host, :[], :reset, :load, :post, :delete, :patch, :put, :in_parallel, :in_parallel?, :options
 
   DefaultStack = Stack.new do
     use Instrumentation
