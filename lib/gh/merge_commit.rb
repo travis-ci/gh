@@ -65,7 +65,7 @@ module GH
           when "", "null", /checking/
             hash['mergeable'] = nil
             sleep 0.1
-          when /unkown/, /dirty/
+          when /unknown/, /dirty/
             hash['mergeable'] = false
           else
             fail "Unkown payload from #{url}: #{payload}"
