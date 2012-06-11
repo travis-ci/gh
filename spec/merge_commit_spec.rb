@@ -8,7 +8,7 @@ describe GH::MergeCommit do
 
   before do
     stub_request(:get, "https://github.com/travis-repos/test-project-1/pull/1/mergeable").
-      to_return(:status => 200, :body => "true", :headers => {})
+      to_return(:status => 200, :body => '{"state":"clean"}', :headers => {})
   end
 
   it 'adds merge commits' do

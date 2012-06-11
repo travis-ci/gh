@@ -57,9 +57,18 @@ module GH
         # until then, please look the other way
         while hash['mergeable'].nil?
           url = hash['_links']['html']['href'] + '/mergeable'
-          case frontend.http(:get, url).body
-          when "true"  then hash['mergeable'] = true
-          when "false" then hash['mergeable'] = false
+          payload = frontend.http(:get, url).body
+
+          case payload
+          when "true", /clean/
+            hash['mergeable'] = true
+          when "", "null", /checking/
+            hash['mergeable'] = nil
+            sleep 0.1
+          when /unkown/, /dirty/
+            hash['mergeable'] = false
+          else
+            fail "Unkown payload from #{url}: #{payload}"
           end
         end
       end
