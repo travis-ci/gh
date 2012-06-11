@@ -68,7 +68,7 @@ module GH
           when /unknown/, /dirty/
             hash['mergeable'] = false
           else
-            fail "Unkown payload from #{url}: #{payload}"
+            fail "Unknown payload from #{url}: #{payload}"
           end
         end
       end
