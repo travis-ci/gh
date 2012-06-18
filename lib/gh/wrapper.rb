@@ -152,7 +152,7 @@ module GH
       when respond_to(:to_ary)  then modify_array(data)
       when respond_to(:to_str)  then modify_string(data)
       when respond_to(:to_int)  then modify_integer(data)
-      else modify_unkown data
+      else modify_unknown data
       end
     rescue Exception => error
       raise Error.new(error, data)
@@ -182,7 +182,7 @@ module GH
 
     alias modify_string   modify
     alias modify_integer  modify
-    alias modify_unkown   modify
+    alias modify_unknown  modify
 
     def setup(backend, options)
       self.backend = Wrapper === backend ? backend : self.class.wraps.new(backend, options)
