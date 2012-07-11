@@ -6,12 +6,7 @@ module GH
   #
   # Delegates safe methods to the parsed body (expected to be an Array or Hash).
   class Response
-    include GH::Case
-
-    # Internal: Content-Type header value expected from Github
-    CONTENT_TYPE = "application/json; charset=utf-8"
-
-    include Enumerable
+    include GH::Case, Enumerable
     attr_accessor :headers, :data, :body, :url
 
     # subset of safe methods that both Array and Hash implement
@@ -26,8 +21,6 @@ module GH
     def initialize(body = "{}", headers = {}, url = nil)
       @url     = url
       @headers = Hash[headers.map { |k,v| [k.downcase, v] }]
-
-      raise ArgumentError, "unexpected Content-Type #{content_type}" if content_type and content_type != CONTENT_TYPE
 
       case body
       when respond_to(:to_str)  then @body = body.to_str
