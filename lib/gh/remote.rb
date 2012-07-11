@@ -27,8 +27,8 @@ module GH
       @api_host = Addressable::URI.parse(api_host)
       @headers  = options[:headers].try(:dup)  || {
         "Origin"          => options[:origin] || "http://example.org",
-        "Accept"          => "application/vnd.github.v3.raw+json," \
-                             "application/vnd.github.beta.raw+json;q=0.5," \
+        "Accept"          => "application/vnd.github.v3.full+json," \
+                             "application/vnd.github.beta.full+json;q=0.5," \
                              "application/json;q=0.1",
         "Accept-Charset"  => "utf-8"
       }

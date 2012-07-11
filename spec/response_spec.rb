@@ -2,6 +2,10 @@
 require 'spec_helper'
 
 describe GH::Response do
+  it 'parses content endpoints correctly' do
+    GH['/repos/rkh/gh/contents/README.md']
+  end
+
   it 'handles UTF-8 properly, even if encoded binary' do
     raw = '{"foo":"über cool sista året"}'
     raw.force_encoding 'binary' if raw.respond_to? :force_encoding
