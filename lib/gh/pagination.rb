@@ -27,6 +27,10 @@ module GH
         to_a # replace with better implementation (use in_parallel)
       end
 
+      def headers
+        @page.headers
+      end
+
       private
 
       def next_page
