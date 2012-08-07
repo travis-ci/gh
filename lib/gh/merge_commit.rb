@@ -22,7 +22,7 @@ module GH
 
     def lazy_load(hash, key)
       return unless key =~ /^(merge|head|base)_commit$/ and hash.include? 'mergeable'
-      return unless force_merge_commit(hash)
+      return unless has_merge_commit?(hash)
       fields = pull_request_refs(hash)
       fields['base_commit'] ||= commit_for hash, hash['base']
       fields['head_commit'] ||= commit_for hash, hash['head']
@@ -51,28 +51,33 @@ module GH
       Hash[commits]
     end
 
-    def force_merge_commit(hash)
-      Timeout.timeout(600) do # MAGIC NUMBERS FTW
-        # FIXME: Rick said "this will become part of the API"
-        # until then, please look the other way
-        while hash['mergeable'].nil?
-          url = hash['_links']['html']['href'] + '/mergeable'
-          payload = frontend.http(:get, url).body
-
-          case payload
-          when "true", /clean/
-            hash['mergeable'] = true
-          when "", "null", /checking/
-            hash['mergeable'] = nil
-            sleep 0.1
-          when /unknown/, /dirty/
-            hash['mergeable'] = false
-          else
-            fail "Unknown payload from #{url}: #{payload}"
-          end
-        end
-      end
+    def has_merge_commit?(hash)
+      force_merge_commit(hash)
       hash['mergeable']
+    end
+
+    def github_done_checking?(hash)
+      case hash['mergeable_state']
+      when 'checking'       then false
+      when 'unknown'        then hash['merged']
+      when 'clean', 'dirty' then true
+      else fail "unknown mergeable_state #{hash['mergeable_state'].inspect} for #{url(hash)}"
+      end
+    end
+
+    def force_merge_commit(hash)
+      Timeout.timeout(600) do
+        update(hash) until github_done_checking? hash
+      end
+    end
+
+    def update(hash)
+      hash.merge! backend[url(hash)]
+      sleep 0.1
+    end
+
+    def url(hash)
+      hash['_links']['self']['href']
     end
   end
 end
