@@ -58,9 +58,9 @@ module GH
 
     def github_done_checking?(hash)
       case hash['mergeable_state']
-      when 'checking'       then false
-      when 'unknown'        then hash['merged']
-      when 'clean', 'dirty' then true
+      when 'checking'                               then false
+      when 'unknown'                                then hash['merged']
+      when 'clean', 'dirty', 'unstable', 'stable'   then true
       else fail "unknown mergeable_state #{hash['mergeable_state'].inspect} for #{url(hash)}"
       end
     end
