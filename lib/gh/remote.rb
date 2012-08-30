@@ -93,6 +93,11 @@ module GH
     end
 
     # Public: ...
+    def head(key)
+      frontend.request(:head, key)
+    end
+
+    # Public: ...
     def patch(key, body)
       frontend.request(:patch, key, body)
     end

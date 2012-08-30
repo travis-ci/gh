@@ -46,6 +46,9 @@ module GH
     def_delegator :backend, :delete
 
     # Public: ...
+    def_delegator :backend, :head
+
+    # Public: ...
     def_delegator :backend, :patch
 
     # Public: ...
