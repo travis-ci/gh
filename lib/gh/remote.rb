@@ -74,7 +74,7 @@ module GH
     def http(verb, url, headers = {}, &block)
       connection.run_request(verb, url, nil, headers, &block)
     rescue Exception => error
-      raise Error.new(error, data, verb: verb, url: url, headers: headers)
+      raise Error.new(error, nil, verb: verb, url: url, headers: headers)
     end
 
     # Internal: ...
