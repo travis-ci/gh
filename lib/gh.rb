@@ -5,6 +5,7 @@ require 'forwardable'
 module GH
   autoload :Cache,            'gh/cache'
   autoload :Case,             'gh/case'
+  autoload :CustomLimit,      'gh/custom_limit'
   autoload :Error,            'gh/error'
   autoload :FaradayAdapter,   'gh/faraday_adapter'
   autoload :Instrumentation,  'gh/instrumentation'
@@ -50,6 +51,7 @@ module GH
   def_delegators :current, :api_host, :[], :reset, :load, :post, :delete, :patch, :put, :in_parallel, :in_parallel?, :options, :head
 
   DefaultStack = Stack.new do
+    use CustomLimit
     use Instrumentation
     use Parallel
     use Pagination
