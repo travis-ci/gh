@@ -56,7 +56,6 @@ module GH
   def_delegators :current, :api_host, :[], :reset, :load, :post, :delete, :patch, :put, :in_parallel, :in_parallel?, :options, :head
 
   DefaultStack = Stack.new do
-    use CustomLimit
     use Instrumentation
     use Parallel
     use Pagination
@@ -64,6 +63,7 @@ module GH
     use MergeCommit
     use LazyLoader
     use Normalizer
+    use CustomLimit
     use Remote
   end
 end
