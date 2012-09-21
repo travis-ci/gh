@@ -28,7 +28,7 @@ module GH
     def entry(key, value)
       value = "#{value.class}: #{value.message}" if Exception === value
       value = value.inspect unless String === value
-      value = "\n" + value.gsub(/[^\n]{30}/, "\\0\n").lines.map { |l| "    #{l}" } if value.size > 30 or value.include? "\n"
+      value = value.gsub(/[^\n]{30}/, "\\0\n").lines.map { |l| "\n    #{l}" }.join if value.size > 30 or value.include? "\n"
       (key.to_s + ": ").ljust(12) + value
     end
   end

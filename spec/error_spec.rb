@@ -28,4 +28,9 @@ describe GH::Error do
   it 'keeps the payload around' do
     exception.payload.should be == {'foo' => 'bar'}
   end
+
+  it 'works for long content' do
+    error = GH::Error.new(nil, nil, 'foo' => 'a'*1000)
+    expect { error.message }.not_to raise_error
+  end
 end
