@@ -39,6 +39,11 @@ module GH
     self.current = was if was
   end
 
+  def self.set(options)
+    Thread.current[:GH] = nil
+    DefaultStack.options.merge! options
+  end
+
   def self.current
     Thread.current[:GH] ||= DefaultStack.new
   end
