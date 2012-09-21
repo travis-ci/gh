@@ -26,7 +26,7 @@ module GH
       api_host  = api_host.api_host if api_host.respond_to? :api_host
       @api_host = Addressable::URI.parse(api_host)
       @headers  = options[:headers].try(:dup)  || {
-        "Origin"          => options[:origin] || "http://example.org",
+        #"Origin"          => options[:origin] || "http://example.org",
         "Accept"          => "application/vnd.github.v3.full+json," \
                              "application/vnd.github.beta.full+json;q=0.5," \
                              "application/json;q=0.1",
