@@ -7,7 +7,7 @@ module GH
     def initialize(error = nil, payload = nil, info = {})
       info   = info.merge(error.info) if error.respond_to? :info and Hash === error.info
       error  = error.error while error.respond_to? :error
-      @info  = info.merge(error: error, payload: payload)
+      @info  = info.merge(:error => error, :payload => payload)
 
       if error
         set_backtrace error.backtrace
