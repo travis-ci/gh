@@ -66,14 +66,14 @@ module GH
     end
 
     def force_merge_commit(hash)
-      Timeout.timeout(600) do
+      Timeout.timeout(300) do
         update(hash) until github_done_checking? hash
       end
     end
 
     def update(hash)
       hash.merge! backend[url(hash)]
-      sleep 0.1
+      sleep 0.5
     end
 
     def url(hash)
