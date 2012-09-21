@@ -13,7 +13,7 @@ describe GH::Remote do
 
   it 'raises an exception for missing resources' do
     stub_request(:get, "https://api.github.com/foo").to_return(:status => 404)
-    expect { subject['foo'] }.to raise_error(Faraday::Error::ResourceNotFound)
+    expect { subject['foo'] }.to raise_error(GH::Error)
   end
 
   it 'parses the body' do
