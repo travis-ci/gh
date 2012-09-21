@@ -8,7 +8,24 @@ module GH
       info   = info.merge(error.info) if error.respond_to? :info and Hash === error.info
       error  = error.error while error.respond_to? :error
       @info  = info.merge(error: error, payload: payload)
-      set_backtrace error.backtrace if error
+
+      if error
+        set_backtrace error.backtrace
+        if error.respond_to? :response and error.response
+          case response = error.response
+          when Hash
+            @info[:response_status]  = response[:status]
+            @info[:response_headers] = response[:headers]
+            @info[:response_body]    = response[:body]
+          when Faraday::Response
+            @info[:response_status]  = response.status
+            @info[:response_headers] = response.headers
+            @info[:response_body]    = response.body
+          else
+            @info[:response]         = response
+          end
+        end
+      end
     end
 
     def payload
