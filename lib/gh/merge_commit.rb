@@ -70,7 +70,8 @@ module GH
         update(hash) until github_done_checking? hash
       end
     rescue TimeoutError
-      raise TimeoutError, 'gave up waiting for github to check the merge status'
+      status = hash['mergeable_state'].inspect
+      raise TimeoutError, "gave up waiting for github to check the merge status (current status is #{status})"
     end
 
     def update(hash)
