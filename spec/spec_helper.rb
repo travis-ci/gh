@@ -29,6 +29,7 @@ module GH
     def should_not_request(&block)
       should_request(0, &block)
     end
+
   end
 
   class MockBackend < Wrapper
@@ -40,11 +41,11 @@ module GH
     end
 
     def fetch_resource(key)
-      key  = path_for(key)
-      file = File.expand_path("../payloads/#{key}.yml", __FILE__)
+      key = path_for(key)
+      key_fn = sanitize_filename(key)
+      file = File.expand_path("../payloads/#{key_fn}.yml", __FILE__)
       @requests << key
-
-      result = @data[key] ||= begin
+       result = @data[key] ||= begin
         unless File.exist? file
           res = allow_http { super }
           FileUtils.mkdir_p File.dirname(file)
@@ -57,6 +58,10 @@ module GH
 
       result = Response.new(result) unless result.is_a? Response
       result
+    end
+
+    def sanitize_filename(name)
+      name.gsub(/[\?=&]/,"_")
     end
 
     def reset
