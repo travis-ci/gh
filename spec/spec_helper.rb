@@ -45,8 +45,7 @@ module GH
       key_fn = sanitize_filename(key)
       file = File.expand_path("../payloads/#{key_fn}.yml", __FILE__)
       @requests << key
-
-      result = @data[key] ||= begin
+       result = @data[key] ||= begin
         unless File.exist? file
           res = allow_http { super }
           FileUtils.mkdir_p File.dirname(file)
@@ -62,7 +61,7 @@ module GH
     end
 
     def sanitize_filename(name)
-      name.gsub(/[\?=]/,"_")
+      name.gsub(/[\?=&]/,"_")
     end
 
     def reset
