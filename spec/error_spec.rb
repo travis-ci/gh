@@ -22,7 +22,7 @@ describe GH::Error do
   end
 
   it "exposes the original exception" do
-    exception.error.should be_a(RuntimeError)
+    exception.error.should be_a(StandardError)
   end
 
   it 'keeps the payload around' do

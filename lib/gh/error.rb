@@ -1,7 +1,7 @@
 require 'gh'
 
 module GH
-  class Error < Exception
+  class Error < StandardError
     attr_reader :info
 
     def initialize(error = nil, payload = nil, info = {})
