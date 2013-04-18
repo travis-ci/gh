@@ -19,6 +19,7 @@ module GH
   autoload :Response,         'gh/response'
   autoload :ResponseWrapper,  'gh/response_wrapper'
   autoload :Stack,            'gh/stack'
+  autoload :TokenCheck,       'gh/token_check'
   autoload :Wrapper,          'gh/wrapper'
 
   def self.with(backend)
@@ -58,6 +59,7 @@ module GH
   DefaultStack = Stack.new do
     use Instrumentation
     use Parallel
+    use TokenCheck
     use Pagination
     use LinkFollower
     use MergeCommit

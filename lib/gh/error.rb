@@ -10,7 +10,7 @@ module GH
       @info  = info.merge(:error => error, :payload => payload)
 
       if error
-        set_backtrace error.backtrace
+        set_backtrace error.backtrace if error.respond_to? :backtrace
         if error.respond_to? :response and error.response
           case response = error.response
           when Hash
@@ -48,5 +48,8 @@ module GH
       value = value.gsub(/[^\n]{80}/, "\\0\n").lines.map { |l| "\n    #{l}" }.join.gsub(/\n+/, "\n")
       (key.to_s + ": ").ljust(12) + value
     end
+  end
+
+  class TokenInvalid < Error
   end
 end
