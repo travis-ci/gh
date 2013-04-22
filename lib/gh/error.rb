@@ -50,6 +50,6 @@ module GH
     end
   end
 
-  class TokenInvalid < Exception
+  class TokenInvalid < Error
   end
 end
