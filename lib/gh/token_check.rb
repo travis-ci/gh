@@ -15,11 +15,11 @@ module GH
 
     def check_token
       return unless @check_token and client_id and client_secret and token
-      auth_header = "Basic %s" % Base64.encode64("#{client_id}:#{client_secret}").gsub("\n")
+      auth_header = "Basic %s" % Base64.encode64("#{client_id}:#{client_secret}").gsub("\n", "")
       http :head, "/applications/#{client_id}/tokens/#{token}", "Authorization" => auth_header
       @check_token = false
-    rescue GH::Error
-      raise GH::TokenInvalid
+    rescue GH::Error => error
+      raise GH::TokenInvalid, error
     end
 
     def fetch_resource(*)
