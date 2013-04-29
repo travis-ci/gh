@@ -1,0 +1,46 @@
+PATH
+  remote: .
+  specs:
+    gh (0.11.0)
+      addressable
+      backports
+      faraday (~> 0.8)
+      multi_json (~> 1.0)
+      net-http-persistent (>= 2.7)
+      net-http-pipeline
+
+GEM
+  remote: http://rubygems.org/
+  specs:
+    addressable (2.3.2)
+    backports (3.3.0)
+    crack (0.3.1)
+    diff-lcs (1.1.3)
+    faraday (0.8.7)
+      multipart-post (~> 1.1)
+    multi_json (1.7.2)
+    multipart-post (1.2.0)
+    net-http-persistent (2.8)
+    net-http-pipeline (1.0.1)
+    rake (0.9.2.2)
+    rspec (2.11.0)
+      rspec-core (~> 2.11.0)
+      rspec-expectations (~> 2.11.0)
+      rspec-mocks (~> 2.11.0)
+    rspec-core (2.11.1)
+    rspec-expectations (2.11.2)
+      diff-lcs (~> 1.1.3)
+    rspec-mocks (2.11.2)
+    webmock (1.8.9)
+      addressable (>= 2.2.7)
+      crack (>= 0.1.7)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  gh!
+  jruby-openssl
+  rake
+  rspec
+  webmock
