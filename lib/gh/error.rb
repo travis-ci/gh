@@ -52,4 +52,13 @@ module GH
 
   class TokenInvalid < Error
   end
+
+  def self.Error(conditions)
+    Module.new do
+      define_singleton_method(:===) do |exception|
+        return false unless Error === exception and not exception.info.nil?
+        conditions.all? { |k,v| v === exception.info[k]}
+      end
+    end
+  end
 end
