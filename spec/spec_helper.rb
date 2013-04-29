@@ -73,7 +73,6 @@ module GH
     private
 
     def allow_http
-      raise Faraday::Error::ResourceNotFound if ENV['CI']
       WebMock.allow_net_connect!
       yield
     ensure
