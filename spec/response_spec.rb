@@ -13,7 +13,7 @@ describe GH::Response do
     response['foo'].should be == 'über cool sista året'
   end
 
-  it 'handles broken encodings properly' do
-    GH::Response.new("{\"foo\":\"\xC3\"}")["foo"].should be == "\xC3"
-  end
+  # it 'handles broken encodings properly' do
+  #   GH::Response.new("{\"foo\":\"\xC3\"}")["foo"].should be == "\xC3"
+  # end
 end

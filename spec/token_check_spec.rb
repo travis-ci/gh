@@ -1,0 +1,27 @@
+require 'spec_helper'
+
+describe GH::TokenCheck do
+  before do
+    subject.client_id     = 'foo'
+    subject.client_secret = 'bar'
+    subject.token         = 'baz'
+  end
+
+  it 'adds client_id and client_secret to a request' do
+    subject.backend.should_receive(:http).with(:head, "/applications/foo/tokens/baz?client_id=foo&client_secret=bar", "Authorization" => "Basic Zm9vOmJhcg==") do
+      error = GH::Error.new
+      error.info[:response_status] = 404
+      raise error
+    end
+    expect { subject['/x'] }.to raise_error(GH::TokenInvalid)
+  end
+
+  it 'does not swallow other status codes' do
+    subject.backend.should_receive(:http).with(:head, "/applications/foo/tokens/baz?client_id=foo&client_secret=bar", "Authorization" => "Basic Zm9vOmJhcg==") do
+      error = GH::Error.new
+      error.info[:response_status] = 500
+      raise error
+    end
+    expect { subject['/x'] }.not_to raise_error(GH::TokenInvalid)
+  end
+end
