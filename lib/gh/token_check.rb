@@ -18,7 +18,7 @@ module GH
       auth_header = "Basic %s" % Base64.encode64("#{client_id}:#{client_secret}").gsub("\n", "")
       http :head, "/applications/#{client_id}/tokens/#{token}", "Authorization" => auth_header
       @check_token = false
-    rescue GH::Error => error
+    rescue GH::Error(:response_status => 404) => error
       raise GH::TokenInvalid, error
     end
 
