@@ -9,7 +9,7 @@ module GH
       super
     end
 
-    def fetch_resource(key)
+    def request(verb, key, body = nil)
       return super unless client_id
 
       url    = full_url(key)
@@ -21,7 +21,7 @@ module GH
       end
 
       url.query_values = params
-      super url.request_uri
+      super verb, url.request_uri, body
     end
   end
 end
