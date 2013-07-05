@@ -23,7 +23,7 @@ module GH
       raise GH::TokenInvalid, error
     end
 
-    def request(*)
+    def http(*)
       check_token
       super
     end
