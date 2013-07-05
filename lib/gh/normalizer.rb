@@ -6,7 +6,7 @@ module GH
   class Normalizer < Wrapper
     def generate_response(key, response)
       result = super
-      links(result)['self'] ||= { 'href' => full_url(key).to_s } if result.respond_to? :to_hash
+      links(result)['self'] ||= { 'href' => frontend.full_url(key).to_s } if result.respond_to? :to_hash
       result
     end
 

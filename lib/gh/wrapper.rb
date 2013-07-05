@@ -63,6 +63,12 @@ module GH
     # Public: ...
     def_delegator :backend, :in_parallel?
 
+    # Public: ...
+    def_delegator :backend, :full_url
+
+    # Public: ...
+    def_delegator :backend, :path_for
+
     # Public: Retrieves resources from Github.
     def self.[](key)
       new[key]
@@ -198,12 +204,6 @@ module GH
       [backend, options]
     end
 
-    def full_url(key)
-      uri = api_host + Addressable::URI.parse(key)
-      raise ArgumentError, "URI out of scope: #{key}" if uri.host != api_host.host
-      uri
-    end
-
     def setup_default_proc(hash, &block)
       old_proc = hash.default_proc
       hash.default_proc = proc do |hash, key|
@@ -226,10 +226,6 @@ module GH
         end
       end
       hash
-    end
-
-    def path_for(key)
-      full_url(key).request_uri
     end
   end
 end

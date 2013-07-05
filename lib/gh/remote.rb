@@ -61,14 +61,14 @@ module GH
 
     # Internal: ...
     def fetch_resource(key)
-      frontend.http(:get, path_for(key), headers)
+      frontend.http(:get, frontend.path_for(key), headers)
     end
 
     # Internal: ...
     def generate_response(key, response)
       body, headers = response.body, response.headers
       url = response.respond_to?(:url) ? response.url : response.env.try(:[], :url)
-      url = full_url(key) if url.to_s.empty?
+      url = frontend.full_url(key) if url.to_s.empty?
       modify(body, headers, url)
     end
 
@@ -124,6 +124,16 @@ module GH
     # Public: ...
     def in_parallel
       raise RuntimeError, "use GH::Parallel middleware for #in_parallel support"
+    end
+
+    def full_url(key)
+      uri = api_host + Addressable::URI.parse(key)
+      raise ArgumentError, "URI out of scope: #{key}" if uri.host != api_host.host
+      uri
+    end
+
+    def path_for(key)
+      frontend.full_url(key).request_uri
     end
 
     private
