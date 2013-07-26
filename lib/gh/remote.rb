@@ -85,6 +85,9 @@ module GH
         req.body = Response.new(body).to_s if body
       end
       frontend.generate_response(key, response)
+    rescue GH::Error => error
+      error.info[:payload] = Response.new(body).to_s if body
+      raise error
     end
 
     # Public: ...
