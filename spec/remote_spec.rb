@@ -18,7 +18,7 @@ describe GH::Remote do
 
   it 'includes the request payload in errors' do
     stub_request(:post, "https://api.github.com/foo").to_return(:status => 422)
-    expect { subject.post('foo', :foo => "bar") }.to raise_error { |error| error.message.should =~ /{\s*"foo":\s*"bar"\s*}/ }
+    expect { subject.post('foo', :foo => "bar") }.to raise_error { |error| error.message.should =~ /\{\s*"foo":\s*"bar"\s*\}/ }
   end
 
   it 'parses the body' do
