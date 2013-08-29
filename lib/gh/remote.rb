@@ -127,7 +127,7 @@ module GH
     end
 
     def full_url(key)
-      uri = api_host + Addressable::URI.parse(key)
+      uri = api_host + Addressable::URI.parse(key.sub(/^\//, ''))
       raise ArgumentError, "URI out of scope: #{key}" if uri.host != api_host.host
       uri
     end
