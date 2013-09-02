@@ -37,4 +37,12 @@ describe GH::Remote do
     wrapper.should_receive(:request).with(:delete, "/foo").and_return GH::Response.new
     wrapper.delete '/foo'
   end
+
+  describe :path_for do
+    before { subject.setup("http://localhost/api/v3", {}) }
+    example { subject.path_for("foo")                         .should be == "/api/v3/foo" }
+    example { subject.path_for("/foo")                        .should be == "/api/v3/foo" }
+    example { subject.path_for("/api/v3/foo")                 .should be == "/api/v3/foo" }
+    example { subject.path_for("http://localhost/api/v3/foo") .should be == "/api/v3/foo" }
+  end
 end
