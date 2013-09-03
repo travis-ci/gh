@@ -56,6 +56,10 @@ module GH
   extend SingleForwardable
   def_delegators :current, :api_host, :[], :reset, :load, :post, :delete, :patch, :put, :in_parallel, :in_parallel?, :options, :head
 
+  def self.method_missing(*args, &block)
+    current.public_send(*args, &block)
+  end
+
   DefaultStack = Stack.new do
     use Instrumentation
     use Parallel
