@@ -4,16 +4,16 @@ describe GH::Normalizer do
   before { subject.backend = GH::MockBackend.new }
 
   def normalize(payload)
-    data['/payload'] = payload
+    data[subject.path_for('/payload')] = payload
   end
 
   def with_headers(headers = {})
     response = GH::Response.new("{}", headers)
-    data['/payload'], response.data = response, data['/payload']
+    data[subject.path_for('/payload')], response.data = response, data[subject.path_for('/payload')]
   end
 
   def normalized
-    subject['/payload']
+    subject[subject.path_for('/payload')]
   end
 
   it 'is set up properly' do
@@ -285,17 +285,35 @@ describe GH::Normalizer do
     end
 
     it 'detects self urls in url field'  do
-      normalize 'url' => 'http://api.github.com/foo'
+      normalize 'url' => 'https://api.github.com/foo'
       normalized.should_not include('url')
       normalized.should include('_links')
       normalized['_links'].should include('self')
       normalized['_links'].should_not include('html')
-      normalized['_links']['self']['href'].should be == 'http://api.github.com/foo'
+      normalized['_links']['self']['href'].should be == 'https://api.github.com/foo'
     end
 
     it 'passes through true' do
       normalize 'foo' => true
       normalized['foo'].should be == true
+    end
+
+    it 'properly detects html links when api is served from same host' do
+      subject.backend.setup("http://localhost/api/v3", {})
+      normalize 'url' => 'http://localhost/foo'
+      normalized.should_not include('url')
+      normalized.should include('_links')
+      normalized['_links'].should include('html')
+      normalized['_links']['html']['href'].should be == 'http://localhost/foo'
+    end
+
+    it 'properly detects self links when api is served from same host' do
+      subject.backend.setup("http://localhost/api/v3", {})
+      normalize 'url' => 'http://localhost/api/v3/foo'
+      normalized.should_not include('url')
+      normalized.should include('_links')
+      normalized['_links'].should include('self')
+      normalized['_links']['self']['href'].should be == 'http://localhost/api/v3/foo'
     end
   end
 end
