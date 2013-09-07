@@ -25,7 +25,7 @@ module GH
 
       api_host  = api_host.api_host if api_host.respond_to? :api_host
       @api_host = Addressable::URI.parse(api_host)
-      @headers  = options[:headers].try(:dup)  || {
+      @headers  = {
         "User-Agent"      => options[:user_agent] || "GH/#{GH::VERSION}",
         "Accept"          => "application/vnd.github.v3+json," \
                              "application/vnd.github.beta+json;q=0.5," \
@@ -33,6 +33,7 @@ module GH
         "Accept-Charset"  => "utf-8",
       }
 
+      @headers.merge! options[:headers] if options[:headers]
       @headers['Origin'] = options[:origin] if options[:origin]
 
       @prefix = ""
