@@ -1,4 +1,4 @@
 module GH
   # Public: Library version.
-  VERSION = "0.12.4"
+  VERSION = "0.13.0"
 end
