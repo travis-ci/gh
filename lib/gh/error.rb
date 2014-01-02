@@ -45,8 +45,8 @@ module GH
     def entry(key, value)
       value = "#{value.class}: #{value.message}" if Exception === value
       value = value.inspect unless String === value
-      value = value.gsub(/[^\n]{80}/, "\\0\n").lines.map { |l| "\n    #{l}" }.join.gsub(/\n+/, "\n")
-      (key.to_s + ": ").ljust(12) + value
+      value.gsub!(/"Basic .+"|(client_(?:id|secret)=)[^&\s]+/, '\1[removed]')
+      (key.to_s + ": ").ljust(20) + value
     end
   end
 
