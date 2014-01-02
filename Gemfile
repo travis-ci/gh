@@ -4,3 +4,9 @@ source "http://rubygems.org"
 gemspec
 gem 'rake'
 platform(:jruby) { gem 'jruby-openssl' }
+
+platforms :rbx do
+  gem 'racc'
+  gem 'rubysl', '~> 2.0'
+  gem 'psych'
+end
