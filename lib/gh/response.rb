@@ -26,7 +26,7 @@ module GH
       when respond_to(:to_str)  then @body = body.to_str
       when respond_to(:to_hash) then @data = body.to_hash
       when respond_to(:to_ary)  then @data = body.to_ary
-      when nil                  then @data = {}
+      when nil, ''              then @data = {}
       else raise ArgumentError, "cannot parse #{body.inspect}"
       end
 
