@@ -1,5 +1,5 @@
 require 'gh/version'
-require 'backports'
+require 'backports' if RUBY_VERSION < '2.1'
 require 'forwardable'
 
 module GH
