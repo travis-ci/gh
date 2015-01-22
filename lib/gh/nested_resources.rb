@@ -8,7 +8,7 @@ module GH
 
     def modify_hash(hash, loaded = false)
       hash = super(hash)
-      link = hash['_links'].try(:[], 'self') unless loaded
+      link = hash['_links']['self'] unless loaded or hash['_links'].nil?
       set_links hash, Addressable::URI.parse(link['href']) if link
       hash
     end

@@ -39,6 +39,7 @@ describe GH::Remote do
   end
 
   describe :path_for do
+    subject { GH::Remote.new }
     before { subject.setup("http://localhost/api/v3", {}) }
     example { subject.path_for("foo")                         .should be == "/api/v3/foo" }
     example { subject.path_for("/foo")                        .should be == "/api/v3/foo" }
