@@ -27,9 +27,9 @@ module GH
       @api_host = Addressable::URI.parse(api_host)
       @headers  = {
         "User-Agent"      => options[:user_agent] || "GH/#{GH::VERSION}",
-        "Accept"          => "application/vnd.github.v3+json," \
-                             "application/vnd.github.beta+json;q=0.5," \
-                             "application/json;q=0.1",
+        "Accept"          => options[:accept] || "application/vnd.github.v3+json," \
+                                                 "application/vnd.github.beta+json;q=0.5," \
+                                                 "application/json;q=0.1",
         "Accept-Charset"  => "utf-8",
       }
 
