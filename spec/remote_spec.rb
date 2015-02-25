@@ -38,6 +38,11 @@ describe GH::Remote do
     wrapper.delete '/foo'
   end
 
+  it 'loads resources from github' do
+    stub_request(:get, "https://api.github.com/foo").with(:headers => {"Accept" => "application/vnd.github.v3+json,application/json"}).to_return(:body => '["foo"]')
+    GH::Remote.new(:accept => "application/vnd.github.v3+json,application/json")['foo'].to_s.should be == '["foo"]'
+  end
+
   describe :path_for do
     subject { GH::Remote.new }
     before { subject.setup("http://localhost/api/v3", {}) }

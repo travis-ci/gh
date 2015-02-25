@@ -9,7 +9,7 @@ describe GH::CustomLimit do
   it 'adds client_id and client_secret to a request' do
     headers = {
       "User-Agent"     => "GH/#{GH::VERSION}",
-      "Accept"         => "application/vnd.github.v3+json,application/vnd.github.beta+json;q=0.5,application/json;q=0.1",
+      "Accept"         => "application/vnd.github.v3+json",
       "Accept-Charset" => "utf-8"
     }
 
