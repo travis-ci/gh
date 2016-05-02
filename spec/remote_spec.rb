@@ -34,7 +34,7 @@ describe GH::Remote do
 
   it 'sends request calls through the frontend' do
     wrapper = Class.new(GH::Wrapper).new
-    wrapper.should_receive(:request).with(:delete, "/foo").and_return GH::Response.new
+    wrapper.should_receive(:request).with(:delete, "/foo", nil).and_return GH::Response.new
     wrapper.delete '/foo'
   end
 

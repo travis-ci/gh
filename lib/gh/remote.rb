@@ -96,8 +96,8 @@ module GH
     end
 
     # Public: ...
-    def delete(key)
-      frontend.request(:delete, key)
+    def delete(key, body = nil)
+      frontend.request(:delete, key, body)
     end
 
     # Public: ...
