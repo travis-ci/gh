@@ -11,5 +11,6 @@ before_install:
   - gem update bundler
 matrix:
   allow_failures:
+    - rvm: rbx-2
     - rvm: jruby-18mode
     - rvm: jruby-head
