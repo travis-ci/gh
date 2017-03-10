@@ -2,11 +2,9 @@ language: ruby
 sudo: false
 dist: trusty
 rvm:
-  - 1.9.3
-  - 2.0.0
-  - 2.1.0
-  - jruby-18mode
-  - jruby-19mode
+  - 2.3.3
+  - 2.4.0
+  - jruby-9.1.5.0
   - rbx-2
   - jruby-head
 before_install:
@@ -14,5 +12,4 @@ before_install:
 matrix:
   allow_failures:
     - rvm: rbx-2
-    - rvm: jruby-18mode
     - rvm: jruby-head
