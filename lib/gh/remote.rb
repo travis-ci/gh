@@ -7,7 +7,7 @@ module GH
   class Remote < Wrapper
     attr_reader :api_host, :connection, :headers, :prefix
 
-    # Public: Generates a new Rempte instance.
+    # Public: Generates a new Remote instance.
     #
     # api_host - HTTP host to send requests to, has to include schema (https or http)
     # options  - Hash with configuration options:
