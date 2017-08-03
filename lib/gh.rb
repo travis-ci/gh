@@ -7,7 +7,6 @@ module GH
   autoload :Case,             'gh/case'
   autoload :CustomLimit,      'gh/custom_limit'
   autoload :Error,            'gh/error'
-  autoload :FaradayAdapter,   'gh/faraday_adapter'
   autoload :Instrumentation,  'gh/instrumentation'
   autoload :LazyLoader,       'gh/lazy_loader'
   autoload :LinkFollower,     'gh/link_follower'
