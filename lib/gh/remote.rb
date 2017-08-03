@@ -11,12 +11,12 @@ module GH
     #
     # api_host - HTTP host to send requests to, has to include schema (https or http)
     # options  - Hash with configuration options:
-    #            :token    - OAuth token to use (optional).
-    #            :username - Github user used for login (optional).
-    #            :password - Github password used for login (optional).
-    #            :origin   - Value of the origin request header (optional).
-    #            :headers  - HTTP headers to be send on every request (optional).
-    #            :adapter  - HTTP library to use for making requests (optional, default: :net_http)
+    #            :token      - OAuth token to use (optional).
+    #            :username   - Github user used for login (optional).
+    #            :password   - Github password used for login (optional).
+    #            :origin     - Value of the origin request header (optional).
+    #            :headers    - HTTP headers to be send on every request (optional).
+    #            :middleware - Middleware passed to faraday (optional).
     #
     # It is highly recommended to set origin, but not to set headers.
     # If you set the username, you should also set the password.
@@ -48,8 +48,8 @@ module GH
         builder.request(:basic_auth, username, password)  if username and password
         builder.request(:retry)
         builder.response(:raise_error)
-        if options[:adapter]
-          builder.use options[:adapter]
+        if options[:middleware]
+          builder.use options[:middleware]
         end
         builder.adapter(:net_http)
       end
