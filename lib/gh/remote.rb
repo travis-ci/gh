@@ -7,7 +7,7 @@ module GH
   class Remote < Wrapper
     attr_reader :api_host, :connection, :headers, :prefix
 
-    # Public: Generates a new Rempte instance.
+    # Public: Generates a new Remote instance.
     #
     # api_host - HTTP host to send requests to, has to include schema (https or http)
     # options  - Hash with configuration options:
@@ -16,7 +16,6 @@ module GH
     #            :password - Github password used for login (optional).
     #            :origin   - Value of the origin request header (optional).
     #            :headers  - HTTP headers to be send on every request (optional).
-    #            :adapter  - HTTP library to use for making requests (optional, default: :net_http)
     #
     # It is highly recommended to set origin, but not to set headers.
     # If you set the username, you should also set the password.
@@ -48,7 +47,9 @@ module GH
         builder.request(:basic_auth, username, password)  if username and password
         builder.request(:retry)
         builder.response(:raise_error)
-        #builder.use(options[:adapter] || GH::FaradayAdapter)
+        if defined? FaradayMiddleware::Instrumentation
+          builder.use :instrumentation
+        end
         builder.adapter(:net_http)
       end
     end
