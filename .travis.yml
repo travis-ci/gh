@@ -4,7 +4,7 @@ dist: trusty
 rvm:
   - 2.3.3
   - 2.4.0
-  - jruby-9.1.5.0
+  - jruby-9.1.13.0
   - rbx-2
   - jruby-head
 before_install:
