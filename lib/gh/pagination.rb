@@ -42,7 +42,7 @@ module GH
     double_dispatch
 
     def fetch_resource(key)
-      url = full_url(key)
+      url = frontend.full_url(key)
       params = url.query_values || {}
       params['per_page'] ||= 100
       url.query_values = params

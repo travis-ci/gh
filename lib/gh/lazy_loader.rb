@@ -8,7 +8,7 @@ module GH
 
     def modify_hash(hash, loaded = false)
       hash = super(hash)
-      link = hash['_links'].try(:[], 'self') unless loaded
+      link = hash['_links']['self'] unless loaded or hash['_links'].nil?
       setup_lazy_loading(hash, link['href']) if link
       hash
     rescue Exception => error

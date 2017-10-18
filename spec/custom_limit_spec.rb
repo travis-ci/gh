@@ -7,10 +7,17 @@ describe GH::CustomLimit do
   end
 
   it 'adds client_id and client_secret to a request' do
-    subject.backend.
-      should_receive(:fetch_resource).
-      with('/x?client_id=foo&client_secret=bar').
+    headers = {
+      "User-Agent"     => "GH/#{GH::VERSION}",
+      "Accept"         => "application/vnd.github.v3+json",
+      "Accept-Charset" => "utf-8"
+    }
+
+    subject.
+      should_receive(:http).
+      with(:get, '/x?client_id=foo&client_secret=bar', headers).
       and_return(GH::Response.new)
+
     subject['/x']
   end
 end

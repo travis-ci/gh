@@ -6,7 +6,7 @@ module GH
   class Normalizer < Wrapper
     def generate_response(key, response)
       result = super
-      links(result)['self'] ||= { 'href' => full_url(key).to_s } if result.respond_to? :to_hash
+      links(result)['self'] ||= { 'href' => frontend.full_url(key).to_s } if result.respond_to? :to_hash
       result
     end
 
@@ -79,7 +79,7 @@ module GH
       when "blog"
         set_link(hash, key, value)
       when "url"
-        type = Addressable::URI.parse(value).host == api_host.host ? "self" : "html"
+        type = value.to_s.start_with?(api_host.to_s) ? "self" : "html"
         set_link(hash, type, value)
       when /^(.+)_url$/
         set_link(hash, $1, value)

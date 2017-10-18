@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-$:.push File.expand_path("../lib", __FILE__)
+$LOAD_PATH.push File.expand_path("../lib", __FILE__)
 require "gh/version"
 
 Gem::Specification.new do |s|
@@ -7,14 +7,12 @@ Gem::Specification.new do |s|
   s.version     = GH::VERSION
   s.authors     = ["Konstantin Haase"]
   s.email       = ["konstantin.mailinglists@googlemail.com"]
-  s.homepage    = "http://gh.rkh.im/"
+  s.homepage    = "https://github.com/travis-ci/gh"
   s.summary     = %q{layered github client}
   s.description = %q{multi-layer client for the github api v3}
+  s.license     = "MIT"
 
-  s.files         = `git ls-files`.split("\n")
-  s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
-  s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
-  s.require_paths = ["lib"]
+  s.files         = `git ls-files -- lib LICENSE`.split("\n")
 
   s.add_development_dependency 'rspec'
   s.add_development_dependency 'webmock'
@@ -22,7 +20,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'faraday',     '~> 0.8'
   s.add_runtime_dependency 'backports'
   s.add_runtime_dependency 'multi_json',  '~> 1.0'
-  s.add_runtime_dependency 'addressable'
-  s.add_runtime_dependency 'net-http-persistent', '>= 2.7'
+  s.add_runtime_dependency 'addressable', '~> 2.4'
+  s.add_runtime_dependency 'net-http-persistent', '~> 2.9'
   s.add_runtime_dependency 'net-http-pipeline'
 end

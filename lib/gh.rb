@@ -1,5 +1,5 @@
 require 'gh/version'
-require 'backports'
+require 'backports' if RUBY_VERSION < '2.1'
 require 'forwardable'
 
 module GH
@@ -7,7 +7,6 @@ module GH
   autoload :Case,             'gh/case'
   autoload :CustomLimit,      'gh/custom_limit'
   autoload :Error,            'gh/error'
-  autoload :FaradayAdapter,   'gh/faraday_adapter'
   autoload :Instrumentation,  'gh/instrumentation'
   autoload :LazyLoader,       'gh/lazy_loader'
   autoload :LinkFollower,     'gh/link_follower'
@@ -55,6 +54,10 @@ module GH
 
   extend SingleForwardable
   def_delegators :current, :api_host, :[], :reset, :load, :post, :delete, :patch, :put, :in_parallel, :in_parallel?, :options, :head
+
+  def self.method_missing(*args, &block)
+    current.public_send(*args, &block)
+  end
 
   DefaultStack = Stack.new do
     use Instrumentation

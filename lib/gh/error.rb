@@ -45,11 +45,20 @@ module GH
     def entry(key, value)
       value = "#{value.class}: #{value.message}" if Exception === value
       value = value.inspect unless String === value
-      value = value.gsub(/[^\n]{80}/, "\\0\n").lines.map { |l| "\n    #{l}" }.join.gsub(/\n+/, "\n")
-      (key.to_s + ": ").ljust(12) + value
+      value.gsub!(/"Basic .+"|(client_(?:id|secret)=)[^&\s]+/, '\1[removed]')
+      (key.to_s + ": ").ljust(20) + value
     end
   end
 
   class TokenInvalid < Error
+  end
+
+  def self.Error(conditions)
+    Module.new do
+      define_singleton_method(:===) do |exception|
+        return false unless Error === exception and not exception.info.nil?
+        conditions.all? { |k,v| v === exception.info[k]}
+      end
+    end
   end
 end

@@ -53,7 +53,7 @@ module GH
         end
 
         headers, body = YAML.load_file(file)
-        Response.new(body, headers, full_url(key))
+        Response.new(body, headers, frontend.full_url(key))
       end
 
       result = Response.new(result) unless result.is_a? Response
@@ -73,7 +73,6 @@ module GH
     private
 
     def allow_http
-      raise Faraday::Error::ResourceNotFound if ENV['CI']
       WebMock.allow_net_connect!
       yield
     ensure
