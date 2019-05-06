@@ -35,7 +35,7 @@ describe GH::Error do
   end
 
   it 'can be rescued by status code' do
-    stub_request(:get, "https://api.github.com/missing").to_return(:status => 404)
+    stub_request(:get, "https://api.github.com/missing?per_page=100").to_return(:status => 404)
 
     expect do
       begin
