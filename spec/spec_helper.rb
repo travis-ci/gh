@@ -30,6 +30,9 @@ module GH
       should_request(0, &block)
     end
 
+    def load_response_stub(name)
+      File.read(File.expand_path("../response_stubs/#{name}.json", __FILE__))
+    end
   end
 
   class MockBackend < Wrapper

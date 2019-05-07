@@ -2,10 +2,16 @@ require 'spec_helper'
 
 describe GH::Parallel do
   before do
-    stub_request(:get, "https://api.github.com/users/rkh").to_return(:status => 200, :body => '{"name": "Konstantin Haase"}')
-    stub_request(:get, "https://api.github.com/users/svenfuchs").to_return(:status => 200, :body => '{"name": "Sven Fuchs"}')
-    stub_request(:get, "https://api.github.com/users/rkh?per_page=100").to_return(:status => 200, :body => '{"name": "Konstantin Haase"}')
-    stub_request(:get, "https://api.github.com/users/svenfuchs?per_page=100").to_return(:status => 200, :body => '{"name": "Sven Fuchs"}')
+    stub_request(:get, "https://api.github.com/users/rkh").to_return(status: 200, body: '{"name": "Konstantin Haase"}')
+    stub_request(:get, "https://api.github.com/users/svenfuchs").to_return(status: 200, body: '{"name": "Sven Fuchs"}')
+    stub_request(:get, "https://api.github.com/users/rkh?per_page=100").to_return(status: 200, body: '{"name": "Konstantin Haase"}')
+    stub_request(:get, "https://api.github.com/users/svenfuchs?per_page=100").to_return(status: 200, body: '{"name": "Sven Fuchs"}')
+    stub_request(:get, "https://api.github.com/user/30442/repos?per_page=100&page=2").to_return(status: 200, body: load_response_stub('repos_2'))
+    stub_request(:get, "https://api.github.com/users/rkh/repos?per_page=100").to_return(
+      status: 200,
+      body: load_response_stub('repos'),
+      headers: { link: '<https://api.github.com/user/30442/repos?per_page=100&page=2>; rel="next", <https://api.github.com/user/30442/repos?per_page=100&page=2>; rel="last"' }
+    )
   end
 
   it 'allows normal requests' do
