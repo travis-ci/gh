@@ -8,7 +8,7 @@ describe GH::TokenCheck do
   end
 
   it 'adds client_id and client_secret to a request' do
-    subject.backend.should_receive(:http).with(:head, "/applications/foo/tokens/baz?client_id=foo&client_secret=bar", "Authorization" => "Basic Zm9vOmJhcg==") do
+    subject.backend.should_receive(:http).with(:post, "/applications/foo/token?access_token=baz", "Authorization" => "Basic Zm9vOmJhcg==") do
       error = GH::Error.new
       error.info[:response_status] = 404
       raise error
@@ -18,7 +18,7 @@ describe GH::TokenCheck do
 
   it 'does not swallow other status codes' do
     pending "test needs rewrite for newer RSpec"
-    subject.backend.should_receive(:http).with(:head, "/applications/foo/tokens/baz?client_id=foo&client_secret=bar", "Authorization" => "Basic Zm9vOmJhcg==") do
+    subject.backend.should_receive(:http).with(:post, "/applications/foo/token?access_token=baz", "Authorization" => "Basic Zm9vOmJhcg==") do
       error = GH::Error.new
       error.info[:response_status] = 500
       raise error
