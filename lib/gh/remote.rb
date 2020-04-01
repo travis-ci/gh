@@ -75,7 +75,8 @@ module GH
 
     # Internal: ...
     def http(verb, url, headers = {}, &block)
-      connection.run_request(verb, url, nil, headers, &block)
+      body = headers.delete :body
+      connection.run_request(verb, url, body, headers, &block)
     rescue Exception => error
       raise Error.new(error, nil, :verb => verb, :url => url, :headers => headers)
     end
