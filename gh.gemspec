@@ -12,6 +12,8 @@ Gem::Specification.new do |s|
   s.description = %q{multi-layer client for the github api v3}
   s.license     = "MIT"
 
+  s.required_ruby_version = '>= 2.3.0'
+
   s.files         = `git ls-files -- lib LICENSE`.split("\n")
 
   s.add_development_dependency 'rspec'
