@@ -1,5 +1,5 @@
 # GH - Layered GitHub API client
-[![Build Status](https://travis-ci.org/travis-ci/gh.svg?branch=master)](https://travis-ci.org/travis-ci/gh)
+[![Build Status](https://travis-ci.com/travis-ci/gh.svg?branch=master)](https://travis-ci.com/travis-ci/gh)
 
 This is a highly flexible, layered, low-level GitHub client library, trying to get out of your way and let you get to the GitHub data as simple as possible. Unless you add layers, you will end up with Hashes and Arrays. The approach and API should be familiar from projects like Rack or Faraday.
 
@@ -84,7 +84,7 @@ One such instance (with the standard setup) can be accessed as `GH::DefaultStack
 
 ## Scoping
 
-With the main goal to separate authentication from other logic, the `gh` library supports scopting:
+With the main goal to separate authentication from other logic, the `gh` library supports scoping:
 
 ``` ruby
 GH.with GH::LazyLoader.new do
