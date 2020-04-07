@@ -84,7 +84,7 @@ One such instance (with the standard setup) can be accessed as `GH::DefaultStack
 
 ## Scoping
 
-With the main goal to separate authentication from other logic, the `gh` library supports scopting:
+With the main goal to separate authentication from other logic, the `gh` library supports scoping:
 
 ``` ruby
 GH.with GH::LazyLoader.new do
