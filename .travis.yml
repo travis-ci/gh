@@ -1,13 +1,17 @@
 language: ruby
-sudo: required
-dist: trusty
+dist: bionic
 rvm:
-  - 2.3.3
-  - 2.4.0
-  - jruby-9.1.5.0
+  - 2.3.8
+  - 2.4.10
+  - 2.5.8
+  - 2.6.6
+  - 2.7.0
+  - jruby-9.1
+  - jruby-9.2
   - jruby-head
 before_install:
   - gem update bundler
 matrix:
   allow_failures:
+    - rvm: 2.7.0
     - rvm: jruby-head
