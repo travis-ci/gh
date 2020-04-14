@@ -99,7 +99,7 @@ module GH
       when /^repos?_(.*)$/              then "repository_#{$1}"
       when /^(.*)_repo$/                then "#{$1}_repository"
       when /^(.*)_repos$/               then "#{$1}_repositories"
-      when 'commit', 'commit_id', 'id'  then value =~ /^\w{40}$/ ? 'sha' : key
+      when 'commit', 'commit_id', 'id'  then value.to_s =~ /^\w{40}$/ ? 'sha' : key
       when 'comments'                   then Numeric === value ? 'comment_count'    : key
       when 'forks'                      then Numeric === value ? 'fork_count'       : key
       when 'repositories'               then Numeric === value ? 'repository_count' : key
