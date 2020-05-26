@@ -41,7 +41,7 @@ module GH
     end
 
     def pull_request_refs(hash)
-      link = git_url_for(hash, 'refs/pull/\1')
+      link = git_url_for(hash, 'matching-refs/pull/\1/merge')
       commits = self[link].map do |data|
         ref = data['ref']
         name = ref.split('/').last + "_commit"
