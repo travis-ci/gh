@@ -1,5 +1,6 @@
 require 'gh'
 require 'faraday'
+require 'active_support/core_ext/string'
 
 module GH
   # Public: This class deals with HTTP requests to Github. It is the base Wrapper you always want to use.
@@ -50,6 +51,7 @@ module GH
         if defined? FaradayMiddleware::Instrumentation
           builder.use :instrumentation
         end
+        builder.response(:logger, nil, formatter: GH.const_get(options[:formatter].camelize)) if options[:formatter]
         builder.adapter(:net_http)
       end
     end

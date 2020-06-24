@@ -16,6 +16,7 @@ module GH
   autoload :Parallel,         'gh/parallel'
   autoload :Remote,           'gh/remote'
   autoload :Response,         'gh/response'
+  autoload :ResponseXHeaderFormatter, 'gh/response_x_header_formatter'
   autoload :ResponseWrapper,  'gh/response_wrapper'
   autoload :Stack,            'gh/stack'
   autoload :TokenCheck,       'gh/token_check'
