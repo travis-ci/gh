@@ -21,9 +21,9 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency 'faraday',     '~> 1.0'
   s.add_runtime_dependency 'faraday_middleware', '~> 1.0'
-  s.add_runtime_dependency 'activesupport', '>= 5', '< 6.1'
+  s.add_runtime_dependency 'activesupport', '>= 5', '< 6.2'
   s.add_runtime_dependency 'multi_json',  '~> 1.0'
-  s.add_runtime_dependency 'addressable', '~> 2.4'
+  s.add_runtime_dependency 'addressable', '~> 2.8'
   s.add_runtime_dependency 'net-http-persistent', '~> 2.9'
   s.add_runtime_dependency 'net-http-pipeline'
 end
