@@ -14,21 +14,22 @@ module GH
 
     def modify_hash(hash)
       setup_lazy_loading(super)
-    rescue Exception => error
-      raise Error.new(error, hash)
+    rescue => e
+      raise Error.new(e, hash)
     end
 
     private
 
     def lazy_load(hash, key)
-      return unless key =~ /^(merge|head|base)_commit$/ and hash.include? 'mergeable'
-      return unless has_merge_commit?(hash)
+      return unless key =~ (/^(merge|head|base)_commit$/) && hash.include?('mergeable')
+      return unless merge_commit?(hash)
+
       fields = pull_request_refs(hash)
       fields['base_commit'] ||= commit_for hash, hash['base']
       fields['head_commit'] ||= commit_for hash, hash['head']
       fields
-    rescue Exception => error
-      raise Error.new(error, hash)
+    rescue => e
+      raise Error.new(e, hash)
     end
 
     def commit_for(from, hash)
@@ -44,14 +45,14 @@ module GH
       link = git_url_for(hash, 'refs/pull/\1')
       commits = self[link].map do |data|
         ref = data['ref']
-        name = ref.split('/').last + "_commit"
+        name = "#{ref.split('/').last}_commit"
         object = data['object'].merge 'ref' => ref
         [name, object]
       end
-      Hash[commits]
+      commits.to_h
     end
 
-    def has_merge_commit?(hash)
+    def merge_commit?(hash)
       force_merge_commit(hash)
       hash['mergeable']
     end
@@ -61,7 +62,7 @@ module GH
       when 'checking' then false
       when 'unknown' then hash['merged']
       when 'clean', 'dirty', 'unstable', 'stable', 'blocked', 'behind', 'has_hooks', 'draft' then true
-      else fail "unknown mergeable_state #{hash['mergeable_state'].inspect} for #{url(hash)}"
+      else raise "unknown mergeable_state #{hash['mergeable_state'].inspect} for #{url(hash)}"
       end
     end
 

@@ -4,11 +4,14 @@ module GH
       include Enumerable
 
       def initialize(page, url, gh)
-        @page, @next_url, @gh = page, url, gh
+        @page = page
+        @next_url = url
+        @gh = gh
       end
 
       def each(&block)
         return enum_for(:each) unless block
+
         @page.each(&block)
         next_page.each(&block)
       end
@@ -20,6 +23,7 @@ module GH
       def [](value)
         raise TypeError, "index has to be an Integer, got #{value.class}" unless value.is_a? Integer
         return @page[value] if value < @page.size
+
         next_page[value - @page.size]
       end
 
@@ -50,8 +54,9 @@ module GH
     end
 
     def modify_response(response)
-      return response unless response.respond_to? :to_ary and response.headers['link'] =~ /<([^>]+)>;\s*rel=\"next\"/
-      Paginated.new(response, $1, self)
+      return response unless response.respond_to?(:to_ary) && response.headers['link'] =~ (/<([^>]+)>;\s*rel="next"/)
+
+      Paginated.new(response, ::Regexp.last_match(1), self)
     end
   end
 end

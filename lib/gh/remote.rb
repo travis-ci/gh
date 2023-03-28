@@ -26,31 +26,29 @@ module GH
       api_host = api_host.api_host if api_host.respond_to? :api_host
       @api_host = Addressable::URI.parse(api_host)
       @headers = {
-        "User-Agent" => options[:user_agent] || "GH/#{GH::VERSION}",
-        "Accept" => options[:accept] || "application/vnd.github.v3+json",
-        "Accept-Charset" => "utf-8",
+        'User-Agent' => options[:user_agent] || "GH/#{GH::VERSION}",
+        'Accept' => options[:accept] || 'application/vnd.github.v3+json',
+        'Accept-Charset' => 'utf-8'
       }
 
       @headers.merge! options[:headers] if options[:headers]
       @headers['Origin'] = options[:origin] if options[:origin]
 
-      @prefix = ""
+      @prefix = ''
       @prefix << "#{token}@" if token
-      @prefix << "#{username}:#{password}@" if username and password
+      @prefix << "#{username}:#{password}@" if username && password
       @prefix << @api_host.host
 
-      faraday_options = { :url => api_host }
+      faraday_options = { url: api_host }
       faraday_options[:ssl] = options[:ssl] if options[:ssl]
       faraday_options.merge! options[:faraday_options] if options[:faraday_options]
 
       @connection = Faraday.new(faraday_options) do |builder|
         builder.request(:authorization, :token, token) if token
-        builder.request(:basic_auth, username, password) if username and password
+        builder.request(:basic_auth, username, password) if username && password
         builder.request(:retry)
         builder.response(:raise_error)
-        if defined? FaradayMiddleware::Instrumentation
-          builder.use :instrumentation
-        end
+        builder.use :instrumentation if defined? FaradayMiddleware::Instrumentation
         builder.response(:logger, nil, formatter: GH.const_get(options[:formatter].camelize)) if options[:formatter]
         builder.adapter(:net_http)
       end
@@ -68,8 +66,9 @@ module GH
 
     # Internal: ...
     def generate_response(key, response)
-      body, headers = response.body, response.headers
-      url = response.env[:url] if response.respond_to? :env and response.env
+      body = response.body
+      headers = response.headers
+      url = response.env[:url] if response.respond_to?(:env) && response.env
       url = response.url if response.respond_to?(:url)
       url = frontend.full_url(key) if url.to_s.empty?
       modify(body, headers, url)
@@ -79,8 +78,8 @@ module GH
     def http(verb, url, headers = {}, &block)
       body = headers.delete :body
       connection.run_request(verb, url, body, headers, &block)
-    rescue Exception => error
-      raise Error.new(error, nil, :verb => verb, :url => url, :headers => headers)
+    rescue => e
+      raise Error.new(e, nil, verb: verb, url: url, headers: headers)
     end
 
     # Internal: ...
@@ -89,9 +88,9 @@ module GH
         req.body = Response.new(body).to_s if body
       end
       frontend.generate_response(key, response)
-    rescue GH::Error => error
-      error.info[:payload] = Response.new(body).to_s if body
-      raise error
+    rescue GH::Error => e
+      e.info[:payload] = Response.new(body).to_s if body
+      raise e
     end
 
     # Public: ...
@@ -120,8 +119,7 @@ module GH
     end
 
     # Public: ...
-    def reset
-    end
+    def reset; end
 
     # Public: ...
     def load(data)
@@ -130,14 +128,15 @@ module GH
 
     # Public: ...
     def in_parallel
-      raise RuntimeError, "use GH::Parallel middleware for #in_parallel support"
+      raise 'use GH::Parallel middleware for #in_parallel support'
     end
 
     def full_url(key)
       uri = Addressable::URI.parse(key)
-      uri.path = File.join(api_host.path, uri.path) unless uri.absolute? or uri.path.start_with?(api_host.path)
+      uri.path = File.join(api_host.path, uri.path) unless uri.absolute? || uri.path.start_with?(api_host.path)
       uri = api_host + uri
       raise ArgumentError, "URI out of scope: #{key}" if uri.host != api_host.host
+
       uri
     end
 
@@ -153,6 +152,7 @@ module GH
 
     def modify(body, headers = {}, url = nil)
       return body if body.is_a? Response
+
       Response.new(body, headers, url)
     end
   end

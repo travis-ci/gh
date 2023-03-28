@@ -1,5 +1,4 @@
 require 'gh'
-require 'thread'
 
 module GH
   # Public: This class caches responses.
@@ -13,19 +12,32 @@ module GH
       #
       # size - Number of objects to hold in cache.
       def initialize(size = 2048)
-        @old, @new, @size, @mutex = {}, {}, size / 2, Mutex.new
+        @old = {}
+        @new = {}
+        @size = size / 2
+        @mutex = Mutex.new
       end
 
       # Internal: Tries to fetch a value from the cache and if it doesn't exist, generates it from the
       # block given.
       def fetch(key)
-        @mutex.synchronize { @old, @new = @new, {} if @new.size > @size } if @new.size > @size
+        if @new.size > @size
+          @mutex.synchronize do
+            if @new.size > @size
+              @old = @new
+              @new = {}
+            end
+          end
+        end
         @new[key] ||= @old[key] || yield
       end
 
       # Internal: ...
       def clear
-        @mutex.synchronize { @old, @new = {}, {} }
+        @mutex.synchronize do
+          @old = {}
+          @new = {}
+        end
       end
     end
 
@@ -51,7 +63,8 @@ module GH
 
     def clear_partial
       return false unless cache.respond_to? :delete_matched
-      pattern = "^" << Regexp.escape(prefixed(""))
+
+      pattern = '^' << Regexp.escape(prefixed(''))
       cache.delete_matched Regexp.new(pattern)
       true
     rescue NotImplementedError

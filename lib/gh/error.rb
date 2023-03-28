@@ -5,26 +5,28 @@ module GH
     attr_reader :info
 
     def initialize(error = nil, payload = nil, info = {})
-      info = info.merge(error.info) if error.respond_to? :info and Hash === error.info
-      error = error.error while error.respond_to? :error
-      @info = info.merge(:error => error, :payload => payload)
+      super(error)
 
-      if error
-        set_backtrace error.backtrace if error.respond_to? :backtrace
-        if error.respond_to? :response and error.response
-          case response = error.response
-          when Hash
-            @info[:response_status] = response[:status]
-            @info[:response_headers] = response[:headers]
-            @info[:response_body] = response[:body]
-          when Faraday::Response
-            @info[:response_status] = response.status
-            @info[:response_headers] = response.headers
-            @info[:response_body] = response.body
-          else
-            @info[:response] = response
-          end
-        end
+      info = info.merge(error.info) if error.respond_to?(:info) && error.info.is_a?(Hash)
+      error = error.error while error.respond_to? :error
+      @info = info.merge(error: error, payload: payload)
+
+      return unless error
+
+      set_backtrace error.backtrace if error.respond_to? :backtrace
+      return unless error.respond_to?(:response) && error.response
+
+      case response = error.response
+      when Hash
+        @info[:response_status] = response[:status]
+        @info[:response_headers] = response[:headers]
+        @info[:response_body] = response[:body]
+      when Faraday::Response
+        @info[:response_status] = response.status
+        @info[:response_headers] = response.headers
+        @info[:response_body] = response.body
+      else
+        @info[:response] = response
       end
     end
 
@@ -37,16 +39,16 @@ module GH
     end
 
     def message
-      "GH request failed\n" + info.map { |k, v| entry(k, v) }.join("\n")
+      (['GH request failed'] + info.map { |k, v| entry(k, v) }).join("\n")
     end
 
     private
 
     def entry(key, value)
-      value = "#{value.class}: #{value.message}" if Exception === value
-      value = value.inspect unless String === value
+      value = "#{value.class}: #{value.message}" if value.is_a?(Exception)
+      value = value.inspect unless value.is_a?(String)
       value.gsub!(/"Basic .+"|(client_(?:id|secret)=)[^&\s]+/, '\1[removed]')
-      (key.to_s + ": ").ljust(20) + value
+      "#{key}: ".ljust(20) + value
     end
   end
 
@@ -56,8 +58,11 @@ module GH
   def self.Error(conditions)
     Module.new do
       define_singleton_method(:===) do |exception|
-        return false unless Error === exception and not exception.info.nil?
+        return false unless exception.is_a?(Error) && !exception.info.nil?
+
+        # rubocop:disable Style/CaseEquality
         conditions.all? { |k, v| v === exception.info[k] }
+        # rubocop:enable Style/CaseEquality
       end
     end
   end

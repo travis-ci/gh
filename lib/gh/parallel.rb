@@ -1,5 +1,4 @@
 require 'gh'
-require 'thread'
 require 'backports/basic_object' unless defined? BasicObject
 
 module GH
@@ -11,8 +10,12 @@ module GH
       attr_accessor :__delegate__
 
       def method_missing(*args)
-        ::Kernel.raise ::RuntimeError, "response not yet loaded" if __delegate__.nil?
+        ::Kernel.raise ::RuntimeError, 'response not yet loaded' if __delegate__.nil?
         __delegate__.__send__(*args)
+      end
+
+      def respond_to_missing?(method, *)
+        super
       end
     end
 
@@ -26,14 +29,17 @@ module GH
 
     def generate_response(key, response)
       return super unless in_parallel?
+
       dummy = Dummy.new
       @mutex.synchronize { @queue << [dummy, key, response] }
       dummy
     end
 
     def in_parallel
-      return yield if in_parallel? or not @parallelize
-      was, @in_parallel = @in_parallel, true
+      return yield if in_parallel? || !@parallelize
+
+      was = @in_parallel
+      @in_parallel = true
       result = nil
       connection.in_parallel { result = yield }
       @mutex.synchronize do
@@ -51,10 +57,10 @@ module GH
 
     def connection
       @connection ||= begin
-                        layer = backend
-                        layer = layer.backend until layer.respond_to? :connection
-                        layer.connection
-                      end
+        layer = backend
+        layer = layer.backend until layer.respond_to? :connection
+        layer.connection
+      end
     end
   end
 end

@@ -8,13 +8,13 @@ module GH
 
     def modify_hash(hash, loaded = false)
       hash = super(hash)
-      link = hash['_links']['self'] unless loaded or hash['_links'].nil?
+      link = hash['_links']['self'] unless loaded || hash['_links'].nil?
       set_links hash, Addressable::URI.parse(link['href']) if link
       hash
     end
 
     def add(hash, link, name, path = name)
-      hash["_links"][name] ||= { "href" => nested(link, path) }
+      hash['_links'][name] ||= { 'href' => nested(link, path) }
     end
 
     def nested(link, path)

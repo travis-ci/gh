@@ -14,13 +14,15 @@ module GH
     end
 
     def check_token
-      return unless @check_token and client_id and client_secret and token
+      return unless @check_token && client_id && client_secret && token
+
       @check_token = false
 
-      auth_header = "Basic %s" % Base64.encode64("#{client_id}:#{client_secret}").gsub("\n", "")
-      http :post, path_for("/applications/#{client_id}/token"), :body => "{\"access_token\": \"#{token}\"}", "Authorization" => auth_header
-    rescue GH::Error(:response_status => 404) => error
-      raise GH::TokenInvalid, error
+      auth_header = 'Basic %s' % Base64.strict_encode64("#{client_id}:#{client_secret}")
+      http :post, path_for("/applications/#{client_id}/token"), body: "{\"access_token\": \"#{token}\"}",
+                                                                'Authorization' => auth_header
+    rescue GH::Error(response_status: 404) => e
+      raise GH::TokenInvalid, e
     end
 
     def http(*)

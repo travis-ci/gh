@@ -23,14 +23,16 @@ module GH
   autoload :Wrapper, 'gh/wrapper'
 
   def self.with(backend)
-    if Hash === backend
+    if backend.is_a?(Hash)
       @options ||= {}
-      @options, options = @options.merge(backend), @options
+      options = @options
+      @options = @options.merge(backend)
       backend = DefaultStack.build(@options)
     end
 
     if block_given?
-      was, self.current = current, backend
+      was = current
+      self.current = backend
       yield
     else
       backend
@@ -54,10 +56,15 @@ module GH
   end
 
   extend SingleForwardable
-  def_delegators :current, :api_host, :[], :reset, :load, :post, :delete, :patch, :put, :in_parallel, :in_parallel?, :options, :head
+  def_delegators :current, :api_host, :[], :reset, :load, :post, :delete, :patch, :put, :in_parallel, :in_parallel?,
+                 :options, :head
 
   def self.method_missing(*args, &block)
     current.public_send(*args, &block)
+  end
+
+  def self.respond_to_missing?(method, *)
+    super
   end
 
   DefaultStack = Stack.new do

@@ -13,24 +13,25 @@ module GH
     end
 
     def http(verb, url, *)
-      instrument(:http, :verb => verb, :url => url) { super }
+      instrument(:http, verb: verb, url: url) { super }
     end
 
     def load(data)
-      instrument(:load, :data => data) { super }
+      instrument(:load, data: data) { super }
     end
 
     def [](key)
-      instrument(:access, :key => key) { super }
+      instrument(:access, key: key) { super }
     end
 
     private
 
     def instrument(type, payload = {})
       return yield unless instrumenter
+
       result = nil
-      instrumenter.call("#{type}.gh", payload.merge(:gh => frontend)) { result = yield }
-      return result
+      instrumenter.call("#{type}.gh", payload.merge(gh: frontend)) { result = yield }
+      result
     end
   end
 end

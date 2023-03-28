@@ -4,11 +4,11 @@ module GH
     double_dispatch
 
     def modify_hash(hash)
-      hash = super
+      hash = super(hash)
       setup_lazy_loading(hash) if hash['_links']
       hash
-    rescue Exception => error
-      raise Error.new(error, hash)
+    rescue => e
+      raise Error.new(e, hash)
     end
 
     private
@@ -16,8 +16,8 @@ module GH
     def lazy_load(hash, key)
       link = hash['_links'][key]
       { key => self[link['href']] } if link
-    rescue Exception => error
-      raise Error.new(error, hash)
+    rescue => e
+      raise Error.new(e, hash)
     end
   end
 end

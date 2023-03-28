@@ -6,7 +6,8 @@ module GH
   #
   # Delegates safe methods to the parsed body (expected to be an Array or Hash).
   class Response
-    include GH::Case, Enumerable
+    include Enumerable
+    include GH::Case
     attr_accessor :headers, :data, :body, :url
 
     # subset of safe methods that both Array and Hash implement
@@ -18,9 +19,9 @@ module GH
     #
     # headers - HTTP headers as a Hash
     # body    - HTTP body as a String
-    def initialize(body = "{}", headers = {}, url = nil)
+    def initialize(body = '{}', headers = {}, url = nil)
       @url = url
-      @headers = Hash[headers.map { |k, v| [k.downcase, v] }]
+      @headers = headers.map { |k, v| [k.downcase, v] }.to_h
 
       case body
       when nil, '' then @data = {}
@@ -30,11 +31,11 @@ module GH
       else raise ArgumentError, "cannot parse #{body.inspect}"
       end
 
-      @body.force_encoding("utf-8") if @body.respond_to? :force_encoding
+      @body.force_encoding('utf-8') if @body.respond_to? :force_encoding
       @body ||= MultiJson.encode(@data)
       @data ||= MultiJson.decode(@body)
-    rescue EncodingError => error
-      fail "Invalid encoding in #{url.to_s}, please contact github."
+    rescue EncodingError
+      raise "Invalid encoding in #{url}, please contact github."
     end
 
     # Public: Duplicates the instance. Will also duplicate some instance variables to behave as expected.
@@ -51,19 +52,22 @@ module GH
 
     # Public: Returns true or false indicating whether it supports method.
     def respond_to?(method, *)
-      return super unless method.to_s == "to_hash" or method.to_s == "to_ary"
+      return super unless (method.to_s == 'to_hash') || (method.to_s == 'to_ary')
+
       data.respond_to? method
     end
 
     # Public: Implements to_hash conventions, please check respond_to?(:to_hash).
     def to_hash
       return method_missing(__method__) unless respond_to? __method__
+
       @data.dup.to_hash
     end
 
     # Public: Implements to_ary conventions, please check respond_to?(:to_hash).
     def to_ary
       return method_missing(__method__) unless respond_to? __method__
+
       @data.dup.to_ary
     end
 
@@ -80,7 +84,9 @@ module GH
     protected
 
     def dup_ivars
-      @headers, @data, @body = @headers.dup, @data.dup, @body.dup
+      @headers = @headers.dup
+      @data = @data.dup
+      @body = @body.dup
       self
     end
 

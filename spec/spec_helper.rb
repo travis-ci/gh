@@ -1,14 +1,30 @@
-require 'gh'
-require 'webmock/rspec'
 require 'yaml'
 require 'fileutils'
+require 'webmock/rspec'
+require 'simplecov'
+require 'simplecov-console'
 
-RUBY_ENGINE = 'ruby' unless defined? RUBY_ENGINE
+require 'gh'
+
+RUBY_ENGINE = 'ruby'.freeze unless defined? RUBY_ENGINE
+
+SimpleCov.formatters = SimpleCov::Formatter::MultiFormatter.new(
+  [
+    SimpleCov::Formatter::Console,
+    SimpleCov::Formatter::HTMLFormatter
+  ]
+)
+
+# Code Coverage check
+SimpleCov.start do
+  add_filter 'spec'
+end
 
 module GH
   module TestHelpers
     def backend(layer = subject)
-      return layer if layer.backend.nil? or layer.is_a? MockBackend
+      return layer if layer.backend.nil? || layer.is_a?(MockBackend)
+
       backend layer.backend
     end
 
@@ -20,14 +36,14 @@ module GH
       backend.data
     end
 
-    def should_request(num = 1, &block)
+    def expect_to_request(num = 1)
       was = requests.count
       yield
-      (requests.count - was).should be == num
+      expect(requests.count - was).to eql(num)
     end
 
-    def should_not_request(&block)
-      should_request(0, &block)
+    def expect_not_to_request(&block)
+      expect_to_request(0, &block)
     end
 
     def load_response_stub(name)
@@ -39,7 +55,8 @@ module GH
     attr_accessor :data, :requests
 
     def setup(*)
-      @data, @requests = {}, []
+      @data = {}
+      @requests = []
       super
     end
 
@@ -49,22 +66,22 @@ module GH
       file = File.expand_path("../payloads/#{key_fn}.yml", __FILE__)
       @requests << key
       result = @data[key] ||= begin
-                                unless File.exist? file
-                                  res = allow_http { super }
-                                  FileUtils.mkdir_p File.dirname(file)
-                                  File.write file, [res.headers, res.body].to_yaml
-                                end
+        unless File.exist? file
+          res = allow_http { super }
+          FileUtils.mkdir_p File.dirname(file)
+          File.write file, [res.headers, res.body].to_yaml
+        end
 
-                                headers, body = YAML.load_file(file)
-                                Response.new(body, headers, frontend.full_url(key))
-                              end
+        headers, body = YAML.load_file(file)
+        Response.new(body, headers, frontend.full_url(key))
+      end
 
       result = Response.new(result) unless result.is_a? Response
       result
     end
 
     def sanitize_filename(name)
-      name.gsub(/[\?=&]/, "_")
+      name.gsub(/[?=&]/, '_')
     end
 
     def reset

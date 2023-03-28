@@ -1,32 +1,34 @@
 require 'spec_helper'
 
 describe GH::Pagination do
-  before { subject.backend = GH::MockBackend.new }
+  subject(:pagination) { described_class.new }
+
+  before { pagination.backend = GH::MockBackend.new }
 
   it 'paginates' do
-    counter = subject['users/rkh/repos'].map { 1 }.reduce(:+) # map/reduce!
-    counter.should be > 120
+    counter = pagination['users/rkh/repos'].sum { 1 } # map/reduce!
+    expect(counter).to be > 120
   end
 
   it 'paginates with GH::Normalizer' do
-    subject.backend = GH::Normalizer.new subject.backend
-    counter = subject['users/rkh/repos'].map { 1 }.reduce(:+) # map/reduce!
-    counter.should be > 120
+    pagination.backend = GH::Normalizer.new pagination.backend
+    counter = pagination['users/rkh/repos'].sum { 1 } # map/reduce!
+    expect(counter).to be > 120
   end
 
   it 'paginates on default stack' do
-    counter = GH['users/rkh/repos'].map { 1 }.reduce(:+) # map/reduce!
-    counter.should be > 120
+    counter = GH['users/rkh/repos'].sum { 1 } # map/reduce!
+    expect(counter).to be > 120
   end
 
   it 'gives random access' do
-    data = subject['users/rkh/repos']
+    data = pagination['users/rkh/repos']
     data.each_with_index do |value, index|
-      data[index].should be == value
+      expect(data[index]).to eql(value)
     end
   end
 
   it 'does not wrap hash responses' do
-    subject['users/rkh'].should_not be_a(GH::Pagination::Paginated)
+    expect(pagination['users/rkh']).not_to be_a(GH::Pagination::Paginated)
   end
 end

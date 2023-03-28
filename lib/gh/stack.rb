@@ -27,8 +27,9 @@ module GH
     # options - Hash of options that will be passed to all layers upon initialization.
     #
     # Can be used for easly stacking layers.
-    def initialize(options = {}, &block)
-      @options, @stack = {}, []
+    def initialize(_options = {}, &block)
+      @options = {}
+      @stack = []
       instance_eval(&block) if block
     end
 
@@ -56,6 +57,6 @@ module GH
       @stack.map! { |klass, options| [old_class == klass ? new_class : klass, options] }
     end
 
-    alias_method :new, :build
+    alias new build
   end
 end

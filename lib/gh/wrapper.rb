@@ -69,6 +69,10 @@ module GH
     # Public: ...
     def_delegator :backend, :path_for
 
+    def self.double_dispatch
+      define_method(:modify) { |data| double_dispatch(data) }
+    end
+
     # Public: Retrieves resources from Github.
     def self.[](key)
       new[key]
@@ -111,9 +115,7 @@ module GH
     end
 
     # Internal: ...
-    def frontend=(value)
-      @frontend = value
-    end
+    attr_writer :frontend
 
     # Internal: ...
     def frontend
@@ -127,12 +129,12 @@ module GH
 
     # Internal: ...
     def prefixed(key)
-      prefix + "#" + identifier(key)
+      "#{prefix}##{identifier(key)}"
     end
 
     # Public: ...
     def reset
-      backend.reset if backend
+      backend&.reset
     end
 
     # Public: ...
@@ -150,10 +152,6 @@ module GH
       self.class.name
     end
 
-    def self.double_dispatch
-      define_method(:modify) { |data| double_dispatch(data) }
-    end
-
     def double_dispatch(data)
       case data
       when respond_to(:to_gh) then modify_response(data)
@@ -163,8 +161,8 @@ module GH
       when respond_to(:to_int) then modify_integer(data)
       else modify_unknown data
       end
-    rescue Exception => error
-      raise Error.new(error, data)
+    rescue => e
+      raise Error.new(e, data)
     end
 
     def modify_response(response)
@@ -174,15 +172,15 @@ module GH
 
     def modify(data, *)
       data
-    rescue Exception => error
-      raise Error.new(error, data)
+    rescue => e
+      raise Error.new(e, data)
     end
 
     def modify_array(array)
       array.map { |e| modify(e) }
     end
 
-    def modify_hash(hash, &block)
+    def modify_hash(hash)
       corrected = {}
       hash.each_pair { |k, v| corrected[k] = modify(v) }
       corrected.default_proc = hash.default_proc if hash.default_proc
@@ -194,11 +192,14 @@ module GH
     alias modify_unknown modify
 
     def setup(backend, options)
-      self.backend = Wrapper === backend ? backend : self.class.wraps.new(backend, options)
+      self.backend = backend.is_a?(Wrapper) ? backend : self.class.wraps.new(backend, options)
     end
 
     def normalize_options(backend, options)
-      backend, options = nil, backend if Hash === backend
+      if backend.is_a?(Hash)
+        options = backend
+        backend = nil
+      end
       options ||= {}
       backend ||= options[:backend] || options[:api_url] || 'https://api.github.com'
       [backend, options]
@@ -206,21 +207,22 @@ module GH
 
     def setup_default_proc(hash, &block)
       old_proc = hash.default_proc
-      hash.default_proc = proc do |hash, key|
-        value = old_proc.call(hash, key) if old_proc
-        value = block[hash, key] if value.nil?
+      hash.default_proc = proc do |h, key|
+        value = old_proc.call(h, key) if old_proc
+        value = block[h, key] if value.nil?
         value
       end
     end
 
     def setup_lazy_loading(hash, *args)
       loaded = false
-      setup_default_proc hash do |hash, key|
+      setup_default_proc(hash) do |h, key|
         next if loaded
-        fields = lazy_load(hash, key, *args)
+
+        fields = lazy_load(h, key, *args)
         if fields
-          modify_hash fields
-          hash.merge! fields
+          modify_hash(fields)
+          h.merge!(fields)
           loaded = true
           fields[key]
         end
