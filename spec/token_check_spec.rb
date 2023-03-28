@@ -11,8 +11,8 @@ describe GH::TokenCheck do
 
   it 'adds client_id and client_secret to a request' do
     allow(token_check.backend).to receive(:http).with(:post, '/applications/foo/token',
-                                                      body: '{"access_token": "baz"}',
-                                                      'Authorization' => 'Basic Zm9vOmJhcg==') do
+                                                      { body: '{"access_token": "baz"}',
+                                                        'Authorization' => 'Basic Zm9vOmJhcg==' }) do
       error = GH::Error.new
       error.info[:response_status] = 404
       raise error
@@ -25,8 +25,8 @@ describe GH::TokenCheck do
 
   it 'does not swallow other status codes' do
     allow(token_check.backend).to receive(:http).with(:post, '/applications/foo/token',
-                                                      body: '{"access_token": "baz"}',
-                                                      'Authorization' => 'Basic Zm9vOmJhcg==') do
+                                                      { body: '{"access_token": "baz"}',
+                                                        'Authorization' => 'Basic Zm9vOmJhcg==' }) do
       error = GH::Error.new
       error.info[:response_status] = 500
       raise error

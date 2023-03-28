@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.files                 = Dir['lib/**/*', 'LICENSE']
   s.require_path          = 'lib'
 
-  s.required_ruby_version = '>= 2.4', '< 3'
+  s.required_ruby_version = '>= 2.4', '< 3.3'
 
   s.add_runtime_dependency 'faraday', '~> 1.0'
   s.add_runtime_dependency 'faraday_middleware', '~> 1.0'
