@@ -2,9 +2,9 @@ require 'spec_helper'
 
 describe GH::TokenCheck do
   before do
-    subject.client_id     = 'foo'
+    subject.client_id = 'foo'
     subject.client_secret = 'bar'
-    subject.token         = 'baz'
+    subject.token = 'baz'
   end
 
   it 'adds client_id and client_secret to a request' do

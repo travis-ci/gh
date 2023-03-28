@@ -6,7 +6,7 @@ module GH
     end
 
     def response(env)
-      info('Response') { env.response_headers.select {|k,v| k =~ /^x-/}.sort.to_h }
+      info('Response') { env.response_headers.select { |k, v| k =~ /^x-/ }.sort.to_h }
     end
   end
 end

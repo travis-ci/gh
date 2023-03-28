@@ -5,24 +5,24 @@ module GH
     attr_reader :info
 
     def initialize(error = nil, payload = nil, info = {})
-      info   = info.merge(error.info) if error.respond_to? :info and Hash === error.info
-      error  = error.error while error.respond_to? :error
-      @info  = info.merge(:error => error, :payload => payload)
+      info = info.merge(error.info) if error.respond_to? :info and Hash === error.info
+      error = error.error while error.respond_to? :error
+      @info = info.merge(:error => error, :payload => payload)
 
       if error
         set_backtrace error.backtrace if error.respond_to? :backtrace
         if error.respond_to? :response and error.response
           case response = error.response
           when Hash
-            @info[:response_status]  = response[:status]
+            @info[:response_status] = response[:status]
             @info[:response_headers] = response[:headers]
-            @info[:response_body]    = response[:body]
+            @info[:response_body] = response[:body]
           when Faraday::Response
-            @info[:response_status]  = response.status
+            @info[:response_status] = response.status
             @info[:response_headers] = response.headers
-            @info[:response_body]    = response.body
+            @info[:response_body] = response.body
           else
-            @info[:response]         = response
+            @info[:response] = response
           end
         end
       end
@@ -37,7 +37,7 @@ module GH
     end
 
     def message
-      "GH request failed\n" + info.map { |k,v| entry(k,v) }.join("\n")
+      "GH request failed\n" + info.map { |k, v| entry(k, v) }.join("\n")
     end
 
     private
@@ -57,7 +57,7 @@ module GH
     Module.new do
       define_singleton_method(:===) do |exception|
         return false unless Error === exception and not exception.info.nil?
-        conditions.all? { |k,v| v === exception.info[k]}
+        conditions.all? { |k, v| v === exception.info[k] }
       end
     end
   end

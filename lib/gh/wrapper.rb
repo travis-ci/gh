@@ -156,11 +156,11 @@ module GH
 
     def double_dispatch(data)
       case data
-      when respond_to(:to_gh)   then modify_response(data)
+      when respond_to(:to_gh) then modify_response(data)
       when respond_to(:to_hash) then modify_hash(data)
-      when respond_to(:to_ary)  then modify_array(data)
-      when respond_to(:to_str)  then modify_string(data)
-      when respond_to(:to_int)  then modify_integer(data)
+      when respond_to(:to_ary) then modify_array(data)
+      when respond_to(:to_str) then modify_string(data)
+      when respond_to(:to_int) then modify_integer(data)
       else modify_unknown data
       end
     rescue Exception => error
@@ -184,14 +184,14 @@ module GH
 
     def modify_hash(hash, &block)
       corrected = {}
-      hash.each_pair { |k,v| corrected[k] = modify(v) }
+      hash.each_pair { |k, v| corrected[k] = modify(v) }
       corrected.default_proc = hash.default_proc if hash.default_proc
       corrected
     end
 
-    alias modify_string   modify
-    alias modify_integer  modify
-    alias modify_unknown  modify
+    alias modify_string modify
+    alias modify_integer modify
+    alias modify_unknown modify
 
     def setup(backend, options)
       self.backend = Wrapper === backend ? backend : self.class.wraps.new(backend, options)

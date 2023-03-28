@@ -20,11 +20,11 @@ module GH
     end
 
     def set_link(hash, type, href)
-      links(hash)[type] = {"href" => href}
+      links(hash)[type] = { "href" => href }
     end
 
     def modify_response(response)
-      response      = response.dup
+      response = response.dup
       response.data = modify response.data
       response
     end
@@ -44,7 +44,7 @@ module GH
       corrected
     end
 
-    TIME_KEYS    = %w[date timestamp committed_at created_at merged_at closed_at datetime time]
+    TIME_KEYS = %w[date timestamp committed_at created_at merged_at closed_at datetime time]
     TIME_PATTERN = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\S*$/
 
     def modify_time(hash, key, value)
@@ -58,11 +58,11 @@ module GH
     end
 
     def modify_user(hash)
-      hash['owner']  ||= hash.delete('user') if hash['created_at']   and hash['user']
+      hash['owner'] ||= hash.delete('user') if hash['created_at'] and hash['user']
       hash['author'] ||= hash.delete('user') if hash['committed_at'] and hash['user']
 
-      hash['committer'] ||= hash['author']    if hash['author']
-      hash['author']    ||= hash['committer'] if hash['committer']
+      hash['committer'] ||= hash['author'] if hash['author']
+      hash['author'] ||= hash['committer'] if hash['committer']
 
       modify_user_fields hash['owner']
       modify_user_fields hash['user']
@@ -90,20 +90,20 @@ module GH
 
     def modify_key(key, value = nil)
       case key
-      when 'gravatar_url'               then 'avatar_url'
-      when 'org'                        then 'organization'
-      when 'orgs'                       then 'organizations'
-      when 'username'                   then 'login'
-      when 'repo'                       then 'repository'
-      when 'repos'                      then modify_key('repositories', value)
-      when /^repos?_(.*)$/              then "repository_#{$1}"
-      when /^(.*)_repo$/                then "#{$1}_repository"
-      when /^(.*)_repos$/               then "#{$1}_repositories"
-      when 'commit', 'commit_id', 'id'  then value.to_s =~ /^\w{40}$/ ? 'sha' : key
-      when 'comments'                   then Numeric === value ? 'comment_count'    : key
-      when 'forks'                      then Numeric === value ? 'fork_count'       : key
-      when 'repositories'               then Numeric === value ? 'repository_count' : key
-      when /^(.*)s_count$/              then "#{$1}_count"
+      when 'gravatar_url' then 'avatar_url'
+      when 'org' then 'organization'
+      when 'orgs' then 'organizations'
+      when 'username' then 'login'
+      when 'repo' then 'repository'
+      when 'repos' then modify_key('repositories', value)
+      when /^repos?_(.*)$/ then "repository_#{$1}"
+      when /^(.*)_repo$/ then "#{$1}_repository"
+      when /^(.*)_repos$/ then "#{$1}_repositories"
+      when 'commit', 'commit_id', 'id' then value.to_s =~ /^\w{40}$/ ? 'sha' : key
+      when 'comments' then Numeric === value ? 'comment_count' : key
+      when 'forks' then Numeric === value ? 'fork_count' : key
+      when 'repositories' then Numeric === value ? 'repository_count' : key
+      when /^(.*)s_count$/ then "#{$1}_count"
       else key
       end
     end

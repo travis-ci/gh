@@ -24,7 +24,7 @@ describe GH do
     it 'propagates options' do
       GH.with(:a => :b) do
         GH.with(:b => :c) do
-          GH.options.should be == {:a => :b, :b => :c}
+          GH.options.should be == { :a => :b, :b => :c }
         end
       end
     end

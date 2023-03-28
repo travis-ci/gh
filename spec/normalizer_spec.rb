@@ -232,13 +232,13 @@ describe GH::Normalizer do
 
   context 'links' do
     it 'does not normalize config' do
-      normalize 'config' => {'url' => 'http://localhost'}
-      normalized['config'].should be == {'url' => 'http://localhost'}
+      normalize 'config' => { 'url' => 'http://localhost' }
+      normalized['config'].should be == { 'url' => 'http://localhost' }
     end
 
     it 'generates link entries from link headers' do
       pending
-      normalize '_links' => {'href' => 'foo'}
+      normalize '_links' => { 'href' => 'foo' }
       with_headers
 
       normalized.headers.should include("Link")
@@ -284,7 +284,7 @@ describe GH::Normalizer do
       normalized['_links']['html']['href'].should be == 'http://github.com/foo'
     end
 
-    it 'detects self urls in url field'  do
+    it 'detects self urls in url field' do
       normalize 'url' => 'https://api.github.com/foo'
       normalized.should_not include('url')
       normalized.should include('_links')

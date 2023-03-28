@@ -41,10 +41,10 @@ module GH
     end
 
     def pull_request_refs(hash)
-      link     = git_url_for(hash, 'refs/pull/\1')
-      commits  = self[link].map do |data|
-        ref    = data['ref']
-        name   = ref.split('/').last + "_commit"
+      link = git_url_for(hash, 'refs/pull/\1')
+      commits = self[link].map do |data|
+        ref = data['ref']
+        name = ref.split('/').last + "_commit"
         object = data['object'].merge 'ref' => ref
         [name, object]
       end
@@ -58,8 +58,8 @@ module GH
 
     def github_done_checking?(hash)
       case hash['mergeable_state']
-      when 'checking'                                                           then false
-      when 'unknown'                                                            then hash['merged']
+      when 'checking' then false
+      when 'unknown' then hash['merged']
       when 'clean', 'dirty', 'unstable', 'stable', 'blocked', 'behind', 'has_hooks', 'draft' then true
       else fail "unknown mergeable_state #{hash['mergeable_state'].inspect} for #{url(hash)}"
       end

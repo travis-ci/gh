@@ -7,9 +7,9 @@ module GH
 
     def setup(backend, options)
       @client_secret = options[:client_secret]
-      @client_id     = options[:client_id]
-      @token         = options[:token]
-      @check_token   = true
+      @client_id = options[:client_id]
+      @token = options[:token]
+      @check_token = true
       super
     end
 

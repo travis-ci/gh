@@ -7,7 +7,7 @@ module GH
     attr_accessor :instrumenter
 
     def setup(backend, options)
-      self.instrumenter ||= Travis::EventLogger.method(:notify)              if defined? Travis::EventLogger
+      self.instrumenter ||= Travis::EventLogger.method(:notify) if defined? Travis::EventLogger
       self.instrumenter ||= ActiveSupport::Notifications.method(:instrument) if defined? ActiveSupport::Notifications
       super
     end

@@ -13,7 +13,7 @@ module GH
       #
       # size - Number of objects to hold in cache.
       def initialize(size = 2048)
-        @old, @new, @size, @mutex = {}, {}, size/2, Mutex.new
+        @old, @new, @size, @mutex = {}, {}, size / 2, Mutex.new
       end
 
       # Internal: Tries to fetch a value from the cache and if it doesn't exist, generates it from the
@@ -31,8 +31,8 @@ module GH
 
     # Internal: Initializes a new Cache instance.
     def setup(*)
-      #self.cache ||= Rails.cache if defined? Rails.cache and defined? RAILS_CACHE
-      #self.cache ||= ActiveSupport::Cache.lookup_store if defined? ActiveSupport::Cache.lookup_store
+      # self.cache ||= Rails.cache if defined? Rails.cache and defined? RAILS_CACHE
+      # self.cache ||= ActiveSupport::Cache.lookup_store if defined? ActiveSupport::Cache.lookup_store
       self.cache ||= SimpleCache.new
       super
     end

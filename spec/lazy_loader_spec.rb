@@ -56,7 +56,7 @@ describe GH::LazyLoader do
 
     should_request 1 do
       rkh['foo'].should be == 1
-      rkh['name'].should be == 'Konstantin Haase' 
+      rkh['name'].should be == 'Konstantin Haase'
       rkh['foo'].should be == 2
     end
   end

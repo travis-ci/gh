@@ -23,12 +23,12 @@ module GH
     def setup(api_host, options)
       token, username, password = options.values_at :token, :username, :password
 
-      api_host  = api_host.api_host if api_host.respond_to? :api_host
+      api_host = api_host.api_host if api_host.respond_to? :api_host
       @api_host = Addressable::URI.parse(api_host)
-      @headers  = {
-        "User-Agent"      => options[:user_agent] || "GH/#{GH::VERSION}",
-        "Accept"          => options[:accept] || "application/vnd.github.v3+json",
-        "Accept-Charset"  => "utf-8",
+      @headers = {
+        "User-Agent" => options[:user_agent] || "GH/#{GH::VERSION}",
+        "Accept" => options[:accept] || "application/vnd.github.v3+json",
+        "Accept-Charset" => "utf-8",
       }
 
       @headers.merge! options[:headers] if options[:headers]
@@ -39,13 +39,13 @@ module GH
       @prefix << "#{username}:#{password}@" if username and password
       @prefix << @api_host.host
 
-      faraday_options = {:url => api_host}
+      faraday_options = { :url => api_host }
       faraday_options[:ssl] = options[:ssl] if options[:ssl]
       faraday_options.merge! options[:faraday_options] if options[:faraday_options]
 
       @connection = Faraday.new(faraday_options) do |builder|
         builder.request(:authorization, :token, token) if token
-        builder.request(:basic_auth, username, password)  if username and password
+        builder.request(:basic_auth, username, password) if username and password
         builder.request(:retry)
         builder.response(:raise_error)
         if defined? FaradayMiddleware::Instrumentation
@@ -69,8 +69,8 @@ module GH
     # Internal: ...
     def generate_response(key, response)
       body, headers = response.body, response.headers
-      url = response.env[:url]     if response.respond_to? :env and response.env
-      url = response.url           if response.respond_to?(:url)
+      url = response.env[:url] if response.respond_to? :env and response.env
+      url = response.url if response.respond_to?(:url)
       url = frontend.full_url(key) if url.to_s.empty?
       modify(body, headers, url)
     end
@@ -134,9 +134,9 @@ module GH
     end
 
     def full_url(key)
-      uri      = Addressable::URI.parse(key)
+      uri = Addressable::URI.parse(key)
       uri.path = File.join(api_host.path, uri.path) unless uri.absolute? or uri.path.start_with?(api_host.path)
-      uri      = api_host + uri
+      uri = api_host + uri
       raise ArgumentError, "URI out of scope: #{key}" if uri.host != api_host.host
       uri
     end

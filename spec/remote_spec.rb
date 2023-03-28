@@ -7,7 +7,7 @@ describe GH::Remote do
   end
 
   it 'sets headers correctly' do
-    stub_request(:get, "https://api.github.com/foo").to_return(:headers => {'X-Foo' => 'bar'}, :body => '[]')
+    stub_request(:get, "https://api.github.com/foo").to_return(:headers => { 'X-Foo' => 'bar' }, :body => '[]')
     subject['foo'].headers['x-foo'].should be == 'bar'
   end
 
@@ -39,16 +39,16 @@ describe GH::Remote do
   end
 
   it 'loads resources from github' do
-    stub_request(:get, "https://api.github.com/foo").with(:headers => {"Accept" => "application/vnd.github.v3+json,application/json"}).to_return(:body => '["foo"]')
+    stub_request(:get, "https://api.github.com/foo").with(:headers => { "Accept" => "application/vnd.github.v3+json,application/json" }).to_return(:body => '["foo"]')
     GH::Remote.new(:accept => "application/vnd.github.v3+json,application/json")['foo'].to_s.should be == '["foo"]'
   end
 
   describe :path_for do
     subject { GH::Remote.new }
     before { subject.setup("http://localhost/api/v3", {}) }
-    example { subject.path_for("foo")                         .should be == "/api/v3/foo" }
-    example { subject.path_for("/foo")                        .should be == "/api/v3/foo" }
-    example { subject.path_for("/api/v3/foo")                 .should be == "/api/v3/foo" }
-    example { subject.path_for("http://localhost/api/v3/foo") .should be == "/api/v3/foo" }
+    example { subject.path_for("foo").should be == "/api/v3/foo" }
+    example { subject.path_for("/foo").should be == "/api/v3/foo" }
+    example { subject.path_for("/api/v3/foo").should be == "/api/v3/foo" }
+    example { subject.path_for("http://localhost/api/v3/foo").should be == "/api/v3/foo" }
   end
 end

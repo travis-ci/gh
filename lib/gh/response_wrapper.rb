@@ -3,6 +3,7 @@ require 'delegate'
 
 module GH
   ResponseWrapper = DelegateClass(Response) unless const_defined?
+
   class ResponseWrapper
     def to_gh
       self

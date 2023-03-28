@@ -3,6 +3,7 @@ require 'spec_helper'
 describe GH::Error do
   class SomeWrapper < GH::Wrapper
     double_dispatch
+
     def modify_hash(*)
       raise "foo"
     end
@@ -26,11 +27,11 @@ describe GH::Error do
   end
 
   it 'keeps the payload around' do
-    exception.payload.should be == {'foo' => 'bar'}
+    exception.payload.should be == { 'foo' => 'bar' }
   end
 
   it 'works for long content' do
-    error = GH::Error.new(nil, nil, 'foo' => 'a'*1000)
+    error = GH::Error.new(nil, nil, 'foo' => 'a' * 1000)
     expect { error.message }.not_to raise_error
   end
 
@@ -43,7 +44,6 @@ describe GH::Error do
       rescue GH::Error(:response_status => 404)
       end
     end.not_to raise_error
-
 
     expect do
       begin

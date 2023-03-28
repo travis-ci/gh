@@ -12,21 +12,21 @@ module GH
     # subset of safe methods that both Array and Hash implement
     extend Forwardable
     def_delegators(:@data, :[], :assoc, :each, :empty?, :flatten, :include?, :index, :inspect, :length,
-      :pretty_print, :pretty_print_cycle, :rassoc, :select, :size, :to_a, :values_at)
+                   :pretty_print, :pretty_print_cycle, :rassoc, :select, :size, :to_a, :values_at)
 
     # Internal: Initializes a new instance.
     #
     # headers - HTTP headers as a Hash
     # body    - HTTP body as a String
     def initialize(body = "{}", headers = {}, url = nil)
-      @url     = url
-      @headers = Hash[headers.map { |k,v| [k.downcase, v] }]
+      @url = url
+      @headers = Hash[headers.map { |k, v| [k.downcase, v] }]
 
       case body
-      when nil, ''              then @data = {}
-      when respond_to(:to_str)  then @body = body.to_str
+      when nil, '' then @data = {}
+      when respond_to(:to_str) then @body = body.to_str
       when respond_to(:to_hash) then @data = body.to_hash
-      when respond_to(:to_ary)  then @data = body.to_ary
+      when respond_to(:to_ary) then @data = body.to_ary
       else raise ArgumentError, "cannot parse #{body.inspect}"
       end
 

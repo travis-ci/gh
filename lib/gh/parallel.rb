@@ -9,6 +9,7 @@ module GH
 
     class Dummy < BasicObject
       attr_accessor :__delegate__
+
       def method_missing(*args)
         ::Kernel.raise ::RuntimeError, "response not yet loaded" if __delegate__.nil?
         __delegate__.__send__(*args)
@@ -18,8 +19,8 @@ module GH
     def setup(*)
       @parallelize = true if @parallelize.nil?
       @in_parallel = false
-      @mutex       = Mutex.new
-      @queue       = []
+      @mutex = Mutex.new
+      @queue = []
       super
     end
 
@@ -50,10 +51,10 @@ module GH
 
     def connection
       @connection ||= begin
-        layer = backend
-        layer = layer.backend until layer.respond_to? :connection
-        layer.connection
-      end
+                        layer = backend
+                        layer = layer.backend until layer.respond_to? :connection
+                        layer.connection
+                      end
     end
   end
 end

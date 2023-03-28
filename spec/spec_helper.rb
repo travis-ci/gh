@@ -48,23 +48,23 @@ module GH
       key_fn = sanitize_filename(key)
       file = File.expand_path("../payloads/#{key_fn}.yml", __FILE__)
       @requests << key
-       result = @data[key] ||= begin
-        unless File.exist? file
-          res = allow_http { super }
-          FileUtils.mkdir_p File.dirname(file)
-          File.write file, [res.headers, res.body].to_yaml
-        end
+      result = @data[key] ||= begin
+                                unless File.exist? file
+                                  res = allow_http { super }
+                                  FileUtils.mkdir_p File.dirname(file)
+                                  File.write file, [res.headers, res.body].to_yaml
+                                end
 
-        headers, body = YAML.load_file(file)
-        Response.new(body, headers, frontend.full_url(key))
-      end
+                                headers, body = YAML.load_file(file)
+                                Response.new(body, headers, frontend.full_url(key))
+                              end
 
       result = Response.new(result) unless result.is_a? Response
       result
     end
 
     def sanitize_filename(name)
-      name.gsub(/[\?=&]/,"_")
+      name.gsub(/[\?=&]/, "_")
     end
 
     def reset

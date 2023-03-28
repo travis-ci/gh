@@ -4,7 +4,7 @@ module GH
     attr_accessor :client_id, :client_secret
 
     def setup(backend, options)
-      @client_id     = options[:client_id]
+      @client_id = options[:client_id]
       @client_secret = options[:client_secret]
       super
     end
@@ -12,11 +12,11 @@ module GH
     def full_url(key)
       return super unless client_id
 
-      url    = super
+      url = super
       params = url.query_values || {}
 
       unless params.include? 'client_id'
-        params['client_id']     = client_id
+        params['client_id'] = client_id
         params['client_secret'] = client_secret
       end
 

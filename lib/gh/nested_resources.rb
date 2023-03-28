@@ -34,14 +34,14 @@ module GH
         add hash, link, 'starred'
       when %r{^/repos/[^/]+/[^/]+$}
         add hash, link, 'commits', 'git/commits'
-        add hash, link, 'refs',    'git/refs'
-        add hash, link, 'tags',    'git/tags'
+        add hash, link, 'refs', 'git/refs'
+        add hash, link, 'tags', 'git/tags'
         add hash, link, 'issues'
       when %r{^/repos/[^/]+/[^/]+/issues/\d+$}
         add hash, link, 'comments'
         add hash, link, 'events'
       when '/user'
-        add hash, link, 'gists',  '/gists'
+        add hash, link, 'gists', '/gists'
         add hash, link, 'issues', '/issues'
       end
     end
