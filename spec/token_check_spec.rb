@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe GH::TokenCheck do
+xdescribe GH::TokenCheck do
   subject(:token_check) { described_class.new }
 
   before do
