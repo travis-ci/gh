@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'gh'
 
 module GH
@@ -9,7 +11,7 @@ module GH
 
       info = info.merge(error.info) if error.respond_to?(:info) && error.info.is_a?(Hash)
       error = error.error while error.respond_to? :error
-      @info = info.merge(error: error, payload: payload)
+      @info = info.merge(error:, payload:)
 
       return unless error
 

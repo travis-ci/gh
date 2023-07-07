@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'gh/version'
 require 'backports' if RUBY_VERSION < '2.1'
 require 'forwardable'

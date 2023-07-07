@@ -1,3 +1,5 @@
+# frozen_string_literal: false
+
 require 'gh'
 require 'faraday'
 require 'faraday/retry'
@@ -80,8 +82,8 @@ module GH
     def http(verb, url, headers = {}, &block)
       body = headers.delete :body
       connection.run_request(verb, url, body, headers, &block)
-    rescue => e
-      raise Error.new(e, nil, verb: verb, url: url, headers: headers)
+    rescue StandardError => e
+      raise Error.new(e, nil, verb:, url:, headers:)
     end
 
     # Internal: ...

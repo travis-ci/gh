@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'gh'
 require 'timeout'
 
@@ -14,7 +16,7 @@ module GH
 
     def modify_hash(hash)
       setup_lazy_loading(super)
-    rescue => e
+    rescue StandardError => e
       raise Error.new(e, hash)
     end
 
@@ -28,7 +30,7 @@ module GH
       fields['base_commit'] ||= commit_for hash, hash['base']
       fields['head_commit'] ||= commit_for hash, hash['head']
       fields
-    rescue => e
+    rescue StandardError => e
       raise Error.new(e, hash)
     end
 

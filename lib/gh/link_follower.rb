@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module GH
   class LinkFollower < Wrapper
     wraps GH::Normalizer
@@ -7,7 +9,7 @@ module GH
       hash = super(hash)
       setup_lazy_loading(hash) if hash['_links']
       hash
-    rescue => e
+    rescue StandardError => e
       raise Error.new(e, hash)
     end
 
@@ -16,7 +18,7 @@ module GH
     def lazy_load(hash, key)
       link = hash['_links'][key]
       { key => self[link['href']] } if link
-    rescue => e
+    rescue StandardError => e
       raise Error.new(e, hash)
     end
   end
