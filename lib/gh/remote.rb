@@ -90,11 +90,14 @@ module GH
       frontend.generate_response(key, response)
     rescue GH::Error => e
       e.info[:payload] = Response.new(body).to_s if body
+      puts "Error from GH post is #{e}"
       raise e
     end
 
     # Public: ...
     def post(key, body)
+      puts "LETS CHECK POST DATA"
+      puts "Key is #{key} and body is #{body}"
       frontend.request(:post, key, body)
     end
 
