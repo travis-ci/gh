@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 class SomeWrapper < GH::Wrapper
@@ -10,12 +12,10 @@ end
 
 describe GH::Error do
   let(:exception) do
-    begin
-      SomeWrapper.new.load('foo' => 'bar')
-      nil
-    rescue => e
-      e
-    end
+    SomeWrapper.new.load('foo' => 'bar')
+    nil
+  rescue StandardError => e
+    e
   end
 
   it 'wraps connection' do
@@ -39,19 +39,15 @@ describe GH::Error do
     stub_request(:get, 'https://api.github.com/missing?per_page=100').to_return(status: 404)
 
     expect do
-      begin
-        GH['missing']
-      rescue GH::Error(response_status: 404) => e
-        e
-      end
+      GH['missing']
+    rescue GH::Error(response_status: 404) => e
+      e
     end.not_to raise_error
 
     expect do
-      begin
-        GH['missing']
-      rescue GH::Error(response_status: 500) => e
-        e
-      end
+      GH['missing']
+    rescue GH::Error(response_status: 500) => e
+      e
     end.to raise_error(described_class)
   end
 end

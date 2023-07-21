@@ -1,3 +1,5 @@
+# frozen_string_literal: false
+
 require 'gh'
 require 'multi_json'
 
@@ -21,7 +23,7 @@ module GH
     # body    - HTTP body as a String
     def initialize(body = '{}', headers = {}, url = nil)
       @url = url
-      @headers = headers.map { |k, v| [k.downcase, v] }.to_h
+      @headers = headers.transform_keys { |k| k.downcase }
 
       case body
       when nil, '' then @data = {}

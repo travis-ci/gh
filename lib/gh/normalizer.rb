@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'gh'
 require 'time'
 
@@ -46,7 +48,7 @@ module GH
     end
 
     TIME_KEYS = %w[date timestamp committed_at created_at merged_at closed_at datetime time].freeze
-    TIME_PATTERN = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\S*$/.freeze
+    TIME_PATTERN = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\S*$/
 
     def modify_time(hash, key, value)
       return unless TIME_KEYS.include?(key) || (TIME_PATTERN === value)
@@ -56,7 +58,7 @@ module GH
 
       time = begin
         Time.at(value)
-      rescue
+      rescue StandardError
         Time.parse(value.to_s)
       end
       hash[should_be] = time.utc.xmlschema if time

@@ -1,5 +1,9 @@
+# frozen_string_literal: false
+
 require 'gh'
 require 'faraday'
+require 'faraday/retry'
+require 'faraday/typhoeus'
 require 'active_support/core_ext/string'
 
 module GH
@@ -47,10 +51,10 @@ module GH
         builder.request(:authorization, :token, token) if token
         builder.request(:basic_auth, username, password) if username && password
         builder.request(:retry)
+        builder.adapter(:typhoeus)
         builder.response(:raise_error)
         builder.use :instrumentation if defined? FaradayMiddleware::Instrumentation
         builder.response(:logger, nil, formatter: GH.const_get(options[:formatter].camelize)) if options[:formatter]
-        builder.adapter(:net_http)
       end
     end
 
@@ -78,8 +82,8 @@ module GH
     def http(verb, url, headers = {}, &block)
       body = headers.delete :body
       connection.run_request(verb, url, body, headers, &block)
-    rescue => e
-      raise Error.new(e, nil, verb: verb, url: url, headers: headers)
+    rescue StandardError => e
+      raise Error.new(e, nil, verb:, url:, headers:)
     end
 
     # Internal: ...

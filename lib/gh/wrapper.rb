@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'gh'
 require 'addressable/uri'
 
@@ -161,7 +163,7 @@ module GH
       when respond_to(:to_int) then modify_integer(data)
       else modify_unknown data
       end
-    rescue => e
+    rescue StandardError => e
       raise Error.new(e, data)
     end
 
@@ -172,7 +174,7 @@ module GH
 
     def modify(data, *)
       data
-    rescue => e
+    rescue StandardError => e
       raise Error.new(e, data)
     end
 
