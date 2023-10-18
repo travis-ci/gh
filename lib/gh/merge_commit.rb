@@ -60,7 +60,7 @@ module GH
       case hash['mergeable_state']
       when 'checking'                                                  then false
       when 'unknown'                                                   then hash['merged']
-      when 'clean', 'dirty', 'unstable', 'stable', 'blocked', 'behind' then true
+      when 'clean', 'dirty', 'unstable', 'stable', 'blocked', 'behind', 'has_hooks', 'draft' then true
       else fail "unknown mergeable_state #{hash['mergeable_state'].inspect} for #{url(hash)}"
       end
     end
