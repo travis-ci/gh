@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'yaml'
 require 'fileutils'
 require 'webmock/rspec'
@@ -6,7 +8,7 @@ require 'simplecov-console'
 
 require 'gh'
 
-RUBY_ENGINE = 'ruby'.freeze unless defined? RUBY_ENGINE
+RUBY_ENGINE = 'ruby' unless defined? RUBY_ENGINE
 
 SimpleCov.formatters = SimpleCov::Formatter::MultiFormatter.new(
   [

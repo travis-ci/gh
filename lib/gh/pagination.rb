@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module GH
   class Pagination < Wrapper
     class Paginated

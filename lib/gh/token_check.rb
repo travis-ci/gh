@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'gh/error'
 require 'base64'
 

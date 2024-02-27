@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 $LOAD_PATH.unshift File.expand_path('lib', __dir__)
 require 'gh/version'
 
@@ -17,13 +19,14 @@ Gem::Specification.new do |s|
   s.files                 = Dir['lib/**/*', 'LICENSE']
   s.require_path          = 'lib'
 
-  s.required_ruby_version = '>= 2.4', '< 3.3'
+  s.required_ruby_version = '>= 3.2', '< 4'
 
-  s.add_runtime_dependency 'faraday', '~> 1.0'
-  s.add_runtime_dependency 'faraday_middleware', '~> 1.0'
-  s.add_runtime_dependency 'activesupport', '>= 5', '< 6.2'
-  s.add_runtime_dependency 'multi_json', '~> 1.0'
+  s.add_runtime_dependency 'activesupport', '~> 7.0.8'
   s.add_runtime_dependency 'addressable', '~> 2.8'
-  s.add_runtime_dependency 'net-http-persistent', '~> 2.9'
+  s.add_runtime_dependency 'faraday', '~> 2'
+  s.add_runtime_dependency 'faraday-retry'
+  s.add_runtime_dependency 'faraday-typhoeus'
+  s.add_runtime_dependency 'multi_json', '~> 1'
+  s.add_runtime_dependency 'net-http-persistent', '~> 4'
   s.add_runtime_dependency 'net-http-pipeline'
 end

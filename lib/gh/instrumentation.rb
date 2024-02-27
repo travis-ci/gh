@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'gh'
 
 module GH
@@ -13,15 +15,15 @@ module GH
     end
 
     def http(verb, url, *)
-      instrument(:http, verb: verb, url: url) { super }
+      instrument(:http, verb:, url:) { super }
     end
 
     def load(data)
-      instrument(:load, data: data) { super }
+      instrument(:load, data:) { super }
     end
 
     def [](key)
-      instrument(:access, key: key) { super }
+      instrument(:access, key:) { super }
     end
 
     private
