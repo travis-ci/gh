@@ -1,3 +1,5 @@
+# frozen_string_literal: false
+
 require 'spec_helper'
 
 describe GH::Response do
@@ -6,7 +8,7 @@ describe GH::Response do
   before do
     stub_request(:get, 'https://api.github.com/repos/travis-ci/gh/contents/README.md?per_page=100').to_return(
       status: 200,
-      body: body
+      body:
     )
   end
 

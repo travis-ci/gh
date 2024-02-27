@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module GH
   # Adds Client info so even unauthenticated requests can use a custom request limit
   class CustomLimit < Wrapper

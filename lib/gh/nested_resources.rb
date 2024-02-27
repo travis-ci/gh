@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'gh'
 
 module GH
@@ -6,7 +8,7 @@ module GH
     wraps GH::Normalizer
     double_dispatch
 
-    def modify_hash(hash, loaded = false)
+    def modify_hash(hash, loaded = false) # rubocop:disable Style/OptionalBooleanParameter
       hash = super(hash)
       link = hash['_links']['self'] unless loaded || hash['_links'].nil?
       set_links hash, Addressable::URI.parse(link['href']) if link
