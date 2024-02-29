@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = '>= 3.2', '< 4'
 
-  s.add_runtime_dependency 'activesupport', '~> 7.0.8'
+  s.add_runtime_dependency 'activesupport', '~> 7.0.6'
   s.add_runtime_dependency 'addressable', '~> 2.8'
   s.add_runtime_dependency 'faraday', '~> 2'
   s.add_runtime_dependency 'faraday-retry'
