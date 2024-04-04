@@ -5,7 +5,7 @@ require 'gh/version'
 
 Gem::Specification.new do |s|
   s.platform              = Gem::Platform::RUBY
-  s.name                  = 'gh'
+  s.name                  = 'travis-gh'
   s.version               = GH::VERSION
   s.summary               = 'layered github client'
   s.description           = 'multi-layer client for the github api v3'
