@@ -3,6 +3,12 @@
 
 This is a highly flexible, layered, low-level GitHub client library, trying to get out of your way and let you get to the GitHub data as simple as possible. Unless you add layers, you will end up with Hashes and Arrays. The approach and API should be familiar from projects like Rack or Faraday.
 
+This is not a fork, but a new release of the same codebase. As we have no access to original `gh` release process, we decided to release it as `travis-gh` gem.
+Having `gh` and `travis-gh` gems installed may cause conflicts.
+
+``` ruby
+gem 'travis-gh'
+```
 Simple example:
 
 ``` ruby
